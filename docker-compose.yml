@@ -1,0 +1,59 @@
+version: "3.9"
+services:
+  chapter-crawler:
+    build:
+      context: ./crawler_projects
+      dockerfile: ./Dockerfile
+    command: crawl chapter_url 
+    restart: always 
+    deploy:
+        replicas: 20
+    environment: 
+      - REDIS_CONNECTION_STRING=redis-back-end
+      - REDIS_CONNECTION_PORT=6379
+    volumes:
+        - ./commics:/app/commics
+    networks:
+        - distributed-crawler-network  
+    links:
+        - redis-back-end:localhost
+  commic-crawler:
+    build:
+      context: ./crawler_projects
+      dockerfile: ./Dockerfile
+    command: crawl commic_url 
+    restart: always 
+    deploy: 
+        replicas: 5
+    environment: 
+      - REDIS_CONNECTION_STRING=redis-back-end
+      - REDIS_CONNECTION_PORT=6379
+    volumes:
+        - ./commics:/app/commics
+    networks:
+        - distributed-crawler-network  
+    links:
+        - redis-back-end:localhost 
+  redis-back-end:
+    restart: always
+    build:
+      context: ./redis
+      dockerfile: ./Dockerfile
+    ports:
+      - 6391:6379
+    volumes:
+        - backend-redis_data:/data 
+    networks:
+        - distributed-crawler-network
+  web-site:
+    build: ./web_site
+    restart: always
+    ports:
+      - "3000:3000"
+    networks:
+      - distributed-crawler-network                 
+networks:
+    distributed-crawler-network:      
+volumes:
+  backend-redis_data:
+  commic-db-data:

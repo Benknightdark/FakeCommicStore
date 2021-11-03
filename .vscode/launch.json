@@ -1,0 +1,49 @@
+{
+  // 使用 IntelliSense 以得知可用的屬性。
+  // 暫留以檢視現有屬性的描述。
+  // 如需詳細資訊，請瀏覽: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "app1",
+      "type": "python",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "jinja": true,
+      "program": "${workspaceFolder}/app1/main1.py",
+      "preLaunchTask": "daprd-debug-app1",
+      "postDebugTask": "daprd-down-app1",
+      "envFile": "${workspaceFolder}/.develop.env"
+    },
+    {
+      "name": "app2",
+      "type": "python",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "jinja": true,
+      "program": "${workspaceFolder}/app2/main2.py",
+      "preLaunchTask": "daprd-debug-app2",
+      "postDebugTask": "daprd-down-app2",
+      "envFile": "${workspaceFolder}/.develop.env"
+    },
+    {
+      "name": "app3",
+      "type": "python",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "jinja": true,
+      "program": "${workspaceFolder}/app3/main3.py",
+      "preLaunchTask": "daprd-debug-app3",
+      "postDebugTask": "daprd-down-app3",
+      "envFile": "${workspaceFolder}/.develop.env"
+    }
+  ],
+
+  "compounds": [
+    {
+      "name": "Debug All",
+      "preLaunchTask": "clear-all-daprd-processes",
+      "configurations": ["app1", "app2", "app3"]
+    }
+  ]
+}

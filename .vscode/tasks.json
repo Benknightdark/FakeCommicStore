@@ -1,0 +1,69 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "clear-all-daprd-processes",
+      "type": "shell",
+      "isBackground": true,
+      "windows":{
+        "command": "Get-Process -Name 'daprd' | Stop-Process"
+      },
+      "linux":{
+        "command": "kill -9 $(ps aux | grep daprd | awk '{print $2}')"
+      },
+      "osx":{
+        "command": "ps aux | grep daprd|grep -v grep | awk '{print $2}'|xargs kill -9"
+      },
+      // "command": [
+      //    "kill -9 $(ps aux | grep daprd | awk '{print $2}')"
+      // ],
+    },
+    {
+      "label": "daprd-debug-app1",
+      "type": "daprd",
+      "appId": "app1",
+      "appPort": 8788,
+      "httpPort": 3500,
+      "metricsPort": 9090,
+      "grpcPort": 53320,
+      
+    },
+    {
+      "label": "daprd-down-app1",
+      "type": "daprd-down",
+      "appId": "app1"
+    },
+
+    {
+      "label": "daprd-debug-app2",
+      "type": "daprd",
+      "appId": "app2",
+      "appPort": 8789,
+      "httpPort": 3501,
+      "metricsPort": 9091,
+      "grpcPort": 53317,
+    },
+    {
+      "label": "daprd-down-app2",
+      "type": "daprd-down",
+      "appId": "app2"
+    },
+
+    {
+      "label": "daprd-debug-app3",
+      "type": "daprd",
+      "appId": "app3",
+      "appPort": 8790,
+      "httpPort": 3506,
+      "metricsPort": 9095,
+      "grpcPort": 53319,
+    },
+    {
+      "label": "daprd-down-app3",
+      "type": "daprd-down",
+      "appId": "app3"
+    },
+  ]
+}
