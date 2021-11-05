@@ -36,20 +36,3 @@ const Index: NextPage = () => {
   )
 }
 export default Index
-
-
-{/* <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} >
-      {data.map((d: any) => (
-        <Grid item xs={2} sm={4} md={4} key={d.title} className="rounded-full py-3 px-6 ">
-          <div className="p-10 bg-blue-100">
-            <div className="bg-white p-3 rounded-lg shadow-lg border-2 border-purple-500 hover:border-red-500">
-              <h2 className="text-2xl font-bold  text-gray-800 text-center cursor-pointer	" onClick={() => {
-                router.push({ pathname: '/commic', query: { url: d.link, subTitle: d.title } })
-              }}>
-                {d.title}
-              </h2>
-            </div>
-          </div>
-        </Grid>
-      ))}
-    </Grid> */}
