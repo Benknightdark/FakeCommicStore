@@ -11,7 +11,50 @@ import Button from "@mui/material/Button";
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import Badge from "@mui/material/Badge";
 import { useStartUrlsCount } from '../../helpers/starts-url-helper';
+import { styled, alpha } from '@mui/material/styles';
+import InputBase from '@mui/material/InputBase';
+import SearchIcon from '@mui/icons-material/Search';
 
+const Search = styled('div')(({ theme }) => ({
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    '&:hover': {
+        backgroundColor: alpha(theme.palette.common.white, 0.25),
+    },
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+        marginLeft: theme.spacing(1),
+        width: 'auto',
+    },
+}));
+
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+    color: 'inherit',
+    '& .MuiInputBase-input': {
+        padding: theme.spacing(1, 1, 1, 0),
+        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+        transition: theme.transitions.create('width'),
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            width: '12ch',
+            '&:focus': {
+                width: '20ch',
+            },
+        },
+    },
+}));
 const Layout: NextPage = ({ children }) => {
     const router = useRouter()
     const [subTitle, setSubTitle] = useState<string>("");
@@ -47,6 +90,28 @@ const Layout: NextPage = ({ children }) => {
                                 }}>
                                 Fake Commic Store  {subTitle}
                             </Typography>
+                            <Search>
+                                <SearchIconWrapper>
+                                    <SearchIcon />
+                                </SearchIconWrapper>
+                                <StyledInputBase
+                                    placeholder="搜尋漫畫"
+                                    inputProps={{ 'aria-label': 'search' }}
+                                    onBlur={async (value) => {
+                                        const subTitle = value.currentTarget.value
+                                        if (subTitle.replace(/\s/g, "") == "") {
+                                            router.push({ pathname: '/' })
+                                            return
+                                        }
+                                        setTimeout(() => {
+                                            const link = `https://www.comicun.com/search-index?q=${subTitle}`
+                                            router.push({ pathname: '/commic', query: { url: link, subTitle: subTitle } })
+                                        }, 500);
+
+                                    }}
+                                />
+                            </Search>
+
                             <Button color="inherit" variant="outlined" endIcon={
                                 <Badge
                                     badgeContent={!startUrlsCountSWR.isLoading && startUrlsCountSWR.data['count']}

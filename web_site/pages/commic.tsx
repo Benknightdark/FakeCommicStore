@@ -1,21 +1,12 @@
-import IconButton from "@mui/material/IconButton";
-import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
-import ImageListItemBar from "@mui/material/ImageListItemBar";
-import ListSubheader from "@mui/material/ListSubheader";
 import { NextPage } from "next";
 import { useRouter } from "next/dist/client/router";
 import React, { useEffect, useState } from "react";
-import Button from '@mui/material/Button';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import InfoIcon from '@mui/icons-material/Info';
 import useSWRInfinite from 'swr/infinite'
 import { useSubTitleContext } from "../context/sub-title-context";
 import Stack from "@mui/material/Stack";
 import LinearProgress from '@mui/material/LinearProgress';
 import Loading from "./utils/loading";
 import Image from 'next/image'
-import { BeakerIcon } from '@heroicons/react/solid'
 
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -97,9 +88,6 @@ const Commic: NextPage = () => {
                     <h2>載入中......</h2>
                     <LinearProgress color="secondary" />
                 </Stack>}
-                {/* <Stack sx={{ width: '100%', color: 'grey.500', paddingTop: 5,paddingBottom:5 }}>
-                Fixed child
-            </Stack> */}
             </div>
         </div>
     );
