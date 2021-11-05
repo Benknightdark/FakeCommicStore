@@ -14,7 +14,8 @@ import { useStartUrlsCount } from '../../helpers/starts-url-helper';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
-
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -81,11 +82,18 @@ const Layout: NextPage = ({ children }) => {
                 <Container fixed sx={{ paddingTop: 10 }} maxWidth="xl">
                     <AppBar position="fixed" className='bg-yellow-500'>
                         <Toolbar>
+                            <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}
+                                className='md:hidden xl:hidden lg:hidden'
+                            >
+                                <MenuIcon />
+                            </IconButton>
                             <Typography className='hover:underline'
                                 style={{
                                     cursor: 'pointer'
                                 }}
-                                variant="h6" component="div" sx={{ flexGrow: 1 }} onClick={() => {
+                                variant="h6" component="div" sx={{ flexGrow: 1 }}
+
+                                onClick={() => {
                                     router.push('/')
                                 }}>
                                 Fake Commic Store  {subTitle}
