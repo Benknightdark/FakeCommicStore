@@ -87,7 +87,7 @@ const Layout: NextPage = ({ children }) => {
                             >
                                 <MenuIcon />
                             </IconButton>
-                            <Typography className='hover:underline visible  md:invisible  xl:invisible lg:invisible 2xl:invisible'
+                            <Typography className='invisible hover:underline  md:visible xl:visible lg:visible 2xl:visible'
                                 style={{
                                     cursor: 'pointer'
                                 }}
