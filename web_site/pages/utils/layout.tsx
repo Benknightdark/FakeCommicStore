@@ -15,7 +15,7 @@ import { useStartUrlsCount } from '../../helpers/starts-url-helper';
 const Layout: NextPage = ({ children }) => {
     const router = useRouter()
     const [subTitle, setSubTitle] = useState<string>("");
-    const startUrlsCountSWR = useStartUrlsCount("commic_url:start_urls")
+    const startUrlsCountSWR = useStartUrlsCount("chapter_url:start_urls")
     const updateSubTitle = (text: string) => {
         if (text !== '')
             setSubTitle(` / ${text}`)
