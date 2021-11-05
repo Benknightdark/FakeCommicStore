@@ -83,11 +83,11 @@ const Layout: NextPage = ({ children }) => {
                     <AppBar position="fixed" className='bg-yellow-500'>
                         <Toolbar>
                             <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}
-                                className='md:hidden xl:hidden lg:hidden'
+                                className='md:hidden xl:hidden lg:hidden 2xl:hidden'
                             >
                                 <MenuIcon />
                             </IconButton>
-                            <Typography className='hover:underline'
+                            <Typography className='hover:underline visible  md:invisible  xl:invisible lg:invisible 2xl:invisible'
                                 style={{
                                     cursor: 'pointer'
                                 }}
@@ -98,7 +98,7 @@ const Layout: NextPage = ({ children }) => {
                                 }}>
                                 Fake Commic Store  {subTitle}
                             </Typography>
-                            <Search>
+                            <Search >
                                 <SearchIconWrapper>
                                     <SearchIcon />
                                 </SearchIconWrapper>
