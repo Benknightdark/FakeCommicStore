@@ -1,5 +1,4 @@
 import logging
-import re
 import sys
 import scrapy
 from scrapy_redis.spiders import RedisSpider
@@ -10,7 +9,6 @@ from io import BytesIO
 import os
 import traceback
 from datetime import datetime
-from urllib.parse import unquote
 import uuid
 from urllib.parse import urlparse
 from urllib.parse import parse_qs

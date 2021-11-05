@@ -1,10 +1,5 @@
-import re
-from urllib.parse import unquote
 from scrapy_redis.spiders import RedisSpider
 from bs4 import BeautifulSoup
-import httpx
-from PIL import Image
-from io import BytesIO
 import os
 import logging
 from urllib.parse import urlparse
