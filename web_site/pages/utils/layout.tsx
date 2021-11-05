@@ -23,17 +23,13 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import Settings from '@mui/icons-material/Settings';
 import People from '@mui/icons-material/People';
 import PermMedia from '@mui/icons-material/PermMedia';
 import Dns from '@mui/icons-material/Dns';
 import Public from '@mui/icons-material/Public';
 import Paper from '@mui/material/Paper';
 import ListItemButton from '@mui/material/ListItemButton';
-import Tooltip from '@mui/material/Tooltip';
-import ArrowRight from '@mui/icons-material/ArrowRight';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
-import { Home } from "@mui/icons-material";
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -74,12 +70,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
         },
     },
 }));
-const data = [
-    { icon: <People />, label: 'Authentication' },
-    { icon: <Dns />, label: 'Database' },
-    { icon: <PermMedia />, label: 'Storage' },
-    { icon: <Public />, label: 'Hosting' },
-];
+
 
 const FireNav = styled(List)<{ component?: React.ElementType }>({
     '& .MuiListItemButton-root': {
@@ -276,7 +267,6 @@ const Layout: NextPage = ({ children }) => {
                     </AppBar>
                     {children}
                 </Container>
-
             </Fragment>
             <SwipeableDrawer
                 anchor='left'
