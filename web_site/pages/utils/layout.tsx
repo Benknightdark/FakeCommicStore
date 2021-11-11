@@ -23,10 +23,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import People from '@mui/icons-material/People';
-import PermMedia from '@mui/icons-material/PermMedia';
-import Dns from '@mui/icons-material/Dns';
-import Public from '@mui/icons-material/Public';
 import Paper from '@mui/material/Paper';
 import ListItemButton from '@mui/material/ListItemButton';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
@@ -44,7 +40,6 @@ const Search = styled('div')(({ theme }) => ({
         width: 'auto',
     },
 }));
-
 const SearchIconWrapper = styled('div')(({ theme }) => ({
     padding: theme.spacing(0, 2),
     height: '100%',
@@ -54,7 +49,6 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
     alignItems: 'center',
     justifyContent: 'center',
 }));
-
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: 'inherit',
     '& .MuiInputBase-input': {
@@ -70,8 +64,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
         },
     },
 }));
-
-
 const FireNav = styled(List)<{ component?: React.ElementType }>({
     '& .MuiListItemButton-root': {
         paddingLeft: 24,
