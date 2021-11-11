@@ -7,3 +7,9 @@
 ## 系統啟動方式
 - 先在根目錄建立名為`commics`的資料夾
 - docker-compose up -d
+
+## Scale Container
+```
+docker-compose  up   --scale chapter-crawler=50 -d 
+docker-compose  up   --scale comic-crawler=50 -d 
+```
