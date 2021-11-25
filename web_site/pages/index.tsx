@@ -14,7 +14,6 @@ const Index: NextPage = () => {
   if (error) return <Loading></Loading>
   if (!data) return <Loading></Loading>
   return (
-
     <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
       {data.map((d: any) => (
         <div key={d.title} className="rounded-full py-3 px-6 ">
