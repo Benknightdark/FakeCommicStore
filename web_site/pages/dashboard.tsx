@@ -49,21 +49,6 @@ const QueueRecord = () => {
         <div className='p-4'>
             <div className="shadow-md rounded-md overflow-hidden text-center border-solid border-4 border-blue-400">
                 <div className="flex bg-gray-100">
-                    <div className="py-3 px-5 flex-grow">章節佇列資訊</div>
-                    <RefreshIcon className="py-1 h-8 w-8 text-blue-500 cursor-pointer" onClick={() => {
-                        chapterRequestsSWR.mutate();
-                        chapterStartUrlsCountSWR.mutate();
-                    }} />
-                </div>
-                <div className="flex-1 2xl:flex xl:flex lg:flex  flex-wrap mx-8 p-5">
-                    <RecordItem key="chapterRequestsSWR" itemBackgroundColor='bg-red-200' itemName='等待下載數量' itemValue={!chapterRequestsSWR.isLoading && chapterRequestsSWR.data['count']} />
-                    <RecordItem key="chapterStartUrlsCountSWR" itemBackgroundColor='bg-yellow-200' itemName='正在下載數量' itemValue={!chapterStartUrlsCountSWR.isLoading && chapterStartUrlsCountSWR.data['count']} />
-                </div>
-            </div>
-        </div>
-        <div className='p-4'>
-            <div className="shadow-md rounded-md overflow-hidden text-center border-solid border-4 border-blue-400">
-                <div className="flex bg-gray-100">
                     <div className="py-3 px-5 flex-grow">漫畫佇列資訊</div>
                     <RefreshIcon className="py-1 h-8 w-8 text-blue-500 cursor-pointer" onClick={() => {
                         commicRequestsSWR.mutate();
@@ -73,6 +58,21 @@ const QueueRecord = () => {
                 <div className="flex-1 2xl:flex xl:flex lg:flex flex-wrap mx-8 p-5">
                     <RecordItem key="commicRequestsSWR" itemBackgroundColor='bg-red-200' itemName='等待下載數量' itemValue={!commicRequestsSWR.isLoading && commicRequestsSWR.data['count']} />
                     <RecordItem key="commicStartUrlsCountSWR" itemBackgroundColor='bg-yellow-200' itemName='正在下載數量' itemValue={!commicStartUrlsCountSWR.isLoading && commicStartUrlsCountSWR.data['count']} />
+                </div>
+            </div>
+        </div>
+        <div className='p-4'>
+            <div className="shadow-md rounded-md overflow-hidden text-center border-solid border-4 border-blue-400">
+                <div className="flex bg-gray-100">
+                    <div className="py-3 px-5 flex-grow">章節佇列資訊</div>
+                    <RefreshIcon className="py-1 h-8 w-8 text-blue-500 cursor-pointer" onClick={() => {
+                        chapterRequestsSWR.mutate();
+                        chapterStartUrlsCountSWR.mutate();
+                    }} />
+                </div>
+                <div className="flex-1 2xl:flex xl:flex lg:flex  flex-wrap mx-8 p-5">
+                    <RecordItem key="chapterRequestsSWR" itemBackgroundColor='bg-red-200' itemName='等待下載數量' itemValue={!chapterRequestsSWR.isLoading && chapterRequestsSWR.data['count']} />
+                    <RecordItem key="chapterStartUrlsCountSWR" itemBackgroundColor='bg-yellow-200' itemName='正在下載數量' itemValue={!chapterStartUrlsCountSWR.isLoading && chapterStartUrlsCountSWR.data['count']} />
                 </div>
             </div>
         </div>
@@ -119,8 +119,8 @@ const DashBoard: NextPage = () => {
                                                     await setLoading(false)
                                                 }}
                                             >
-                                                <RefreshIcon className="py-1 h-8 w-8 text-white-500 cursor-pointer" />                                       
-                                            </button>                                          
+                                                <RefreshIcon className="py-1 h-8 w-8 text-white-500 cursor-pointer" />
+                                            </button>
                                         </div>
                                     </GridToolbarContainer>
                                 )!,
@@ -134,7 +134,7 @@ const DashBoard: NextPage = () => {
                                     headerClassName: headerColumnClassName,
 
                                 },
-                                
+
                                 {
                                     field: 'title',
                                     headerName: "標題",

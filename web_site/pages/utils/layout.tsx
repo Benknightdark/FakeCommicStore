@@ -77,6 +77,13 @@ const FireNav = styled(List)<{ component?: React.ElementType }>({
         fontSize: 20,
     },
 });
+const ShowMenuButton = styled('div')(({ theme }) => ({
+    visibility: "hidden",
+    [theme.breakpoints.down('md')]: {
+        visibility: "visible",
+    },
+
+}));
 const Layout: NextPage = ({ children }) => {
     const router = useRouter()
     const [openDrawer, setOpenDrawer] = useState(false)
@@ -201,12 +208,13 @@ const Layout: NextPage = ({ children }) => {
                 <Container fixed sx={{ paddingTop: 10 }} maxWidth="xl">
                     <AppBar position="fixed" className='bg-yellow-500'>
                         <Toolbar>
-                            <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}
-                                className='md:hidden xl:hidden lg:hidden 2xl:hidden'
-                                onClick={() => { setOpenDrawer(true) }}
-                            >
-                                <MenuIcon />
-                            </IconButton>
+                            <ShowMenuButton>
+                                <IconButton edge="start" color="inherit" aria-label="menu"
+                                    onClick={() => { setOpenDrawer(true) }}
+                                >
+                                    <MenuIcon />
+                                </IconButton>
+                            </ShowMenuButton>
                             <Typography className='invisible hover:underline  md:visible xl:visible lg:visible 2xl:visible'
                                 style={{
                                     cursor: 'pointer'
@@ -239,7 +247,6 @@ const Layout: NextPage = ({ children }) => {
                                     }}
                                 />
                             </Search>
-
                             <Button
                                 className='invisible  md:visible xl:visible lg:visible 2xl:visible'
                                 color="inherit" variant="outlined" endIcon={
