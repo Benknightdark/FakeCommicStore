@@ -127,6 +127,28 @@ const DashBoard: NextPage = () => {
                             }}
                             columns={[
                                 {
+                                    field: 'chapterUrl',
+                                    width: 150,
+                                    headerName: '下載來源',
+                                    sortable: false,
+                                    renderCell: (params: GridRenderCellParams) => (
+                                        <strong>
+                                            <GradientButton
+                                                color='blue'
+                                                variant="contained"
+                                                style={{ marginLeft: 8 }}
+                                                onClick={() => {
+                                                    window.open(params.value?.toString()!)
+                                                }}
+                                            >
+                                                前往網址
+                                            </GradientButton>
+                                        </strong>
+                                    ),
+                                    headerClassName: headerColumnClassName,
+
+                                },
+                                {
                                     field: 'finishedTime',
                                     minWidth: 200,
                                     sortable: false,
@@ -149,29 +171,8 @@ const DashBoard: NextPage = () => {
                                     width: 800,
                                     sortable: false,
                                     headerClassName: headerColumnClassName,
-                                },
-                                {
-                                    field: 'chapterUrl',
-                                    width: 150,
-                                    headerName: '下載來源',
-                                    sortable: false,
-                                    renderCell: (params: GridRenderCellParams) => (
-                                        <strong>
-                                            <GradientButton
-                                                color='blue'
-                                                variant="contained"
-                                                style={{ marginLeft: 8 }}
-                                                onClick={() => {
-                                                    window.open(params.value?.toString()!)
-                                                }}
-                                            >
-                                                前往網址
-                                            </GradientButton>
-                                        </strong>
-                                    ),
-                                    headerClassName: headerColumnClassName,
-
-                                },
+                                }
+                                
 
                             ]}
                             pagination
