@@ -13,3 +13,9 @@
 docker-compose  up   --scale chapter-crawler=50 -d 
 docker-compose  up   --scale comic-crawler=50 -d 
 ```
+
+## prepare to do
+- add redis cache
+  - https://github.com/knovator/next-redis-cache
+- 使用者帳號登入
+- 我的最愛
