@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import * as cheerio from 'cheerio';
 import fetch from 'node-fetch';
+import clientPromise from '../../helpers/mongodb-client';
 
 type Data = {
   title: string
@@ -20,6 +21,6 @@ export default async function handler(
     if (index != 0)
       categories.push({ title: $(element).text(), link: $(element).attr('href') })
   });
-
+  (await clientPromise).db("web_site").collection('user').insertMany([{ a: 1 }, { a: 2 }, { a: 3 }]);
   res.status(200).json(categories)
 }
