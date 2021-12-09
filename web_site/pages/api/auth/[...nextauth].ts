@@ -1,25 +1,25 @@
 import NextAuth, { NextAuthOptions } from "next-auth"
-// import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
-// import clientPromise from "../../../helpers/mongodb-client";
 import Credentials from "next-auth/providers/credentials";
-
+import clientPromise from '../../../helpers/mongodb-client'
 const options: NextAuthOptions = {
     // adapter: MongoDBAdapter(clientPromise),
     providers: [
         Credentials({
             name: 'Credentials',
             credentials: {
-                username: { label: "Username", type: "text",  },
+                username: { label: "Username", type: "text", },
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials, req) {
                 console.log(credentials)
-                const user = { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-                return user
+                const userData = await (await clientPromise).db().collection('user').
+                    findOne({ 'username': credentials?.username, 'password': credentials?.password })
+                console.log(userData)
+                return userData
             }
         })
     ],
-    secret:process.env.NEXTAUTH_RANDOM_KEY_SECRECT,
+    secret: process.env.NEXTAUTH_RANDOM_KEY_SECRECT,
     session: {
         // Choose how you want to save the user session.
         // The default is `"jwt"`, an encrypted JWT (JWE) in the session cookie.
@@ -49,6 +49,14 @@ const options: NextAuthOptions = {
     },
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {
+            console.log(user)
+            user.name = user.displayName as string
+            console.log('---------------------')
+            console.log(account)
+            console.log('---------------------')
+            console.log(profile)
+            console.log('---------------------')
+
             return true
         },
         async redirect({ url, baseUrl }) {

@@ -19,14 +19,14 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 const schema = object().shape({
-    userName: string().required(),
+    username: string().required(),
     password: string().required(),
     email: string().required(),
     displayName: string().required(),
 
 }).required();
 interface IFormInputs {
-    userName: string
+    username: string
     password: string
     email: string
     displayName: string
@@ -46,23 +46,19 @@ const Register: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof ge
             body: JSON.stringify(data),
             headers: { "content-type": "application/json" },
         });
-        // const res = await req.json();
-        // console.log(res)
-        // if (res?.token) {
-        //     signIn("credentials", {
-        //         username: data.userName,
-        //         password: data.password,
-        //         redirect: false,
-        //     }).then((r) => {
-        //         console.log(r)
-        //     });
-        // }
+        if (req.status===200){
+             signIn("credentials", {
+                username: data.username,
+                password: data.password,
+            })
+        }else{
+            const message=(await req.json());
+           alert(message['message']) 
+        }
+        
 
     };
-    // justify="center"
-    // alignItems="baseline"
-    // direction="row"
-    // className={classes.root}
+
     return (
         <Grid
             container
@@ -91,8 +87,8 @@ const Register: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof ge
                                 fullWidth={true}
                                 type="text"
                                 className="form-control"
-                                id="userName"
-                                {...register("userName")}
+                                id="username"
+                                {...register("username")}
                             />
                             <InputLabel>密碼</InputLabel>
                             <Input

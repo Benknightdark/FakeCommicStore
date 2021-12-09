@@ -19,14 +19,12 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 const schema = object().shape({
-    userName: string().required(),
+    username: string().required(),
     password: string().required(),
-    email: string().required(),
-    displayName: string().required(),
 
 }).required();
 interface IFormInputs {
-    userName: string
+    username: string
     password: string
     email: string
     displayName: string
@@ -39,22 +37,7 @@ const Login: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getSe
     });
     const onSubmit = async (data: { userName: any; password: any; }) => {
         console.log(data)
-        // const req = await fetch("/api/auth/register", {
-        //     method: "POST",
-        //     body: JSON.stringify(data),
-        //     headers: { "content-type": "application/json" },
-        // });
-        // const res = await req.json();
-        // console.log(res)
-        // if (res?.token) {
-        //     signIn("credentials", {
-        //         username: data.userName,
-        //         password: data.password,
-        //         redirect: false,
-        //     }).then((r) => {
-        //         console.log(r)
-        //     });
-        // }
+        await signIn("credentials", data)
 
     };
     return (
@@ -88,7 +71,7 @@ const Login: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getSe
                                 type="text"
                                 className="form-control"
                                 id="userName"
-                                {...register("userName")}
+                                {...register("username")}
                             />
                             <InputLabel>密碼</InputLabel>
                             <Input
