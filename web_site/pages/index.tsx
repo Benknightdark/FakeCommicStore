@@ -23,9 +23,7 @@ const Index: NextPage = () => {
 
               try {
                 if (session.status!='authenticated'){
-
-  
-                  const bb = await signIn("Credentials",{ redirect:false});
+                  const bb = await signIn("Credentials",{ redirect:false,username:"username", password: 'password'});
                   console.log(bb)
                 }
                 console.log(session.data)
@@ -34,8 +32,6 @@ const Index: NextPage = () => {
                 console.log(error)
               }
       }}>ttt</button>
-      {session.status}
-
       {data.map((d: any) => (
         <div key={d.title} className="rounded-full py-3 px-6 ">
           <div className="p-10 bg-gradient-to-br from-yellow-400 via-yellow-500 to-orange-200">

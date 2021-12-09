@@ -13,20 +13,13 @@ const options: NextAuthOptions = {
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials, req) {
-                // Add logic here to look up the user from the credentials supplied
-                // Add logic here to look up the user from the credentials supplied
+                console.log(credentials)
                 const user = { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-
-
-                // Any object returned will be saved in `user` property of the JWT
                 return user
-
-
             }
         })
     ],
-    debug: true,
-    secret: "LlKq6ZtYbr+hTC073mAmAh9/h2HwMfsFo4hrfCx5mLg=",
+    secret:process.env.NEXTAUTH_RANDOM_KEY_SECRECT,
     session: {
         // Choose how you want to save the user session.
         // The default is `"jwt"`, an encrypted JWT (JWE) in the session cookie.
@@ -46,7 +39,7 @@ const options: NextAuthOptions = {
     },
     jwt: {
         // A secret to use for key generation. Defaults to the top-level `session`.
-        secret: 'INp8IvdIyeMcoGAgFGoA61DdBglwwSqnXJZkgz8PSnw',
+        secret: process.env.NEXTAUTH_JWT_SECRET,
         // The maximum age of the NextAuth.js issued JWT in seconds.
         // Defaults to `session.maxAge`.
         maxAge: 60 * 60 * 24 * 30,
@@ -56,14 +49,12 @@ const options: NextAuthOptions = {
     },
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {
-            console.log({ user, account, profile, email, credentials })
             return true
         },
         async redirect({ url, baseUrl }) {
             return baseUrl
         },
         async session({ session, token, user }) {
-            console.log(session)
             return session
         },
         async jwt({ token, user, account, profile, isNewUser }) {
