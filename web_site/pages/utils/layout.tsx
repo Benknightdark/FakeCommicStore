@@ -251,6 +251,8 @@ const Layout: NextPage = ({ children }) => {
                             </Search>
                             {session.status == 'unauthenticated' && <Button variant="contained" color="secondary" onClick={() => { router.push("/account/login") }}>登入</Button>}
                             {session.status == 'authenticated' && <Button variant="contained" color="success" onClick={() => { signOut() }}>{session.data.user?.name}</Button>}
+                            {session.status == 'authenticated' && <Button variant="contained" color="primary" onClick={() => { router.push("/favorite") }}>我的最愛</Button>}
+
                             <Button
                                 className='invisible  md:visible xl:visible lg:visible 2xl:visible'
                                 color="inherit" variant="outlined" endIcon={
