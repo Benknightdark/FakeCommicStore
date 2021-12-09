@@ -1,5 +1,4 @@
 import { NextPage } from "next";
-import { useRouter } from "next/dist/client/router";
 import React, { useEffect, useState } from "react";
 import useSWRInfinite from 'swr/infinite'
 import { useSubTitleContext } from "../context/sub-title-context";
@@ -7,6 +6,7 @@ import Stack from "@mui/material/Stack";
 import LinearProgress from '@mui/material/LinearProgress';
 import Loading from "./utils/loading";
 import Image from 'next/image'
+import { useRouter } from "next/router";
 
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
