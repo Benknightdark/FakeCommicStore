@@ -10,12 +10,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             res.status(404).json({"message":"未登入"})
             return;
         }
-        const skip:number = Number.parseInt(req.query['page'].toString()!);
-
         const favoriteCollection=await (await clientPromise).db().collection("favorite")
-        const findData=await favoriteCollection.find({'username':session.user?.name},{projection:{_id:0}}).skip(skip).limit(10).toArray();
-        //.skip(2).limit(10)
-        res.status(200).json(findData)
+        req.body['username']=session?.user?.name;
+        const deleteData=favoriteCollection.deleteOne(req.body);
+        res.status(200).json(deleteData)
     } catch (error:any) {
         res.status(500).json({"message":error.message})
 
