@@ -7,7 +7,8 @@ import { createStyles, makeStyles } from "@mui/styles";
 import { NextPage, GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Grid from '@mui/material/Grid';
 import { useForm } from "react-hook-form";
-
+const { yupResolver } = require('@hookform/resolvers/yup')
+import {object,string} from "yup";
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
@@ -15,7 +16,13 @@ const useStyles = makeStyles((theme: Theme) =>
         },
     })
 );
+const schema = object().shape({
+    userName: string().required(),
+    password: string().required(),
+    email: string().required(),
+    displayName: string().required(),
 
+  }).required();
 interface IFormInputs {
     userName: string
     password: string
@@ -27,7 +34,9 @@ interface IFormInputs {
 const register: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const classes = useStyles();
     const router = useRouter();
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { register, handleSubmit, watch, formState: { errors }  } = useForm({
+        resolver: yupResolver(schema)
+      });
     const onSubmit = async (data: { userName: any; password: any; }) => {
         console.log(data)
         // const req = await fetch("/api/auth/register", {
@@ -84,7 +93,7 @@ const register: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof ge
                                 {...register("password")}
 
                             />
-
+                            
                             <InputLabel>Email</InputLabel>
                             <Input
                                 fullWidth={true}
