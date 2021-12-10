@@ -26,6 +26,7 @@ import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Paper from '@mui/material/Paper';
 import ListItemButton from '@mui/material/ListItemButton';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
+import { signOut, useSession } from "next-auth/react";
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -89,6 +90,7 @@ const Layout: NextPage = ({ children }) => {
     const [openDrawer, setOpenDrawer] = useState(false)
     const [subTitle, setSubTitle] = useState<string>("");
     const startUrlsCountSWR = useStartUrlsCount("chapter_url:start_urls")
+    const session = useSession();
     const updateSubTitle = (text: string) => {
         if (text !== '')
             setSubTitle(` / ${text}`)
@@ -247,6 +249,10 @@ const Layout: NextPage = ({ children }) => {
                                     }}
                                 />
                             </Search>
+                            {session.status == 'unauthenticated' && <Button variant="contained" color="secondary" onClick={() => { router.push("/account/login") }}>登入</Button>}
+                            {session.status == 'authenticated' && <Button variant="contained" color="success" onClick={() => { signOut() }}>{session.data.user?.name}</Button>}
+                            {session.status == 'authenticated' && <Button variant="contained" color="primary" onClick={() => { router.push("/favorite") }}>我的最愛</Button>}
+
                             <Button
                                 className='invisible  md:visible xl:visible lg:visible 2xl:visible'
                                 color="inherit" variant="outlined" endIcon={

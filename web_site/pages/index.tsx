@@ -5,6 +5,7 @@ import Loading from './utils/loading'
 import useSWR from 'swr'
 import { NextPage } from 'next'
 
+
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const Index: NextPage = () => {
   const { data, error } = useSWR('/api/category', fetcher)
@@ -13,6 +14,7 @@ const Index: NextPage = () => {
   subTitleContext.updateSubTitle('漫畫類別')
   if (error) return <Loading></Loading>
   if (!data) return <Loading></Loading>
+
   return (
     <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
       {data.map((d: any) => (
@@ -29,7 +31,7 @@ const Index: NextPage = () => {
             </div>
           </div>
         </div>
-      ))}  
+      ))}
     </div>
 
   )
