@@ -1,5 +1,4 @@
 import { NextPage } from "next";
-import { useRouter } from "next/dist/client/router";
 import React, { useEffect, useState } from "react";
 import useSWRInfinite from 'swr/infinite'
 import { useSubTitleContext } from "../context/sub-title-context";
@@ -7,6 +6,7 @@ import Stack from "@mui/material/Stack";
 import LinearProgress from '@mui/material/LinearProgress';
 import Loading from "./utils/loading";
 import Image from 'next/image'
+import { useRouter } from "next/router";
 
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -64,18 +64,41 @@ const Commic: NextPage = () => {
                                     />
                                     <header className=" text-xl font-extrabold p-4">{itemData.title}</header>
 
-                                    <footer className="text-center py-3 px-8 text-gray-500">
-                                        <button
-                                            className="  py-2 px-4 mt-5 bg-green-500 rounded-lg text-white font-semibold hover:bg-green-600"
-                                            onClick={() => {
-                                                router.push({
-                                                    pathname: '/chapter',
-                                                    query: { url: itemData.link, subTitle: itemData.title, backUrl: '/commic?url=' + router.query['url'] + '&subTitle=' + router.query['subTitle']?.toString()! }
-                                                })
-                                            }}
-                                        >
-                                            看更多
-                                        </button>
+                                    <footer className="text-center py-3 px-5 text-gray-500">
+                                        <div className="flex flex-row space-x-4">
+                                            <button
+                                                className="  py-2 px-4 mt-5 bg-green-500 rounded-lg text-white font-semibold hover:bg-green-600"
+                                                onClick={() => {
+                                                    router.push({
+                                                        pathname: '/chapter',
+                                                        query: { url: itemData.link, subTitle: itemData.title, backUrl: '/commic?url=' + router.query['url'] + '&subTitle=' + router.query['subTitle']?.toString()! }
+                                                    })
+                                                }}
+                                            >
+                                                看更多
+                                            </button>
+                                            <button
+                                                className="  py-2 px-4 mt-5 bg-yellow-400 rounded-lg text-white font-semibold hover:bg-yellow-600"
+                                                onClick={async () => {
+                                                    const req = await fetch("/api/favorite/add", {
+                                                        method: "POST",
+                                                        body: JSON.stringify(itemData),
+                                                        headers: { "content-type": "application/json" },
+                                                    });
+                                                    if (req.status === 200) {
+                                                        alert(`已新增『${itemData.title}』至我的最愛`)
+
+                                                    } else {
+                                                        const message = (await req.json());
+                                                        alert(message['message'])
+                                                    }
+                                                }}
+                                            >
+                                                加入最愛
+                                            </button>
+                                        </div>
+
+
                                     </footer>
                                 </div>
                             )
