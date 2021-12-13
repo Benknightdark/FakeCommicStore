@@ -49,7 +49,7 @@ services:
     build: ./web_site
     restart: always
     ports:
-      - "3100:3000"
+      - "3000:3000"
     networks:
       - distributed-crawler-network
   mongo:
