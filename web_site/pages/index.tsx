@@ -11,7 +11,7 @@ const Index: NextPage = () => {
   const { data, error } = useSWR('/api/category', fetcher)
   const router = useRouter()
   const subTitleContext = useSubTitleContext()
-  subTitleContext.updateSubTitle('漫畫類別')
+  subTitleContext.updateSubTitle('漫畫類別2')
   if (error) return <Loading></Loading>
   if (!data) return <Loading></Loading>
 

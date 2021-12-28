@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  chapter-crawler:
+    image: chapter-crawler:dev
+  commic-crawler:
+    image: commic-crawler:dev
+  web-site:
+    image: web-site:dev 
+
+
