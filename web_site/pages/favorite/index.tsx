@@ -28,7 +28,12 @@ const Index = () => {
     if (session.status == "unauthenticated") {
         return (
             <div>
-                {session.status}
+                <Image src="https://i.giphy.com/media/lvQe7YwEEJoaIluvs6/giphy.webp" alt="not accessed" layout="fill"
+                className="cursor-pointer"
+                onClick={()=>{
+                    router.back()
+                }}
+                ></Image>
             </div>
         );
     } else {
