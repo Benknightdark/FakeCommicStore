@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "env-cmd -f environments/.env.development next dev -p 3033",
     "build": "env-cmd -f environments/.env.production next build",
-    "start": "env-cmd -f environments/.env.production next start",
+    "start": "env-cmd -f environments/.env.production node server.js",
     "lint": "next lint"
   },
   "dependencies": {
@@ -20,6 +20,7 @@
     "@next-auth/mongodb-adapter": "^1.0.1",
     "cheerio": "^1.0.0-rc.10",
     "env-cmd": "^10.1.0",
+    "express": "^4.17.2",
     "mongodb": "^4.2.2",
     "next": "12.0.7",
     "next-auth": "^4.0.6",
