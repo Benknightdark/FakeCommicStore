@@ -1,20 +1,11 @@
 import React, { Fragment, useState } from "react";
 import Head from "next/head";
 import { NextPage } from "next";
-import Container from "@mui/material/Container";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import { useRouter } from "next/dist/client/router";
 import { SubTitleContext } from "../../context/sub-title-context";
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import Badge from "@mui/material/Badge";
 import { useStartUrlsCount } from '../../helpers/starts-url-helper';
 import { styled, alpha, ThemeProvider, createTheme } from '@mui/material/styles';
-import InputBase from '@mui/material/InputBase';
-import SearchIcon from '@mui/icons-material/Search';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import Box from "@mui/system/Box";
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
@@ -26,47 +17,10 @@ import Paper from '@mui/material/Paper';
 import ListItemButton from '@mui/material/ListItemButton';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import { GiSpiderMask } from 'react-icons/gi'
-import { AiOutlineBarChart, AiOutlineFullscreenExit } from "react-icons/ai";
+import { AiOutlineBarChart } from "react-icons/ai";
 
 import { signOut, useSession } from "next-auth/react";
-const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
-        backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    // marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-        // marginLeft: theme.spacing(1),
-        width: 'auto',
-    },
-}));
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-}));
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    '& .MuiInputBase-input': {
-        padding: theme.spacing(1, 1, 1, 0),
-        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            width: '12ch',
-            '&:focus': {
-                width: '20ch',
-            },
-        },
-    },
-}));
+
 const FireNav = styled(List)<{ component?: React.ElementType }>({
     '& .MuiListItemButton-root': {
         paddingLeft: 24,
@@ -233,7 +187,9 @@ const Layout: NextPage = ({ children }) => {
                                         <label htmlFor="table-search" className="sr-only">Search</label>
                                         <div className="relative mt-1">
                                             <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                                                <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                                                <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                                        clipRule="evenodd"></path></svg>
                                             </div>
                                             <input type="text" id="table-search" className="bg-gray-50 border
                                              border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500

@@ -18,3 +18,4 @@ docker-compose  up   --scale comic-crawler=50 -d
 - add redis cache
   - https://github.com/knovator/next-redis-cache
   - https://pythonrepo.com/repo/comeuplater-fastapi_cache-python-fastapi-utilities
+- https://codepen.io/chris__sev/pen/RwKWXpJ
