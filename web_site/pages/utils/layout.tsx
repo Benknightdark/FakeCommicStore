@@ -228,7 +228,7 @@ const Layout: NextPage = ({ children }) => {
                                     </p>
                                 </div>
                                 <div className="justify-end flex-row">
-                                    <div className="p-4 
+                                    <div className="p-2 
                                       hidden  md:inline-block xl:inline-block lg:inline-block 2xl:inline-block">
                                         <label htmlFor="table-search" className="sr-only">Search</label>
                                         <div className="relative mt-1">
