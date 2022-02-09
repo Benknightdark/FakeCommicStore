@@ -1,11 +1,31 @@
 module.exports = {
   purge: ['./pages/**/*.{js,ts,jsx,tsx}','./pages/utils/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
-  darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      typography: (theme) => ({
+        dark: {
+          css: {
+            color: theme('colors.gray.300'),
+            h1: {
+              color: theme('colors.gray.100'),
+            },
+            h2: {
+              color: theme('colors.gray.100'),
+            },
+          },
+        },
+      }),
+    },
   },
   variants: {
-    extend: {},
+    extend: {
+      typography: ['dark'],
+    },
   },
-  plugins: [],
+  plugins: [
+    require('flowbite/plugin')
+  ],
+//   content: [
+//     "./node_modules/flowbite/**/*.js"
+// ]
 }

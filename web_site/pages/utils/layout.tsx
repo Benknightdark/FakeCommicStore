@@ -7,7 +7,6 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/dist/client/router";
 import { SubTitleContext } from "../../context/sub-title-context";
-import Button from "@mui/material/Button";
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import Badge from "@mui/material/Badge";
 import { useStartUrlsCount } from '../../helpers/starts-url-helper';
@@ -26,6 +25,9 @@ import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Paper from '@mui/material/Paper';
 import ListItemButton from '@mui/material/ListItemButton';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
+import { GiSpiderMask } from 'react-icons/gi'
+import { AiOutlineBarChart, AiOutlineFullscreenExit } from "react-icons/ai";
+
 import { signOut, useSession } from "next-auth/react";
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -207,8 +209,105 @@ const Layout: NextPage = ({ children }) => {
                         href="https://fonts.googleapis.com/icon?family=Material+Icons"
                     />
                 </Head>
-                <Container fixed sx={{ paddingTop: 10 }} maxWidth="xl">
-                    <AppBar position="fixed" className='bg-yellow-500'>
+                <div className="flex flex-col h-screen">
+                    <header className="dark:bg-indigo-600 bg-yellow-300  w-full" >
+                        <div className="p-3">
+                            <div className="flex items-center justify-between flex-wrap">
+                                <div className="w-0 flex-1 flex items-center">
+                                    <span className="flex p-2 rounded-lg dark:bg-indigo-800 bg-yellow-600">
+                                        <GiSpiderMask className="h-6 w-6 text-white cursor-pointer" aria-hidden="true"
+                                            onClick={
+                                                () => {
+                                                    router.push('/')
+                                                }
+                                            }
+                                        ></GiSpiderMask>
+                                    </span>
+                                    <p className="ml-3 font-medium text-white truncate">
+                                        <span className='dark:text-white text-black hover:font-bold'>🔥Fake Commic Store  {subTitle}</span>
+                                    </p>
+                                </div>
+                                <div className="justify-end flex-row">
+                                    <div className="p-4 
+                                      hidden  md:inline-block xl:inline-block lg:inline-block 2xl:inline-block">
+                                        <label htmlFor="table-search" className="sr-only">Search</label>
+                                        <div className="relative mt-1">
+                                            <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                                                <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                                            </div>
+                                            <input type="text" id="table-search" className="bg-gray-50 border
+                                             border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500
+                                              focus:border-blue-500 block w-80 pl-10 p-2.5  dark:bg-gray-700
+                                               dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
+                                               dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="搜尋漫畫" />
+                                        </div>
+                                    </div>
+                                    <button type='button' className='green-btn
+                                     hidden  md:inline-block xl:inline-block lg:inline-block 2xl:inline-block'
+                                        onClick={
+                                            () => {
+                                                router.push('/dashboard')
+                                            }
+                                        }
+                                    >
+                                        <div className="flex space-x-2">
+                                            <AiOutlineBarChart className='text-gray-100 dark:text-gray-800 h-5 w-5'></AiOutlineBarChart>
+                                            下載進度查詢
+                                            {
+                                                !startUrlsCountSWR.isLoading && <span className="bg-red-100 text-red-800 text-sm font-medium 
+                                                mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{startUrlsCountSWR.data['count']}</span>
+                                            }
+
+                                        </div>
+                                    </button>
+                                    {session.status == 'unauthenticated' && (
+                                        <button className='grow  blue-btn' onClick={() => { router.push("/account/login") }}>登入</button>
+                                    )
+
+                                    }
+                                    {session.status == 'authenticated' &&
+                                        <button type='button' className='grow  blue-btn'
+                                            onClick={() => { signOut() }}>
+                                            {session?.data?.user?.name}</button>
+                                    }
+
+
+                                    {session.status == 'authenticated' &&
+                                        <button className='grow red-btn' onClick={() => { router.push("/favorite") }}>我的最愛</button>
+                                    }
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+                    <div className=" bg-slate-50 dark:bg-black flex-1 overflow-y-auto">
+
+                        {children}
+
+                    </div>
+                    <footer className="py-5 bg-gray-700 text-center text-white">
+                        made by ben 😎
+                    </footer>
+                </div>
+
+            </Fragment>
+            {/* <SwipeableDrawer
+                anchor='left'
+                open={openDrawer}
+                onClose={() => { setOpenDrawer(false) }}
+                onOpen={() => { setOpenDrawer(true) }}
+            >
+                <Drawler />
+            </SwipeableDrawer> */}
+        </SubTitleContext.Provider>
+    );
+}
+
+export default Layout;
+
+
+{/* <AppBar position="fixed" className='bg-yellow-500'>
                         <Toolbar>
                             <ShowMenuButton>
                                 <IconButton edge="start" color="inherit" aria-label="menu"
@@ -269,20 +368,4 @@ const Layout: NextPage = ({ children }) => {
                                 }>
                                 Dashboard</Button>
                         </Toolbar>
-                    </AppBar>
-                    {children}
-                </Container>
-            </Fragment>
-            <SwipeableDrawer
-                anchor='left'
-                open={openDrawer}
-                onClose={() => { setOpenDrawer(false) }}
-                onOpen={() => { setOpenDrawer(true) }}
-            >
-                <Drawler />
-            </SwipeableDrawer>
-        </SubTitleContext.Provider>
-    );
-}
-
-export default Layout;
+                    </AppBar> */}
