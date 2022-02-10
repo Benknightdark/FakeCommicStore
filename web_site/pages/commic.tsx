@@ -21,7 +21,7 @@ const Commic: NextPage = () => {
         fetcher)
     useEffect(() => {
         // let dd= document?.getElementById('contentBody')?.onscroll;
-        document.getElementById('contentBody').onscroll = async () => {
+        document.getElementById('contentBody')!.onscroll = async () => {
             console.log((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight)
             if (showLoading) return
             if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) {
