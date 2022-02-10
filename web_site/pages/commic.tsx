@@ -20,7 +20,9 @@ const Commic: NextPage = () => {
         `/api/commic?url=${router.query['url']}&page=${index + 1}`,
         fetcher)
     useEffect(() => {
-        window.onscroll = async () => {
+        // let dd= document?.getElementById('contentBody')?.onscroll;
+        document.getElementById('contentBody').onscroll = async () => {
+            console.log((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight)
             if (showLoading) return
             if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) {
                 await setShowLoading(true)
@@ -45,7 +47,7 @@ const Commic: NextPage = () => {
                     回上一頁
                 </button>
             </div>
-            <div className='grid  grid-rows-1 pt-20'>
+            <div className='grid  grid-rows-1 pt-20' >
                 <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5  gap-4">
                     {data && data.map((item: any) => (
                         item.map((itemData: any) => {
@@ -102,8 +104,6 @@ const Commic: NextPage = () => {
                                     </footer>
                                 </div>
                             )
-
-
                         })
                     ))}
                 </div>

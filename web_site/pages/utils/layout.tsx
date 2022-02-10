@@ -133,10 +133,11 @@ const Layout: NextPage = ({ children }) => {
                             </div>
                         </div>
                     </header>
-                    <div className=" bg-slate-50 dark:bg-black flex-1 overflow-y-auto">
+                    <div className=" bg-slate-50 dark:bg-black flex-1 overflow-y-auto" id="contentBody">
                         {children}
                     </div>
-                    <div className={
+                    <div                    
+                    className={
                         `sidebar bg-blue-800 text-blue-100 w-64 space-y-6 py-7 px-2
                         inset-y-0 left-0 transform  
                         z-100
