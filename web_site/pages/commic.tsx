@@ -20,7 +20,6 @@ const Commic: NextPage = () => {
         `/api/commic?url=${router.query['url']}&page=${index + 1}`,
         fetcher)
     useEffect(() => {
-        // let dd= document?.getElementById('contentBody')?.onscroll;
         document.getElementById('contentBody')!.onscroll = async () => {
             console.log((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight)
             if (showLoading) return
