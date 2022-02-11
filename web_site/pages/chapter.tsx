@@ -14,11 +14,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useTheme } from '@mui/material/styles';
 import Checkbox from '@mui/material/Checkbox';
-import Fab from '@mui/material/Fab';
-import DownloadIcon from '@mui/icons-material/Download';
-import HighlightOffSharpIcon from '@mui/icons-material/HighlightOffSharp';
-import CheckBoxSharpIcon from '@mui/icons-material/CheckBoxSharp';
-
+import { AiTwotoneDelete, AiOutlineCloudDownload, AiOutlineDownload } from 'react-icons/ai'
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const Chapter: NextPage = () => {
@@ -78,8 +74,12 @@ const Chapter: NextPage = () => {
                     })
                     mutate([])
                     mutate([...newData])
-                }}
-            >清除全部</button>
+                }}>
+                <div className="flex space-x-2">
+                    <AiTwotoneDelete className="mr-2 -ml-1 w-5 h-5"></AiTwotoneDelete>
+                    清除全部
+                </div>
+            </button>
 
             <button type="button" className="text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 
             hover:bg-gradient-to-br focus:ring-4 focus:ring-lime-300 dark:focus:ring-lime-800 shadow-lg shadow-lime-500/50 
@@ -104,7 +104,12 @@ const Chapter: NextPage = () => {
                     console.log(res)
                     setOpen(true)
                 }}
-            >下載全部</button>
+            >
+                <div className="flex space-x-2">
+                    <AiOutlineCloudDownload className="mr-2 -ml-1 w-5 h-5"></AiOutlineCloudDownload>
+                    下載全部
+                </div>
+            </button>
             <button type="button"
                 className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br 
  focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg
@@ -126,9 +131,13 @@ const Chapter: NextPage = () => {
                     mutate([...newData])
                     console.log(res)
                     setOpen(true)
-
                 }}
-            >下載</button>
+            >
+                <div className="flex space-x-2">
+                    <AiOutlineDownload className="mr-2 -ml-1 w-5 h-5"></AiOutlineDownload>
+                    下載
+                </div>
+            </button>
 
 
         </div>

@@ -101,8 +101,8 @@ const Layout: NextPage = ({ children }) => {
                                         <Tooltip title="是否要登出?" placement="top-start">
                                             <button type='button' className='grow  blue-btn'
                                                 onClick={() => { signOut() }}>
-                                                {session?.data?.user?.name}</button>                                   
-                                                </Tooltip>
+                                                {session?.data?.user?.name}</button>
+                                        </Tooltip>
 
                                     }
                                     {session.status == 'authenticated' &&
