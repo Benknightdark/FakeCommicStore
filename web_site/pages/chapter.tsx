@@ -66,10 +66,11 @@ const Chapter: NextPage = () => {
             right: 20,
             zIndex: 2231000,
         }}>
-            <Fab variant="extended" color="primary" aria-label="add" style={{
-                cursor: 'pointer',
-                backgroundColor: 'red',
-            }}
+            <button type="button"
+                className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 
+            hover:bg-gradient-to-br focus:ring-4 focus:ring-red-300 dark:focus:ring-red-800 shadow-lg
+             shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium
+             rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
                 onClick={async () => {
                     const newData = data.map((d: any) => {
                         d.checked = false
@@ -78,14 +79,11 @@ const Chapter: NextPage = () => {
                     mutate([])
                     mutate([...newData])
                 }}
-            >
-                <HighlightOffSharpIcon sx={{ mr: 1 }} />
-                清除全部
-            </Fab>
-            <Fab variant="extended" color="primary" aria-label="add" style={{
-                cursor: 'pointer',
-                backgroundColor: '#bbf2a0',
-            }}
+            >清除全部</button>
+
+            <button type="button" className="text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 
+            hover:bg-gradient-to-br focus:ring-4 focus:ring-lime-300 dark:focus:ring-lime-800 shadow-lg shadow-lime-500/50 
+            dark:shadow-lg dark:shadow-lime-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
                 onClick={async () => {
                     const allData = data.map((r: any) => `${r.link}?subFolderName=${r.title}&rootFolderName=${router.query['subTitle']?.toString()!}`)
                     console.log(allData)
@@ -106,37 +104,33 @@ const Chapter: NextPage = () => {
                     console.log(res)
                     setOpen(true)
                 }}
-            >
-                <CheckBoxSharpIcon sx={{ mr: 1 }} />
-                下載全部
-            </Fab>
-            <Fab variant="extended" color="primary" aria-label="add" style={{
+            >下載全部</button>
+            <button type="button"
+                className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br 
+ focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg
+  dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                onClick={async () => {
+                    const req = await fetch(`/api/download`, {
+                        body: JSON.stringify(selectData), // must match 'Content-Type' header
+                        headers: {
+                            'content-type': 'application/json'
+                        },
+                        method: 'POST',
+                    })
+                    const res = await req.text()
+                    const newData = data.map((d: any) => {
+                        d.checked = false
+                        return d
+                    })
+                    mutate([])
+                    mutate([...newData])
+                    console.log(res)
+                    setOpen(true)
 
-                cursor: 'pointer',
-                backgroundColor: 'coral',
+                }}
+            >下載</button>
 
-            }} onClick={async () => {
-                const req = await fetch(`/api/download`, {
-                    body: JSON.stringify(selectData), // must match 'Content-Type' header
-                    headers: {
-                        'content-type': 'application/json'
-                    },
-                    method: 'POST',
-                })
-                const res = await req.text()
-                const newData = data.map((d: any) => {
-                    d.checked = false
-                    return d
-                })
-                mutate([])
-                mutate([...newData])
-                console.log(res)
-                setOpen(true)
 
-            }}>
-                <DownloadIcon sx={{ mr: 1 }} />
-                下載
-            </Fab>
         </div>
         {/* Alert Window */}
         <Dialog
@@ -161,8 +155,6 @@ const Chapter: NextPage = () => {
         </Dialog>
         {/* 漫畫章節列表 */}
         <div className="flex flex-col">
-
-
             <div className="fixed  top-20 animated z-50 w-full">
                 <button
                     className="  py-2 px-4 mt-5 bg-red-300 rounded-lg text-white font-semibold hover:bg-red-600"
@@ -173,10 +165,6 @@ const Chapter: NextPage = () => {
                     回上一頁
                 </button>
             </div>
-
-
-
-
             <div className=" flex flex-wrap pt-20">
                 {data.map((d: any) => (
                     <div key={d.title} className="rounded-full py-3 px-6 ">
