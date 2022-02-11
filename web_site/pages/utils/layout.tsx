@@ -26,7 +26,7 @@ const Layout: NextPage = ({ children }) => {
 
             <Fragment>
                 <div className="flex flex-col h-screen">
-                    <header className="dark:bg-indigo-600 bg-yellow-300  w-full" >
+                    <header className="bg-gradient-to-r from-yellow-400 to-orange-200  w-full">
                         <div className="p-3">
                             <div className="flex items-center justify-between flex-wrap">
                                 <div className="w-0 flex-1 flex items-center">
@@ -195,7 +195,7 @@ const Layout: NextPage = ({ children }) => {
                         </nav>
                     </div>
                     <footer className="py-5 bg-gray-700 text-center text-white">
-                        made by ben 😎
+                        made by ben 😎 
                     </footer>
                 </div>
             </Fragment>
