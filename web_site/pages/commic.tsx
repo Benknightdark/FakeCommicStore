@@ -2,8 +2,6 @@ import { NextPage } from "next";
 import React, { useEffect, useState } from "react";
 import useSWRInfinite from 'swr/infinite'
 import { useSubTitleContext } from "../context/sub-title-context";
-import Stack from "@mui/material/Stack";
-import LinearProgress from '@mui/material/LinearProgress';
 import Loading from "./utils/loading";
 import Image from 'next/image'
 import { useRouter } from "next/router";
@@ -106,10 +104,13 @@ const Commic: NextPage = () => {
                         })
                     ))}
                 </div>
-                {showLoading && <Stack sx={{ width: '100%', color: 'grey.500', paddingTop: 10 }}>
-                    <h2>載入中......</h2>
-                    <LinearProgress color="secondary" />
-                </Stack>}
+                {showLoading && <div className="pt-10">
+                    {/* <LinearProgress color="secondary" /> */}
+                    <div className="mb-1 text-base font-bold text-green-700">載入中......</div>
+                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                        <div className="bg-green-600 h-2.5 rounded-full animate-bounce"></div>
+                    </div>
+                </div>}
             </div>
         </div>
     );

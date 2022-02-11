@@ -1,17 +1,10 @@
 import type { NextPage } from 'next'
 import useSWR from 'swr'
-import { styled } from '@mui/material/styles'
-import Paper from '@mui/material/Paper'
 import React, { useState } from 'react'
-import Grid from '@mui/material/Grid'
-import Checkbox from '@mui/material/Checkbox';
-import Fab from '@mui/material/Fab';
-import DownloadIcon from '@mui/icons-material/Download';
-import HighlightOffSharpIcon from '@mui/icons-material/HighlightOffSharp';
-import CheckBoxSharpIcon from '@mui/icons-material/CheckBoxSharp';
 import { useSubTitleContext } from '../context/sub-title-context'
 import Loading from './utils/loading'
 import { useRouter } from 'next/router'
+
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -20,6 +13,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useTheme } from '@mui/material/styles';
+import Checkbox from '@mui/material/Checkbox';
+import Fab from '@mui/material/Fab';
+import DownloadIcon from '@mui/icons-material/Download';
+import HighlightOffSharpIcon from '@mui/icons-material/HighlightOffSharp';
+import CheckBoxSharpIcon from '@mui/icons-material/CheckBoxSharp';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -64,7 +62,7 @@ const Chapter: NextPage = () => {
         {/* 浮動按鈕 */}
         <div style={{
             position: 'fixed',
-            bottom: 20,
+            bottom: 40,
             right: 20,
             zIndex: 2231000,
         }}>
@@ -163,6 +161,8 @@ const Chapter: NextPage = () => {
         </Dialog>
         {/* 漫畫章節列表 */}
         <div className="flex flex-col">
+
+
             <div className="fixed  top-20 animated z-50 w-full">
                 <button
                     className="  py-2 px-4 mt-5 bg-red-300 rounded-lg text-white font-semibold hover:bg-red-600"
@@ -173,6 +173,10 @@ const Chapter: NextPage = () => {
                     回上一頁
                 </button>
             </div>
+
+
+
+
             <div className=" flex flex-wrap pt-20">
                 {data.map((d: any) => (
                     <div key={d.title} className="rounded-full py-3 px-6 ">

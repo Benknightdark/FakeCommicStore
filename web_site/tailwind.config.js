@@ -1,10 +1,10 @@
 module.exports = {
-  purge: ['./pages/**/*.{js,ts,jsx,tsx}','./pages/utils/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
+  purge: ['./pages/**/*.{js,ts,jsx,tsx}', './pages/utils/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   theme: {
     screens: {
       'sm': '640px',
       'md': '768px',
-      'nmd':'641px',
+      'nmd': '641px',
       'lg': '1024px',
       'xl': '1280px',
       '2xl': '1536px',
@@ -33,7 +33,7 @@ module.exports = {
   plugins: [
     require('flowbite/plugin')
   ],
-//   content: [
-//     "./node_modules/flowbite/**/*.js"
-// ]
+  content: [
+    "./node_modules/flowbite/**/*.js"
+  ]
 }

@@ -1,5 +1,4 @@
 import React, { Fragment, useState } from "react";
-import Head from "next/head";
 import { NextPage } from "next";
 import { useRouter } from "next/dist/client/router";
 import { SubTitleContext } from "../../context/sub-title-context";
@@ -7,6 +6,9 @@ import { useStartUrlsCount } from '../../helpers/starts-url-helper';
 import { GiSpiderMask, GiHamburgerMenu } from 'react-icons/gi'
 import { AiOutlineBarChart } from "react-icons/ai";
 import { signOut, useSession } from "next-auth/react";
+import Tooltip from "@mui/material/Tooltip";
+
+
 const Layout: NextPage = ({ children }) => {
     const router = useRouter()
     const [subTitle, setSubTitle] = useState<string>("");
@@ -21,16 +23,8 @@ const Layout: NextPage = ({ children }) => {
     };
     return (
         <SubTitleContext.Provider value={{ updateSubTitle }}>
+
             <Fragment>
-                <Head>
-                    <title>Fake Commic Store</title>
-                    <meta charSet="utf-8" />
-                    <meta name="viewport" content="width=device-width, initial-scale=1" />
-                    <link
-                        rel="stylesheet"
-                        href="https://fonts.googleapis.com/icon?family=Material+Icons"
-                    />
-                </Head>
                 <div className="flex flex-col h-screen">
                     <header className="dark:bg-indigo-600 bg-yellow-300  w-full" >
                         <div className="p-3">
@@ -102,10 +96,14 @@ const Layout: NextPage = ({ children }) => {
                                     )
 
                                     }
+
                                     {session.status == 'authenticated' &&
-                                        <button type='button' className='grow  blue-btn'
-                                            onClick={() => { signOut() }}>
-                                            {session?.data?.user?.name}</button>
+                                        <Tooltip title="是否要登出?" placement="top-start">
+                                            <button type='button' className='grow  blue-btn'
+                                                onClick={() => { signOut() }}>
+                                                {session?.data?.user?.name}</button>                                   
+                                                </Tooltip>
+
                                     }
                                     {session.status == 'authenticated' &&
                                         <button className='grow red-btn' onClick={() => { router.push("/favorite") }}>我的最愛</button>
@@ -133,12 +131,12 @@ const Layout: NextPage = ({ children }) => {
                             </div>
                         </div>
                     </header>
-                    <div className=" bg-slate-50 dark:bg-black flex-1 overflow-y-auto" id="contentBody">
+                    <div className=" bg-slate-50 dark:bg-black flex-1 overflow-y-auto overflow-x-hidden" id="contentBody">
                         {children}
                     </div>
-                    <div                    
-                    className={
-                        `sidebar bg-blue-800 text-blue-100 w-64 space-y-6 py-7 px-2
+                    <div
+                        className={
+                            `sidebar bg-blue-800 text-blue-100 w-64 space-y-6 py-7 px-2
                         inset-y-0 left-0 transform  
                         z-100
                         absolute     
@@ -150,7 +148,7 @@ const Layout: NextPage = ({ children }) => {
                         sm:translate-x-0                     
                         transition duration-200 ease-in-out 
                         ${openMenu}`
-                    }>
+                        }>
                         <a href="#" className="text-white flex items-center space-x-2 px-4">
                             <span className="text-2xl font-extrabold">🔥Fake Commic Store {subTitle}</span>
                         </a>
@@ -175,24 +173,24 @@ const Layout: NextPage = ({ children }) => {
                             </div>
 
                             <div className="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
-                                    <input type="text" id="table-search" className="bg-gray-50 border 
+                                <input type="text" id="table-search" className="bg-gray-50 border 
                                              border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500
                                               focus:border-blue-500 block  pl-10 p-2.5  dark:bg-gray-700
                                                dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
                                                dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="搜尋漫畫"
-                                        onBlur={async (value) => {
-                                            const subTitle = value.currentTarget.value
-                                            if (subTitle.replace(/\s/g, "") == "") {
-                                                router.push({ pathname: '/' })
-                                                return
-                                            }
-                                            setTimeout(() => {
-                                                const link = `https://www.comicun.com/search-index?q=${subTitle}`
-                                                router.push({ pathname: '/commic', query: { url: link, subTitle: subTitle } })
-                                            }, 500);
+                                    onBlur={async (value) => {
+                                        const subTitle = value.currentTarget.value
+                                        if (subTitle.replace(/\s/g, "") == "") {
+                                            router.push({ pathname: '/' })
+                                            return
+                                        }
+                                        setTimeout(() => {
+                                            const link = `https://www.comicun.com/search-index?q=${subTitle}`
+                                            router.push({ pathname: '/commic', query: { url: link, subTitle: subTitle } })
+                                        }, 500);
 
-                                        }}
-                                    />
+                                    }}
+                                />
                             </div>
                         </nav>
                     </div>
@@ -201,6 +199,7 @@ const Layout: NextPage = ({ children }) => {
                     </footer>
                 </div>
             </Fragment>
+
         </SubTitleContext.Provider>
     );
 }
