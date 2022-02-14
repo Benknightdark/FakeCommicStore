@@ -88,7 +88,9 @@ const DashBoard: NextPage = () => {
     const headerColumnClassName = 'bg-indigo-200 font-bold'
     if (error) return <Loading></Loading>
     if (!data) return <Loading></Loading>
-    console.log(data)
+    data['data'].map((d:any)=>{
+        console.log(d)
+    })
     return (
         <div className="p-10">
             <QueueRecord />
@@ -197,16 +199,13 @@ const DashBoard: NextPage = () => {
             }
             {
 
-                <div className="flex flex-col">
+                data&&<div className="flex flex-col">
                     <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div className="inline-block py-2 min-w-full sm:px-6 lg:px-8">
                             <div className="overflow-hidden shadow-md sm:rounded-lg">
                                 <table className="min-w-full">
                                     <thead className="bg-gray-200 dark:bg-gray-700">
                                         <tr>
-                                            <th scope="col" className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
-                                                下載來源
-                                            </th>
                                             <th scope="col" className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
                                                 完成時間
                                             </th>
@@ -217,34 +216,29 @@ const DashBoard: NextPage = () => {
                                                 錯誤訊息
                                             </th>
                                             <th scope="col" className="relative py-3 px-6">
-                                                <span className="sr-only">前往網址</span>
+                                            <span className="sr-only">前往網址</span>
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {
-                                            data && data['data'].map((d: any) => {
-                                                
-                                                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                                        <td className="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                            Apple MacBook Pro 17
-                                                        </td>
-                                                        <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                                            Sliver
-                                                        </td>
-                                                        <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                                            Laptop
-                                                        </td>
-                                                        <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                                            $2999
-                                                        </td>
-                                                        <td className="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
-                                                            <a href="#" className="text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                                        </td>
-                                                    </tr>
-                                                
+                                            data['data'].map((d: any) => {
+                                               return <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={d['chapterUrl']}>
+                                                    <td className="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                                                    >
+                                                       { d['finishedTime']}
+                                                    </td>
+                                                    <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                                    { d['title']}
+                                                    </td>
+                                                    <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                                    { d['error_msg']}
+                                                    </td>
+                                                    <td className="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
+                                                        <a href={d['chapterUrl']} className="text-blue-600 dark:text-blue-500 hover:underline">前往網址</a>
+                                                    </td>
+                                                </tr>
                                             }
-
                                             )
                                         }
                                         {/* <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -269,16 +263,13 @@ const DashBoard: NextPage = () => {
                             </div>
                         </div>
                     </div>
-                </div>
-            }
-            {
-
-                data && <Pagination count={data['count']} page={page} onChange={async (event: React.ChangeEvent<unknown>, currentPage: number) => {
+                    <Pagination count={data['count']} page={page} onChange={async (event: React.ChangeEvent<unknown>, currentPage: number) => {
                     console.log(event)
                     console.log(currentPage)
                     await setPage(currentPage) //currentPage+1
                     await mutate()
                 }} />
+                </div>
             }
 
         </div>
