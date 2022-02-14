@@ -1,15 +1,14 @@
 import React from "react";
 import { getCsrfToken, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
-import { Card, Theme, CardHeader, CardContent, InputLabel, Input, Button, IconButton } from "@mui/material";
+import { Theme } from "@mui/material";
 import { createStyles, makeStyles } from "@mui/styles";
 import { NextPage, GetServerSideProps, InferGetServerSidePropsType } from "next";
-import Grid from '@mui/material/Grid';
 import { useForm } from "react-hook-form";
 const { yupResolver } = require('@hookform/resolvers/yup')
 import { object, string } from "yup";
-import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
-import Tooltip from '@mui/material/Tooltip';
+import { FiSend } from 'react-icons/fi'
+import { BsFillArrowRightSquareFill } from 'react-icons/bs'
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -36,62 +35,7 @@ const Login: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getSe
 
     };
     return (
-        // <Grid
-        //     container
-        //     justifyContent="center"
-        //     alignItems="baseline"
-        //     direction="row"
-        //     spacing={2}
-        //     className={classes.root}
-        // >
-        //     <Grid item xs={12} md={6}>
-        //         <Card className="card">
-        //             <CardHeader title="登入" className="gradient-red"
-        //                 action={
-        //                     <Tooltip title="前往註冊頁面">
-        //                         <IconButton aria-label="settings" onClick={() => {
-        //                             router.push('/account/register')
-        //                         }}>
-        //                             <AppRegistrationIcon />
-        //                         </IconButton>
-        //                     </Tooltip>
-        //                 }
-        //             ></CardHeader>
-        //             <CardContent>
-        //                 <form method="post" onSubmit={handleSubmit(onSubmit)}>
-        //                     <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
-        //                     <div className="mb-3">
-        //                         <label htmlFor="userName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">帳號</label>
-        //                         <input type="text"
-        //                             className="block p-4 w-full text-gray-900 
-        //                         bg-gray-50 rounded-lg border border-gray-300 sm:text-md focus:ring-blue-500 focus:border-blue-500 
-        //                         dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
-        //                         dark:focus:border-blue-500"   id="userName"
-        //                             {...register("username")} />
-        //                     </div>
-        //                     {errors.username?.message && <div className="red-alert" role="alert">
-        //                         <p>{errors.username?.message}</p>
-        //                     </div>}
-        //                     <div className="mb-3">
-        //                         <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">密碼</label>
-        //                         <input type="password"
-        //                             className="block p-4 w-full text-gray-900 
-        //                         bg-gray-50 rounded-lg border border-gray-300 sm:text-md focus:ring-blue-500 focus:border-blue-500 
-        //                         dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
-        //                         dark:focus:border-blue-500"   id="password"
-        //                             {...register("password")} />
-        //                     </div>
-        //                     {errors.password?.message && <div className="red-alert" role="alert">
-        //                         <p>{errors.password?.message}</p>
-        //                     </div>}
-        //                     <button type="submit" className="green-btn">
-        //                         送出
-        //                     </button>
-        //                 </form>
-        //             </CardContent>
-        //         </Card>
-        //     </Grid>
-        // </Grid>
+
         <div className="bg-blue-400 h-screen w-screen">
             <div className="flex flex-col items-center flex-1 h-full justify-center px-4 sm:px-0">
                 <div className="flex rounded-lg shadow-lg w-full sm:w-3/4 lg:w-1/2 bg-white sm:mx-0" style={{ "height": "500px" }}>
@@ -127,7 +71,19 @@ const Login: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getSe
                                     </div>}
                                     <div className="flex flex-col mt-8">
                                         <button type="submit" className="green-btn">
-                                            登入
+                                            <div className="flex space-x-2 justify-center">
+                                                <span className="pr-1">登入</span>
+                                                <FiSend className="h-4 w-4"></FiSend>
+                                            </div>
+                                        </button>
+                                        <button type="button" className="purple-btn" onClick={() => {
+                                            router.push('/account/register')
+                                        }}>
+                                            <div className="flex space-x-2 justify-center">
+
+                                                <span className="pr-1">註冊</span>
+                                                <BsFillArrowRightSquareFill className="h-4 w-4"></BsFillArrowRightSquareFill>
+                                            </div>
                                         </button>
                                     </div>
                                 </form>
