@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
 import { NextPage } from 'next';
-import {
-    DataGrid, GridRenderCellParams, GridToolbarContainer,
-} from '@mui/x-data-grid';
+
 import Loading from './utils/loading'
 import useSWR from 'swr';
-import { GradientButton } from '../components/gradient-button';
 import { useSubTitleContext } from '../context/sub-title-context';
 import { RefreshIcon } from '@heroicons/react/solid'
 import { useRequestsCount } from '../helpers/requests-count-helper';
 import { useStartUrlsCount } from '../helpers/starts-url-helper';
-import Pagination, { PaginationProps } from '@mui/material/Pagination';
+import Pagination from '@mui/material/Pagination';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const RecordItem = (props: any) => {
@@ -82,124 +79,18 @@ const QueueRecord = () => {
 
 const DashBoard: NextPage = () => {
     useSubTitleContext().updateSubTitle('DashBoard')
-    const [loading, setLoading] = useState<boolean>(false);
     const [page, setPage] = useState(1);
-    const { data, error, mutate } = useSWR(`/api/logs/items?page=${page}&row=10`, fetcher)
-    const headerColumnClassName = 'bg-indigo-200 font-bold'
+    const { data, error, mutate } = useSWR(`/api/logs/items?page=${page}&row=5`, fetcher)
     if (error) return <Loading></Loading>
     if (!data) return <Loading></Loading>
-    data['data'].map((d:any)=>{
+    data['data'].map((d: any) => {
         console.log(d)
     })
     return (
         <div className="p-10">
             <QueueRecord />
             {
-                // <div style={{ height: 400, width: '100%' }}>
-                //     <div style={{ display: 'flex', height: '100%' }} >
-                //         <DataGrid style={{ flexGrow: 1 }}
-                //             rows={data['data']}
-                //             disableColumnFilter
-                //             disableColumnSelector
-                //             disableColumnMenu
-                //             components={{
-                //                 Toolbar: () => (
-                //                     <GridToolbarContainer>
-                //                         <div className='flex flex-row flex-grow bg-gradient-to-r 
-                //                         from-blue-100 via-yellow-100 to-green-100'>
-                //                             <div className='flex-1 '>
-                //                                 <h3 className='self-center	 text-2xl text-red-500 font-bold'>
-                //                                     下載記錄
-                //                                 </h3>
-                //                             </div>
-                //                             <button className="h-10 px-5 m-2 
-                //                             rounded-full  w-24 flex items-center justify-center
-                //                             text-blue-100 transition-colors duration-150 
-                //                             bg-blue-600  focus:shadow-outline hover:bg-blue-700"
-                //                                 onClick={async () => {
-                //                                     await setLoading(true)
-                //                                     await setPage(1)
-                //                                     await mutate()
-                //                                     await setLoading(false)
-                //                                 }}
-                //                             >
-                //                                 <RefreshIcon className="py-1 h-8 w-8 text-white-500 cursor-pointer" />
-                //                             </button>
-                //                         </div>
-                //                     </GridToolbarContainer>
-                //                 )!,
-                //             }}
-                //             columns={[
-                //                 {
-                //                     field: 'chapterUrl',
-                //                     width: 150,
-                //                     headerName: '下載來源',
-                //                     sortable: false,
-                //                     renderCell: (params: GridRenderCellParams) => (
-                //                         <strong>
-                //                             <GradientButton
-                //                                 color='blue'
-                //                                 variant="contained"
-                //                                 style={{ marginLeft: 8 }}
-                //                                 onClick={() => {
-                //                                     window.open(params.value?.toString()!)
-                //                                 }}
-                //                             >
-                //                                 前往網址
-                //                             </GradientButton>
-                //                         </strong>
-                //                     ),
-                //                     headerClassName: headerColumnClassName,
-
-                //                 },
-                //                 {
-                //                     field: 'finishedTime',
-                //                     minWidth: 200,
-                //                     sortable: false,
-                //                     headerName: '完成時間',
-                //                     headerClassName: headerColumnClassName,
-
-                //                 },
-
-                //                 {
-                //                     field: 'title',
-                //                     headerName: "標題",
-                //                     width: 500,
-                //                     sortable: false,
-                //                     headerClassName: headerColumnClassName,
-
-                //                 },
-                //                 {
-                //                     field: 'error_msg',
-                //                     headerName: '錯誤訊息',
-                //                     width: 800,
-                //                     sortable: false,
-                //                     headerClassName: headerColumnClassName,
-                //                 }
-
-
-                //             ]}
-                //             pagination
-                //             page={page - 1}
-                //             pageSize={10}
-                //             rowsPerPageOptions={[5]}
-                //             rowCount={data['count']}
-                //             paginationMode="server"
-                //             onPageChange={async (newPage) => {
-                //                 await setLoading(true)
-                //                 await setPage(newPage + 1)
-                //                 await mutate()
-                //                 await setLoading(false)
-
-                //             }}
-                //             loading={loading}
-                //         />
-                //     </div>
-                // </div>
-            }
-            {
-
-                data&&<div className="flex flex-col">
+                data && <div className="flex flex-col">
                     <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div className="inline-block py-2 min-w-full sm:px-6 lg:px-8">
                             <div className="overflow-hidden shadow-md sm:rounded-lg">
@@ -216,59 +107,45 @@ const DashBoard: NextPage = () => {
                                                 錯誤訊息
                                             </th>
                                             <th scope="col" className="relative py-3 px-6">
-                                            <span className="sr-only">前往網址</span>
+                                                <span className="sr-only">前往網址</span>
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {
                                             data['data'].map((d: any) => {
-                                               return <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={d['chapterUrl']}>
+                                                return <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={d['chapterUrl']}>
                                                     <td className="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
                                                     >
-                                                       { d['finishedTime']}
+                                                        {d['finishedTime']}
                                                     </td>
                                                     <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                                    { d['title']}
+                                                        {d['title']}
                                                     </td>
                                                     <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                                    { d['error_msg']}
+                                                        {d['error_msg']}
                                                     </td>
                                                     <td className="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
-                                                        <a href={d['chapterUrl']} className="text-blue-600 dark:text-blue-500 hover:underline">前往網址</a>
+                                                        <a href={d['chapterUrl']}
+                                                            className="monochrome-cyan-btn">
+                                                            前往網址
+                                                        </a>
                                                     </td>
                                                 </tr>
                                             }
                                             )
                                         }
-                                        {/* <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                            <td className="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                Apple MacBook Pro 17
-                                            </td>
-                                            <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                                Sliver
-                                            </td>
-                                            <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                                Laptop
-                                            </td>
-                                            <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                                $2999
-                                            </td>
-                                            <td className="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
-                                                <a href="#" className="text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                            </td>
-                                        </tr> */}
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
                     <Pagination count={data['count']} page={page} onChange={async (event: React.ChangeEvent<unknown>, currentPage: number) => {
-                    console.log(event)
-                    console.log(currentPage)
-                    await setPage(currentPage) //currentPage+1
-                    await mutate()
-                }} />
+                        console.log(event)
+                        console.log(currentPage)
+                        await setPage(currentPage)
+                        await mutate()
+                    }} />
                 </div>
             }
 
