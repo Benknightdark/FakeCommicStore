@@ -8,7 +8,8 @@ import { RefreshIcon } from '@heroicons/react/solid'
 import { useRequestsCount } from '../helpers/requests-count-helper';
 import { useStartUrlsCount } from '../helpers/starts-url-helper';
 import Pagination from '@mui/material/Pagination';
-
+import { IoIosRefreshCircle } from 'react-icons/io'
+import Tooltip from '@mui/material/Tooltip';
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const RecordItem = (props: any) => {
     return <div className="m-1 border-solid border-4 border-blue-900	
@@ -90,10 +91,23 @@ const DashBoard: NextPage = () => {
         <div className="p-10">
             <QueueRecord />
             {
-                data && <div className="flex flex-col">
+                <div className="flex flex-col">
                     <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div className="inline-block py-2 min-w-full sm:px-6 lg:px-8">
                             <div className="overflow-hidden shadow-md sm:rounded-lg">
+                                <div className="flex p-4 text-sm text-gray-700 bg-green-100 rounded-lg dark:bg-green-700 
+                                dark:text-gray-300 justify-between" role="alert">
+                                    <span className="text-2xl">下載記錄</span>
+                                    <Tooltip title="重新取得下載資料" placement="top">
+                                        <div>
+                                        <IoIosRefreshCircle className="inline flex-shrink-0 mr-3 w-8 h-8 cursor-pointer" onClick={() => {
+                                            setPage(1);
+                                            mutate();
+                                        }}>
+                                        </IoIosRefreshCircle>
+                                        </div>
+                                    </Tooltip>
+                                </div>
                                 <table className="min-w-full">
                                     <thead className="bg-gray-200 dark:bg-gray-700">
                                         <tr>
@@ -113,7 +127,7 @@ const DashBoard: NextPage = () => {
                                     </thead>
                                     <tbody>
                                         {
-                                            data['data'].map((d: any) => {
+                                            data && data['data'].map((d: any) => {
                                                 return <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={d['chapterUrl']}>
                                                     <td className="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
                                                     >
@@ -140,12 +154,17 @@ const DashBoard: NextPage = () => {
                             </div>
                         </div>
                     </div>
-                    <Pagination count={data['count']} page={page} onChange={async (event: React.ChangeEvent<unknown>, currentPage: number) => {
-                        console.log(event)
-                        console.log(currentPage)
-                        await setPage(currentPage)
-                        await mutate()
-                    }} />
+                    {
+                        data && <div className='flex justify-center'>
+                            <Pagination count={data['count']} page={page}
+                         onChange={async (event: React.ChangeEvent<unknown>, currentPage: number) => {
+                            console.log(event)
+                            console.log(currentPage)
+                            await setPage(currentPage)
+                            await mutate()
+                        }} />
+                            </div>
+                    }
                 </div>
             }
 

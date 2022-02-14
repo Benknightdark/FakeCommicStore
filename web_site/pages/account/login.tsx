@@ -19,23 +19,18 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 const schema = object().shape({
-    username: string().required(),
-    password: string().required(),
+    username: string().required("帳號不能為空值"),
+    password: string().required("密碼不能為空值"),
 
 }).required();
-interface IFormInputs {
-    username: string
-    password: string
-    email: string
-    displayName: string
-}
+
 const Login: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const classes = useStyles();
     const router = useRouter();
     const { register, handleSubmit, watch, formState: { errors } } = useForm({
         resolver: yupResolver(schema)
     });
-    const onSubmit = async (data: { userName: any; password: any; }) => {
+    const onSubmit = async (data: any) => {//{ userName: any; password: any; }
         console.log(data)
         await signIn("credentials", data)
 
@@ -52,39 +47,46 @@ const Login: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getSe
             <Grid item xs={12} md={6}>
                 <Card className="card">
                     <CardHeader title="登入" className="gradient-red"
-                    action={
-                        <Tooltip title="前往註冊頁面">
-                        <IconButton aria-label="settings" onClick={()=>{
-                            router.push('/account/register')
-                        }}>
-                          <AppRegistrationIcon />
-                        </IconButton>
-                        </Tooltip>
-                      }
+                        action={
+                            <Tooltip title="前往註冊頁面">
+                                <IconButton aria-label="settings" onClick={() => {
+                                    router.push('/account/register')
+                                }}>
+                                    <AppRegistrationIcon />
+                                </IconButton>
+                            </Tooltip>
+                        }
                     ></CardHeader>
                     <CardContent>
                         <form method="post" onSubmit={handleSubmit(onSubmit)}>
                             <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
-                            <InputLabel>帳號</InputLabel>
-                            <Input
-                                fullWidth={true}
-                                type="text"
-                                className="form-control"
-                                id="userName"
-                                {...register("username")}
-                            />
-                            <InputLabel>密碼</InputLabel>
-                            <Input
-                                fullWidth={true}
-                                type="password"
-                                className="form-control"
-                                id="password"
-                                {...register("password")}
-
-                            />
-                            <Button type="submit" variant="contained" color="primary">
+                            <div className="mb-3">
+                                <label htmlFor="userName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">帳號</label>
+                                <input type="text"
+                                    className="block p-4 w-full text-gray-900 
+                                bg-gray-50 rounded-lg border border-gray-300 sm:text-md focus:ring-blue-500 focus:border-blue-500 
+                                dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
+                                dark:focus:border-blue-500"   id="userName"
+                                    {...register("username")} />
+                            </div>
+                            {errors.username?.message && <div className="red-alert" role="alert">
+                                <p>{errors.username?.message}</p>
+                            </div>}
+                            <div className="mb-3">
+                                <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">密碼</label>
+                                <input type="password"
+                                    className="block p-4 w-full text-gray-900 
+                                bg-gray-50 rounded-lg border border-gray-300 sm:text-md focus:ring-blue-500 focus:border-blue-500 
+                                dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
+                                dark:focus:border-blue-500"   id="password"
+                                    {...register("password")} />
+                            </div>
+                            {errors.password?.message && <div className="red-alert" role="alert">
+                                <p>{errors.password?.message}</p>
+                            </div>}
+                            <button type="submit" className="green-btn">
                                 送出
-                            </Button>
+                            </button>
                         </form>
                     </CardContent>
                 </Card>
