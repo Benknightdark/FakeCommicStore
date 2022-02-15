@@ -5,7 +5,9 @@ import { Theme } from "@mui/material";
 import { createStyles, makeStyles } from "@mui/styles";
 import { NextPage, GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useForm } from "react-hook-form";
-const { yupResolver } = require('@hookform/resolvers/yup')
+// const { yupResolver } = require('@hookform/resolvers/yup')
+import { yupResolver } from '@hookform/resolvers/yup';
+
 import { object, string } from "yup";
 import { FiSend } from 'react-icons/fi'
 import { BsFillArrowRightSquareFill } from 'react-icons/bs'

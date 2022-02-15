@@ -49,10 +49,14 @@ const QueueRecord = () => {
             <div className="shadow-md rounded-md overflow-hidden text-center border-solid border-4 border-blue-400">
                 <div className="flex bg-gray-100">
                     <div className="py-3 px-5 flex-grow">漫畫佇列資訊</div>
-                    <RefreshIcon className="py-1 h-8 w-8 text-blue-500 cursor-pointer" onClick={() => {
-                        commicRequestsSWR.mutate();
-                        commicStartUrlsCountSWR.mutate();
-                    }} />
+                    <Tooltip title="重新取得漫畫佇列資訊" placement="top">
+                        <div>
+                            <IoIosRefreshCircle className="py-1 h-8 w-8 text-blue-500 cursor-pointer hover:h-10 hover:w-10" onClick={() => {
+                                commicRequestsSWR.mutate();
+                                commicStartUrlsCountSWR.mutate();
+                            }} />
+                        </div>
+                    </Tooltip>
                 </div>
                 <div className="flex-1 2xl:flex xl:flex lg:flex flex-wrap mx-8 p-5">
                     <RecordItem key="commicRequestsSWR" itemBackgroundColor='bg-red-200' itemName='等待下載數量' itemValue={!commicRequestsSWR.isLoading && commicRequestsSWR.data['count']} />
@@ -64,10 +68,14 @@ const QueueRecord = () => {
             <div className="shadow-md rounded-md overflow-hidden text-center border-solid border-4 border-blue-400">
                 <div className="flex bg-gray-100">
                     <div className="py-3 px-5 flex-grow">章節佇列資訊</div>
-                    <RefreshIcon className="py-1 h-8 w-8 text-blue-500 cursor-pointer" onClick={() => {
-                        chapterRequestsSWR.mutate();
-                        chapterStartUrlsCountSWR.mutate();
-                    }} />
+                    <Tooltip title="重新取得章節佇列資訊" placement="top">
+                        <div>
+                            <IoIosRefreshCircle className="py-1 h-8 w-8 text-blue-500 cursor-pointer hover:h-10 hover:w-10" onClick={() => {
+                                chapterRequestsSWR.mutate();
+                                chapterStartUrlsCountSWR.mutate();
+                            }} />
+                        </div>
+                    </Tooltip>
                 </div>
                 <div className="flex-1 2xl:flex xl:flex lg:flex  flex-wrap mx-8 p-5">
                     <RecordItem key="chapterRequestsSWR" itemBackgroundColor='bg-red-200' itemName='等待下載數量' itemValue={!chapterRequestsSWR.isLoading && chapterRequestsSWR.data['count']} />
@@ -100,11 +108,11 @@ const DashBoard: NextPage = () => {
                                     <span className="text-2xl">下載記錄</span>
                                     <Tooltip title="重新取得下載資料" placement="top">
                                         <div>
-                                        <IoIosRefreshCircle className="inline flex-shrink-0 mr-3 w-8 h-8 cursor-pointer" onClick={() => {
-                                            setPage(1);
-                                            mutate();
-                                        }}>
-                                        </IoIosRefreshCircle>
+                                            <IoIosRefreshCircle className="inline flex-shrink-0 mr-3 w-8 h-8 cursor-pointer hover:h-10 hover:w-10" onClick={() => {
+                                                setPage(1);
+                                                mutate();
+                                            }}>
+                                            </IoIosRefreshCircle>
                                         </div>
                                     </Tooltip>
                                 </div>
@@ -157,13 +165,13 @@ const DashBoard: NextPage = () => {
                     {
                         data && <div className='flex justify-center'>
                             <Pagination count={data['count']} page={page}
-                         onChange={async (event: React.ChangeEvent<unknown>, currentPage: number) => {
-                            console.log(event)
-                            console.log(currentPage)
-                            await setPage(currentPage)
-                            await mutate()
-                        }} />
-                            </div>
+                                onChange={async (event: React.ChangeEvent<unknown>, currentPage: number) => {
+                                    console.log(event)
+                                    console.log(currentPage)
+                                    await setPage(currentPage)
+                                    await mutate()
+                                }} />
+                        </div>
                     }
                 </div>
             }
