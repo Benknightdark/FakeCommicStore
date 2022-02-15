@@ -1,8 +1,6 @@
 import React from "react";
 import { getCsrfToken, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
-import { Theme } from "@mui/material";
-import { createStyles, makeStyles } from "@mui/styles";
 import { NextPage, GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useForm } from "react-hook-form";
 // const { yupResolver } = require('@hookform/resolvers/yup')
@@ -12,13 +10,6 @@ import { object, string } from "yup";
 import { FiSend } from 'react-icons/fi'
 import { BsFillArrowRightSquareFill } from 'react-icons/bs'
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            flexGrow: 1,
-        },
-    })
-);
 const schema = object().shape({
     username: string().required("帳號不能為空值"),
     password: string().required("密碼不能為空值"),
