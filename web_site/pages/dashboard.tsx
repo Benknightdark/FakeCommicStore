@@ -4,7 +4,6 @@ import { NextPage } from 'next';
 import Loading from './utils/loading'
 import useSWR from 'swr';
 import { useSubTitleContext } from '../context/sub-title-context';
-import { RefreshIcon } from '@heroicons/react/solid'
 import { useRequestsCount } from '../helpers/requests-count-helper';
 import { useStartUrlsCount } from '../helpers/starts-url-helper';
 import Pagination from '@mui/material/Pagination';

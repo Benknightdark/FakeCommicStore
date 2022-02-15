@@ -26,23 +26,23 @@ const schema = object().shape({
 }).required();
 
 const Login: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    const classes = useStyles();
     const router = useRouter();
     const { register, handleSubmit, watch, formState: { errors } } = useForm({
         resolver: yupResolver(schema)
     });
-    const onSubmit = async (data: any) => {//{ userName: any; password: any; }
-        console.log(data)
+    const onSubmit = async (data: any) => {
         await signIn("credentials", data)
-
     };
     return (
-
-        <div className="bg-blue-400 h-screen w-screen">
+        <div className="h-fit w-screen pt-20 ">
             <div className="flex flex-col items-center flex-1 h-full justify-center px-4 sm:px-0">
-                <div className="flex rounded-lg shadow-lg w-full sm:w-3/4 lg:w-1/2 bg-white sm:mx-0" style={{ "height": "500px" }}>
-                    <div className="flex flex-col w-full md:w-1/2 p-4">
-                        <div className="flex flex-col flex-1 justify-center mb-8">
+                <div className="flex rounded-lg shadow-lg w-full sm:w-3/4 lg:w-1/2 bg-white sm:mx-0
+                 border-8 border-purple-500 
+                hover:shadow-md  transform hover:-translate-y-1 transition-all duration-200 hover:border-green-500 hover:ring-indigo-300
+                ">
+                    <div className="flex flex-col w-full md:w-1/2 p-4 ">
+                        <div className="flex flex-col flex-1 justify-center mb-8               
+                        ">
                             <h1 className="text-4xl text-center font-thin">登入</h1>
                             <div className="w-full mt-4">
                                 <form className="form-horizontal w-3/4 mx-auto" method="post" onSubmit={handleSubmit(onSubmit)}>
@@ -55,10 +55,11 @@ const Login: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getSe
                                 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
                                 dark:focus:border-blue-500"   id="userName"
                                             {...register("username")} />
+                                        {errors.username?.message && <div className="text-red-600" role="alert">
+                                            <p>{errors.username?.message}</p>
+                                        </div>}
                                     </div>
-                                    {errors.username?.message && <div className="red-alert" role="alert">
-                                        <p>{errors.username?.message}</p>
-                                    </div>}
+
                                     <div className="mb-3">
                                         <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">密碼</label>
                                         <input type="password"
@@ -67,10 +68,11 @@ const Login: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getSe
                                 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
                                 dark:focus:border-blue-500"   id="password"
                                             {...register("password")} />
+                                        {errors.password?.message && <div className="text-red-600" role="alert">
+                                            <p>{errors.password?.message}</p>
+                                        </div>}
                                     </div>
-                                    {errors.password?.message && <div className="red-alert" role="alert">
-                                        <p>{errors.password?.message}</p>
-                                    </div>}
+
                                     <div className="flex flex-col mt-8">
                                         <button type="submit" className="green-btn">
                                             <div className="flex space-x-2 justify-center">
@@ -82,8 +84,7 @@ const Login: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getSe
                                             router.push('/account/register')
                                         }}>
                                             <div className="flex space-x-2 justify-center">
-
-                                                <span className="pr-1">註冊</span>
+                                                <span className="pr-1">前往註冊頁面</span>
                                                 <BsFillArrowRightSquareFill className="h-4 w-4"></BsFillArrowRightSquareFill>
                                             </div>
                                         </button>
@@ -92,7 +93,7 @@ const Login: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getSe
                             </div>
                         </div>
                     </div>
-                    <div className="hidden md:block md:w-1/2 rounded-r-lg" style={{
+                    <div className="hidden md:block md:w-1/2 " style={{
                         "background": "url('https://images.unsplash.com/photo-1515965885361-f1e0095517ea?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3300&q=80')",
                         "backgroundSize": "cover",
                         "backgroundPosition": "center center",
