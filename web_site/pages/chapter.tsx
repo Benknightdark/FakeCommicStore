@@ -1,17 +1,10 @@
 import type { NextPage } from 'next'
 import useSWR from 'swr'
-import { styled } from '@mui/material/styles'
-import Paper from '@mui/material/Paper'
 import React, { useState } from 'react'
-import Grid from '@mui/material/Grid'
-import Checkbox from '@mui/material/Checkbox';
-import Fab from '@mui/material/Fab';
-import DownloadIcon from '@mui/icons-material/Download';
-import HighlightOffSharpIcon from '@mui/icons-material/HighlightOffSharp';
-import CheckBoxSharpIcon from '@mui/icons-material/CheckBoxSharp';
 import { useSubTitleContext } from '../context/sub-title-context'
 import Loading from './utils/loading'
 import { useRouter } from 'next/router'
+
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -20,7 +13,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useTheme } from '@mui/material/styles';
-
+import Checkbox from '@mui/material/Checkbox';
+import { AiTwotoneDelete, AiOutlineCloudDownload, AiOutlineDownload } from 'react-icons/ai'
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const Chapter: NextPage = () => {
@@ -64,14 +58,15 @@ const Chapter: NextPage = () => {
         {/* 浮動按鈕 */}
         <div style={{
             position: 'fixed',
-            bottom: 20,
+            bottom: 40,
             right: 20,
             zIndex: 2231000,
         }}>
-            <Fab variant="extended" color="primary" aria-label="add" style={{
-                cursor: 'pointer',
-                backgroundColor: 'red',
-            }}
+            <button type="button"
+                className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 
+            hover:bg-gradient-to-br focus:ring-4 focus:ring-red-300 dark:focus:ring-red-800 shadow-lg
+             shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium
+             rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
                 onClick={async () => {
                     const newData = data.map((d: any) => {
                         d.checked = false
@@ -79,15 +74,16 @@ const Chapter: NextPage = () => {
                     })
                     mutate([])
                     mutate([...newData])
-                }}
-            >
-                <HighlightOffSharpIcon sx={{ mr: 1 }} />
-                清除全部
-            </Fab>
-            <Fab variant="extended" color="primary" aria-label="add" style={{
-                cursor: 'pointer',
-                backgroundColor: '#bbf2a0',
-            }}
+                }}>
+                <div className="flex space-x-2">
+                    <AiTwotoneDelete className="mr-2 -ml-1 w-5 h-5"></AiTwotoneDelete>
+                    清除全部
+                </div>
+            </button>
+
+            <button type="button" className="text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 
+            hover:bg-gradient-to-br focus:ring-4 focus:ring-lime-300 dark:focus:ring-lime-800 shadow-lg shadow-lime-500/50 
+            dark:shadow-lg dark:shadow-lime-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
                 onClick={async () => {
                     const allData = data.map((r: any) => `${r.link}?subFolderName=${r.title}&rootFolderName=${router.query['subTitle']?.toString()!}`)
                     console.log(allData)
@@ -109,36 +105,41 @@ const Chapter: NextPage = () => {
                     setOpen(true)
                 }}
             >
-                <CheckBoxSharpIcon sx={{ mr: 1 }} />
-                下載全部
-            </Fab>
-            <Fab variant="extended" color="primary" aria-label="add" style={{
+                <div className="flex space-x-2">
+                    <AiOutlineCloudDownload className="mr-2 -ml-1 w-5 h-5"></AiOutlineCloudDownload>
+                    下載全部
+                </div>
+            </button>
+            <button type="button"
+                className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br 
+ focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg
+  dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                onClick={async () => {
+                    const req = await fetch(`/api/download`, {
+                        body: JSON.stringify(selectData), // must match 'Content-Type' header
+                        headers: {
+                            'content-type': 'application/json'
+                        },
+                        method: 'POST',
+                    })
+                    const res = await req.text()
+                    const newData = data.map((d: any) => {
+                        d.checked = false
+                        return d
+                    })
+                    mutate([])
+                    mutate([...newData])
+                    console.log(res)
+                    setOpen(true)
+                }}
+            >
+                <div className="flex space-x-2">
+                    <AiOutlineDownload className="mr-2 -ml-1 w-5 h-5"></AiOutlineDownload>
+                    下載
+                </div>
+            </button>
 
-                cursor: 'pointer',
-                backgroundColor: 'coral',
 
-            }} onClick={async () => {
-                const req = await fetch(`/api/download`, {
-                    body: JSON.stringify(selectData), // must match 'Content-Type' header
-                    headers: {
-                        'content-type': 'application/json'
-                    },
-                    method: 'POST',
-                })
-                const res = await req.text()
-                const newData = data.map((d: any) => {
-                    d.checked = false
-                    return d
-                })
-                mutate([])
-                mutate([...newData])
-                console.log(res)
-                setOpen(true)
-
-            }}>
-                <DownloadIcon sx={{ mr: 1 }} />
-                下載
-            </Fab>
         </div>
         {/* Alert Window */}
         <Dialog
