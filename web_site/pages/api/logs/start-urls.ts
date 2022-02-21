@@ -17,6 +17,7 @@ export default async function handler(
         await client.connect();
         const startUrlsCount = await client.lLen(reqData['keyName'])//"chapter_url:start_urls"
         console.log(startUrlsCount)
+        await client.disconnect()
         res.status(200).json({ count: startUrlsCount })
     } catch (error) {
         res.status(200).json({ count: 0 })

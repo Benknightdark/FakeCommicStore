@@ -14,5 +14,6 @@ export default async function handler(
     );
     await client.connect();
     const data = await client.hGetAll("chapter_url:stats")//lRange
+    await client.disconnect()
     res.status(200).json(data )
 }

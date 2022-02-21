@@ -16,9 +16,9 @@ export default async function handler(
         );
         await client.connect();
         const data = await client.zCard(reqData['keyName'])//"chapter_url:requests"
+        await client.disconnect()
         res.status(200).json({ count: data })
     } catch {
         res.status(200).json({ count: 0 })
     }
-
 }
