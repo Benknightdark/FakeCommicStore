@@ -15,7 +15,7 @@ export default async function handler(
         }
     );
     await client.connect();
-    
+
     const logCount = await client.lLen("chapter_url:items")//lRange
     const dataIndex=logCount
     console.log('logCount',dataIndex)
@@ -25,5 +25,6 @@ export default async function handler(
     const data = await client.lRange("chapter_url:items",dataIndex-(page*row) ,dataIndex-((page-1)*row)  )//lRange
 
     const newData=data.map(d=>JSON.parse(d))
+    await client.disconnect()
     res.status(200).json({count:logCount,data:newData})
 }
