@@ -3,9 +3,7 @@ import { getCsrfToken, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import { NextPage, GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useForm } from "react-hook-form";
-// const { yupResolver } = require('@hookform/resolvers/yup')
 import { yupResolver } from '@hookform/resolvers/yup';
-
 import { object, string } from "yup";
 import { FiSend } from 'react-icons/fi'
 import { BsFillArrowRightSquareFill } from 'react-icons/bs'
