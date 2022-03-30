@@ -165,8 +165,6 @@ const DashBoard: NextPage = () => {
                         data && <div className='flex justify-center'>
                             <Pagination count={data['count']} page={page}
                                 onChange={async (event: React.ChangeEvent<unknown>, currentPage: number) => {
-                                    console.log(event)
-                                    console.log(currentPage)
                                     await setPage(currentPage)
                                     await mutate()
                                 }} />
