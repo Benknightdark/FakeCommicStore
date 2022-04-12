@@ -1,15 +1,15 @@
 import React, { Fragment, useState } from "react";
 import { NextPage } from "next";
-import { useRouter } from "next/dist/client/router";
 import { SubTitleContext } from "../../context/sub-title-context";
 import { useStartUrlsCount } from '../../helpers/starts-url-helper';
 import { GiSpiderMask, GiHamburgerMenu } from 'react-icons/gi'
 import { AiOutlineBarChart } from "react-icons/ai";
 import { signOut, useSession } from "next-auth/react";
 import Tooltip from "@mui/material/Tooltip";
+import { useRouter } from "next/router";
 
 
-const Layout: NextPage = ({ children }) => {
+const Layout: NextPage = ({ children }: any) => {
     const router = useRouter()
     const [subTitle, setSubTitle] = useState<string>("");
     const startUrlsCountSWR = useStartUrlsCount("chapter_url:start_urls")
@@ -23,7 +23,6 @@ const Layout: NextPage = ({ children }) => {
     };
     return (
         <SubTitleContext.Provider value={{ updateSubTitle }}>
-
             <Fragment>
                 <div className="flex flex-col h-screen">
                     <header className="bg-gradient-to-r from-yellow-400 to-orange-200  w-full">
@@ -103,7 +102,6 @@ const Layout: NextPage = ({ children }) => {
                                                 onClick={() => { signOut() }}>
                                                 {session?.data?.user?.name}</button>
                                         </Tooltip>
-
                                     }
                                     {session.status == 'authenticated' &&
                                         <button className='grow red-btn' onClick={() => { router.push("/favorite") }}>我的最愛</button>
@@ -195,7 +193,7 @@ const Layout: NextPage = ({ children }) => {
                         </nav>
                     </div>
                     <footer className="py-5 bg-gray-700 text-center text-white">
-                        made by ben 😎 
+                        made by ben 😎
                     </footer>
                 </div>
             </Fragment>
