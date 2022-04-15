@@ -1,8 +1,7 @@
-scrapy
+scrapy==2.5.1
 redis
 httpx
 BeautifulSoup4
-scrapy_redis
-scrapyd
+scrapy-redis
 Pillow
 python-dotenv
