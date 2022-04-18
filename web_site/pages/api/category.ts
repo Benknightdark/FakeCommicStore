@@ -4,6 +4,7 @@ import * as cheerio from 'cheerio';
 import fetch from 'node-fetch';
 import { createClient } from 'redis';
 import { getCsrfToken } from 'next-auth/react';
+import { csrTokenCheck } from '../../helpers/csr-token-helper';
 
 type Data = {
   title: string
@@ -14,6 +15,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data[] | any>
 ) {
+  await csrTokenCheck(req,res)
   const key: string = "categories";
   let categories: Data[] = []
   const client = createClient(
@@ -21,16 +23,16 @@ export default async function handler(
       url: `redis://${process.env['REDIS_HOST']}:${process.env['REDIS_PORT']}`,
     }
   );
-  console.log('--------------------------')
-  let headerCsrfToken = req.headers['x-csrf-token'];
-  console.log(`FROM HEADR=> ${headerCsrfToken}`)
-  const currentServerCsrToken = await getCsrfToken({ req })
-  console.log(`FROM SERVER=> ${currentServerCsrToken}`)
-  if (headerCsrfToken !== currentServerCsrToken) {
-    res.status(403).json({ message: "not allowed" })
-    return;
-  }
-  console.log('--------------------------')
+  // console.log('--------------------------')
+  // let headerCsrfToken = req.headers['x-csrf-token'];
+  // console.log(`FROM HEADR=> ${headerCsrfToken}`)
+  // const currentServerCsrToken = await getCsrfToken({ req })
+  // console.log(`FROM SERVER=> ${currentServerCsrToken}`)
+  // if (headerCsrfToken !== currentServerCsrToken) {
+  //   res.status(403).json({ message: "not allowed" })
+  //   return;
+  // }
+  // console.log('--------------------------')
   await client.connect();
   const cacheData = await client.getEx(key, { "EX": 20 });
   if (cacheData != null) {

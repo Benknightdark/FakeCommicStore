@@ -1,30 +1,34 @@
-import { NextPage } from "next";
+import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from "next";
 import React, { useEffect, useState } from "react";
 import useSWRInfinite from 'swr/infinite'
 import { useSubTitleContext } from "../context/sub-title-context";
 import Loading from "./utils/loading";
 import Image from 'next/image'
 import { useRouter } from "next/router";
+import { getCsrfToken } from "next-auth/react";
 
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = (url: string,csrfToken:string) => fetch(url,{headers:{'x-csrf-token':csrfToken}}).then((res) => res.json());
 
-const Commic: NextPage = () => {
+const Commic: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const router = useRouter()
     const subTitleContext = useSubTitleContext()
     const [showLoading, setShowLoading] = useState(false)
     subTitleContext.updateSubTitle(router.query['subTitle']?.toString()!)
     const { data, size, setSize, error } = useSWRInfinite(index =>
-        `/api/commic?url=${router.query['url']}&page=${index + 1}`,
+        [`/api/commic?url=${router.query['url']}&page=${index + 1}`,csrfToken],
         fetcher)
     useEffect(() => {
         document.getElementById('contentBody')!.onscroll = async () => {
-            console.log((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight)
+            // console.log((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight)
             if (showLoading) return
             if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) {
+                console.log("開始撈下一頁")
                 await setShowLoading(true)
                 await setSize(size + 1)
                 await setShowLoading(false)
+                console.log("完成撈下一頁")
+                console.log('----------------------------')
             }
         };
     });
@@ -115,5 +119,11 @@ const Commic: NextPage = () => {
         </div>
     );
 }
-
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+    return {
+        props: {
+            csrfToken: await getCsrfToken(ctx)
+        }
+    }
+  }
 export default Commic;
