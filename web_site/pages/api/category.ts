@@ -12,7 +12,7 @@ type Data = {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data[]|any>
+  res: NextApiResponse<Data[] | any>
 ) {
   const key: string = "categories";
   let categories: Data[] = []
@@ -32,10 +32,10 @@ export default async function handler(
   }
   console.log('--------------------------')
   await client.connect();
-  // const cacheData = await client.getEx(key, { "EX": 20 });
-  // if (cacheData != null) {
-  //   categories = JSON.parse(cacheData)
-  // } else {
+  const cacheData = await client.getEx(key, { "EX": 20 });
+  if (cacheData != null) {
+    categories = JSON.parse(cacheData)
+  } else {
     const reqData = await fetch('https://www.comicun.com/')
     const resData = await reqData.text()
     const $ = cheerio.load(resData);
@@ -44,7 +44,7 @@ export default async function handler(
         categories.push({ title: $(element).text(), link: $(element).attr('href') })
     });
     await client.setEx(key, 20, JSON.stringify(categories))
-  // }
-  // await client.disconnect();
+  }
+  await client.disconnect();
   res.status(200).json(categories)
 }

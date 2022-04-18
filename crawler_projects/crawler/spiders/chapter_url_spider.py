@@ -16,7 +16,7 @@ from urllib.parse import parse_qs
 class ChapterUrlSpider(RedisSpider):
     name = 'chapter_url'
     custom_settings = {
-        'ROBOTSTXT_OBEY': True
+        'ROBOTSTXT_OBEY': False
     }
     transport = httpx.HTTPTransport(retries=500)
 

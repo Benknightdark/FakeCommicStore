@@ -11,7 +11,7 @@ import os
 class CommicUrlSpider(RedisSpider):
     name = 'commic_url'
     custom_settings = {
-        'ROBOTSTXT_OBEY': True
+        'ROBOTSTXT_OBEY': False
     }
 
     def parse(self, response):
