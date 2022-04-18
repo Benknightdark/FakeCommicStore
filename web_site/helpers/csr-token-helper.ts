@@ -1,6 +1,13 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import { getCsrfToken } from "next-auth/react";
 
+/**
+ * 
+ * CSRToken驗證
+ * @param {NextApiRequest} req
+ * @param {NextApiResponse} res
+ * @return {*} 
+ */
 export const csrTokenCheck = async (
     req: NextApiRequest,
     res:NextApiResponse
