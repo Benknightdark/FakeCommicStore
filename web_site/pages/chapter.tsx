@@ -1,4 +1,4 @@
-import type { NextPage } from 'next'
+import type { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import useSWR from 'swr'
 import React, { useState } from 'react'
 import { useSubTitleContext } from '../context/sub-title-context'
@@ -15,16 +15,17 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useTheme } from '@mui/material/styles';
 import Checkbox from '@mui/material/Checkbox';
 import { AiTwotoneDelete, AiOutlineCloudDownload, AiOutlineDownload } from 'react-icons/ai'
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+import { getCsrfToken } from 'next-auth/react'
+const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
 
-const Chapter: NextPage = () => {
+const Chapter: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const theme = useTheme();
     const router = useRouter()
     const subTitleContext = useSubTitleContext()
     subTitleContext.updateSubTitle(router.query['subTitle']?.toString()!)
     const [open, setOpen] = useState(false);
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-    const { data, error, mutate } = useSWR(`/api/chapter?url=${router.query['url']}`, fetcher, {
+    const { data, error, mutate } = useSWR([`/api/chapter?url=${router.query['url']}`, csrfToken], fetcher, {
         revalidateOnFocus: false
     })
     const [selectData, updateSelectData] = useState<string[]>([])
@@ -196,5 +197,12 @@ const Chapter: NextPage = () => {
             </div>
         </div>
     </div>
+}
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+    return {
+        props: {
+            csrfToken: await getCsrfToken(ctx)
+        }
+    }
 }
 export default Chapter

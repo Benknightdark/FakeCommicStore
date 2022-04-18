@@ -91,9 +91,6 @@ const DashBoard: NextPage = () => {
     const { data, error, mutate } = useSWR(`/api/logs/items?page=${page}&row=5`, fetcher)
     if (error) return <Loading></Loading>
     if (!data) return <Loading></Loading>
-    data['data'].map((d: any) => {
-        console.log(d)
-    })
     return (
         <div className="p-10">
             <QueueRecord />
