@@ -8,8 +8,13 @@ import { v4 as uuidv4 } from 'uuid';
  * @return {*} 
  */
 export const useRequestsCount = (keyName: string) => {
-    const { data, error, mutate } = useSWR(`/api/logs/requests?requestId=${keyName}`,
-        (url: string) => fetch(url, { method: 'POST', body: JSON.stringify({ keyName: keyName }) }).then((res) => res.json()),
+    const fetcher=(url:string,keyName:string)=>fetch(url, { method: 'POST',
+     body: JSON.stringify({ keyName: keyName }),
+     headers: { "X-Custom-Header": "AnotherValue"} 
+    }).then((res) => res.json())
+    const { data, error, mutate } = useSWR(
+        [`/api/logs/requests?requestId=${keyName}`,keyName],
+    fetcher,
         { refreshInterval: 10000 })
     return {
         data: data,
