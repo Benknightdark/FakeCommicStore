@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { createClient } from 'redis';
+import { getCsrfToken } from "next-auth/react"
 
 /**
  * 下載漫畫資料
@@ -13,8 +14,6 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    console.log(req.body)
-
     const selectData=req.body
     if(selectData.length>0){
         
