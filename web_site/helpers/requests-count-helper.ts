@@ -1,5 +1,4 @@
 import useSWR from "swr";
-import { v4 as uuidv4 } from 'uuid';
 const fetcher = (url: string, keyName: string,csrfToken:string) => fetch(url, {
     method: 'POST',
     body: JSON.stringify({ keyName: keyName }),
