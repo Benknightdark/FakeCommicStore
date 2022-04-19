@@ -1,18 +1,18 @@
 import React, { Fragment, useState } from "react";
-import { NextPage } from "next";
+import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from "next";
 import { SubTitleContext } from "../../context/sub-title-context";
 import { useStartUrlsCount } from '../../helpers/starts-url-helper';
 import { GiSpiderMask, GiHamburgerMenu } from 'react-icons/gi'
 import { AiOutlineBarChart } from "react-icons/ai";
-import { signOut, useSession } from "next-auth/react";
+import { getCsrfToken, signOut, useSession } from "next-auth/react";
 import Tooltip from "@mui/material/Tooltip";
 import { useRouter } from "next/router";
 
 
-const Layout: NextPage = ({ children }: any) => {
+const Layout: NextPage = ({ children }: any,{ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const router = useRouter()
     const [subTitle, setSubTitle] = useState<string>("");
-    const startUrlsCountSWR = useStartUrlsCount("chapter_url:start_urls")
+    const startUrlsCountSWR = useStartUrlsCount("chapter_url:start_urls",csrfToken)
     const session = useSession();
     const [openMenu, setOpenMenu] = useState<string>("-translate-x-full")
     const updateSubTitle = (text: string) => {
@@ -201,6 +201,12 @@ const Layout: NextPage = ({ children }: any) => {
         </SubTitleContext.Provider>
     );
 }
-
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+    return {
+        props: {
+            csrfToken: await getCsrfToken(ctx)
+        }
+    }
+}
 export default Layout;
 

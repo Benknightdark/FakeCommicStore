@@ -1,15 +1,18 @@
 import useSWR from "swr";
-import { v4 as uuidv4 } from 'uuid';
-
+const fetcher = (url: string, keyName: string, csrfToken: string) => fetch(url, {
+    method: 'POST',
+    body: JSON.stringify({ keyName: keyName }),
+    headers: { 'x-csrf-token': csrfToken }
+}).then((res) => res.json())
 /**
  * 取得正要下載的網頁數量
  * commic_url:start_urls
  * chapter_url:start_urls
  * @return {*} 
  */
-export const useStartUrlsCount = (keyName:string) => {
-    const { data, error, mutate } = useSWR(`/api/logs/start-urls?requestId=${keyName}`,
-        (url: string) => fetch(url, { method: 'POST', body: JSON.stringify({ keyName: keyName }) }).then((res) => res.json()),
+export const useStartUrlsCount = (keyName: string, csrfToken: string = '') => {
+    const { data, error, mutate } = useSWR([`/api/logs/start-urls?requestId=${keyName}`, keyName, csrfToken],
+        fetcher,
         { refreshInterval: 10000 })
     return {
         data: data,
