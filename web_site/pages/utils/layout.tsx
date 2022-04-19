@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 import DownloadCount from "../../components/download-count";
 
 
-const Layout: NextPage = ({ children }: any) => {
+const Layout: NextPage = ({ children }: React.PropsWithChildren<{}>) => {
 
     const router = useRouter()
     const [subTitle, setSubTitle] = useState<string>("");
