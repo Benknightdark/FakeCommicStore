@@ -1,16 +1,17 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from "next";
 import { SubTitleContext } from "../../context/sub-title-context";
 import { useStartUrlsCount } from '../../helpers/starts-url-helper';
 import { GiSpiderMask, GiHamburgerMenu } from 'react-icons/gi'
 import { AiOutlineBarChart } from "react-icons/ai";
-import { getCsrfToken, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Tooltip from "@mui/material/Tooltip";
 import { useRouter } from "next/router";
+import DownloadCount from "../../components/download-count";
 
 
-const Layout: NextPage = ({ children }: any,{ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    console.log(csrfToken)
+const Layout: NextPage = ({ children }: any) => {
+
     const router = useRouter()
     const [subTitle, setSubTitle] = useState<string>("");
     // const startUrlsCountSWR = useStartUrlsCount("chapter_url:start_urls",csrfToken)
@@ -89,7 +90,7 @@ const Layout: NextPage = ({ children }: any,{ csrfToken }: InferGetServerSidePro
                                                 !startUrlsCountSWR.isLoading && <span className="bg-red-100 text-red-800 text-sm font-medium 
                                                 mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{startUrlsCountSWR.data['count']}</span>
                                             } */}
-
+                                            <DownloadCount/>
                                         </div>
                                     </button>
                                     {session.status == 'unauthenticated' && (
@@ -164,10 +165,7 @@ const Layout: NextPage = ({ children }: any,{ csrfToken }: InferGetServerSidePro
                                 <div className="flex space-x-2">
                                     <AiOutlineBarChart className='text-gray-100 dark:text-gray-800 h-5 w-5'></AiOutlineBarChart>
                                     下載進度查詢
-                                    {/* {
-                                        !startUrlsCountSWR.isLoading && <span className="bg-red-100 text-red-800 text-sm font-medium 
-                                                mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{startUrlsCountSWR.data['count']}</span>
-                                    } */}
+                                    <DownloadCount/>
 
                                 </div>
                             </div>
@@ -203,12 +201,6 @@ const Layout: NextPage = ({ children }: any,{ csrfToken }: InferGetServerSidePro
         </SubTitleContext.Provider>
     );
 }
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    return {
-        props: {
-            csrfToken: await getCsrfToken(ctx)
-        }
-    }
-}
+
 export default Layout;
 
