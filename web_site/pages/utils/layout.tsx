@@ -10,9 +10,10 @@ import { useRouter } from "next/router";
 
 
 const Layout: NextPage = ({ children }: any,{ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    console.log(csrfToken)
     const router = useRouter()
     const [subTitle, setSubTitle] = useState<string>("");
-    const startUrlsCountSWR = useStartUrlsCount("chapter_url:start_urls",csrfToken)
+    // const startUrlsCountSWR = useStartUrlsCount("chapter_url:start_urls",csrfToken)
     const session = useSession();
     const [openMenu, setOpenMenu] = useState<string>("-translate-x-full")
     const updateSubTitle = (text: string) => {
@@ -83,10 +84,11 @@ const Layout: NextPage = ({ children }: any,{ csrfToken }: InferGetServerSidePro
                                         <div className="flex space-x-2">
                                             <AiOutlineBarChart className='text-gray-100 dark:text-gray-800 h-5 w-5'></AiOutlineBarChart>
                                             下載進度查詢
+                                            {/* 
                                             {
                                                 !startUrlsCountSWR.isLoading && <span className="bg-red-100 text-red-800 text-sm font-medium 
                                                 mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{startUrlsCountSWR.data['count']}</span>
-                                            }
+                                            } */}
 
                                         </div>
                                     </button>
@@ -162,10 +164,10 @@ const Layout: NextPage = ({ children }: any,{ csrfToken }: InferGetServerSidePro
                                 <div className="flex space-x-2">
                                     <AiOutlineBarChart className='text-gray-100 dark:text-gray-800 h-5 w-5'></AiOutlineBarChart>
                                     下載進度查詢
-                                    {
+                                    {/* {
                                         !startUrlsCountSWR.isLoading && <span className="bg-red-100 text-red-800 text-sm font-medium 
                                                 mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{startUrlsCountSWR.data['count']}</span>
-                                    }
+                                    } */}
 
                                 </div>
                             </div>

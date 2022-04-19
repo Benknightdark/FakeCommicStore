@@ -91,7 +91,8 @@ const Chapter: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof get
                     const req = await fetch(`/api/download`, {
                         body: JSON.stringify(allData),
                         headers: {
-                            'content-type': 'application/json'
+                            'content-type': 'application/json',
+                            'x-csrf-token':csrfToken
                         },
                         method: 'POST',
                     })
@@ -111,6 +112,7 @@ const Chapter: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof get
                     下載全部
                 </div>
             </button>
+           
             <button type="button"
                 className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br 
  focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg
@@ -119,19 +121,25 @@ const Chapter: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof get
                     const req = await fetch(`/api/download`, {
                         body: JSON.stringify(selectData), // must match 'Content-Type' header
                         headers: {
-                            'content-type': 'application/json'
+                            'content-type': 'application/json',
+                          'x-csrf-token':csrfToken
                         },
                         method: 'POST',
                     })
-                    const res = await req.text()
-                    const newData = data.map((d: any) => {
-                        d.checked = false
-                        return d
-                    })
-                    mutate([])
-                    mutate([...newData])
-                    console.log(res)
-                    setOpen(true)
+                    if (req.status === 200) {
+                        const res = await req.text()
+                        const newData = data.map((d: any) => {
+                            d.checked = false
+                            return d
+                        })
+                        mutate([])
+                        mutate([...newData])
+                        console.log(res)
+                        setOpen(true)
+                    }else{
+                        alert((await req.json())['message'])
+                    }
+
                 }}
             >
                 <div className="flex space-x-2">

@@ -1,12 +1,15 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { createClient } from 'redis';
+import { csrTokenCheck } from '../../../helpers/csr-token-helper';
 
 
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
+    await csrTokenCheck(req,res)
+
     const page=Number.parseInt(req.query['page'].toString()) //1
     const row=Number.parseInt(req.query['row'].toString()) //10
     const client = createClient(

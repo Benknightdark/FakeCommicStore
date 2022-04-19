@@ -10,7 +10,7 @@ import Pagination from '@mui/material/Pagination';
 import { IoIosRefreshCircle } from 'react-icons/io'
 import Tooltip from '@mui/material/Tooltip';
 import { getCsrfToken } from 'next-auth/react';
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = (url: string,csrfToken:string) => fetch(url,{ headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
 const RecordItem = (props: any) => {
     return <div className="m-1 border-solid border-4 border-blue-900	
     bg-white rounded-xl shadow-md overflow-hidden item-center">
@@ -89,10 +89,9 @@ const QueueRecord = ({csrfToken}:any) => {
 const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     useSubTitleContext().updateSubTitle('DashBoard')
     const [page, setPage] = useState(1);
-    const { data, error, mutate } = useSWR(`/api/logs/items?page=${page}&row=5`, fetcher)
+    const { data, error, mutate } = useSWR([`/api/logs/items?page=${page}&row=5`,csrfToken], fetcher)
     if (error) return <Loading></Loading>
     if (!data) return <Loading></Loading>
-    console.log(csrfToken)
     return (
         <div className="p-10">
             <QueueRecord csrfToken={csrfToken}></QueueRecord>
