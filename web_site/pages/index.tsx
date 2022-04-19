@@ -3,12 +3,13 @@ import { useSubTitleContext } from '../context/sub-title-context'
 import { useRouter } from 'next/router'
 import Loading from './utils/loading'
 import useSWR from 'swr'
-import { NextPage } from 'next'
+import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
+import { getCsrfToken } from 'next-auth/react'
 
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
-const Index: NextPage = () => {
-  const { data, error } = useSWR('/api/category', fetcher)
+const fetcher = (url: string,csrfToken:string) => fetch(url,{headers:{'x-csrf-token':csrfToken}}).then((res) => res.json());
+const Index: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const { data, error } = useSWR(['/api/category', csrfToken], fetcher)
   const router = useRouter()
   const subTitleContext = useSubTitleContext()
   subTitleContext.updateSubTitle('漫畫類別')
@@ -35,5 +36,12 @@ const Index: NextPage = () => {
     </div>
 
   )
+}
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  return {
+      props: {
+          csrfToken: await getCsrfToken(ctx)
+      }
+  }
 }
 export default Index

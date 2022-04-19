@@ -1,4 +1,4 @@
-import type { NextPage } from 'next'
+import type { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import useSWR from 'swr'
 import React, { useState } from 'react'
 import { useSubTitleContext } from '../context/sub-title-context'
@@ -15,16 +15,17 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useTheme } from '@mui/material/styles';
 import Checkbox from '@mui/material/Checkbox';
 import { AiTwotoneDelete, AiOutlineCloudDownload, AiOutlineDownload } from 'react-icons/ai'
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+import { getCsrfToken } from 'next-auth/react'
+const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
 
-const Chapter: NextPage = () => {
+const Chapter: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const theme = useTheme();
     const router = useRouter()
     const subTitleContext = useSubTitleContext()
     subTitleContext.updateSubTitle(router.query['subTitle']?.toString()!)
     const [open, setOpen] = useState(false);
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-    const { data, error, mutate } = useSWR(`/api/chapter?url=${router.query['url']}`, fetcher, {
+    const { data, error, mutate } = useSWR([`/api/chapter?url=${router.query['url']}`, csrfToken], fetcher, {
         revalidateOnFocus: false
     })
     const [selectData, updateSelectData] = useState<string[]>([])
@@ -90,7 +91,8 @@ const Chapter: NextPage = () => {
                     const req = await fetch(`/api/download`, {
                         body: JSON.stringify(allData),
                         headers: {
-                            'content-type': 'application/json'
+                            'content-type': 'application/json',
+                            'x-csrf-token':csrfToken
                         },
                         method: 'POST',
                     })
@@ -110,6 +112,7 @@ const Chapter: NextPage = () => {
                     下載全部
                 </div>
             </button>
+           
             <button type="button"
                 className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br 
  focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg
@@ -118,19 +121,25 @@ const Chapter: NextPage = () => {
                     const req = await fetch(`/api/download`, {
                         body: JSON.stringify(selectData), // must match 'Content-Type' header
                         headers: {
-                            'content-type': 'application/json'
+                            'content-type': 'application/json',
+                          'x-csrf-token':csrfToken
                         },
                         method: 'POST',
                     })
-                    const res = await req.text()
-                    const newData = data.map((d: any) => {
-                        d.checked = false
-                        return d
-                    })
-                    mutate([])
-                    mutate([...newData])
-                    console.log(res)
-                    setOpen(true)
+                    if (req.status === 200) {
+                        const res = await req.text()
+                        const newData = data.map((d: any) => {
+                            d.checked = false
+                            return d
+                        })
+                        mutate([])
+                        mutate([...newData])
+                        console.log(res)
+                        setOpen(true)
+                    }else{
+                        alert((await req.json())['message'])
+                    }
+
                 }}
             >
                 <div className="flex space-x-2">
@@ -196,5 +205,12 @@ const Chapter: NextPage = () => {
             </div>
         </div>
     </div>
+}
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+    return {
+        props: {
+            csrfToken: await getCsrfToken(ctx)
+        }
+    }
 }
 export default Chapter

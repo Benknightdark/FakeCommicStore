@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import * as cheerio from 'cheerio';
 import fetch from 'node-fetch';
 import { createClient } from 'redis';
+import { csrTokenCheck } from '../../helpers/csr-token-helper';
 
 type Data = {
   title: string
@@ -11,8 +12,9 @@ type Data = {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data[]>
+  res: NextApiResponse<Data[] | any>
 ) {
+  await csrTokenCheck(req,res)
   const key: string = "categories";
   let categories: Data[] = []
   const client = createClient(
@@ -20,7 +22,6 @@ export default async function handler(
       url: `redis://${process.env['REDIS_HOST']}:${process.env['REDIS_PORT']}`,
     }
   );
-
   await client.connect();
   const cacheData = await client.getEx(key, { "EX": 20 });
   if (cacheData != null) {

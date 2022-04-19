@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NextPage } from 'next';
+import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 
 import Loading from './utils/loading'
 import useSWR from 'swr';
@@ -9,7 +9,8 @@ import { useStartUrlsCount } from '../helpers/starts-url-helper';
 import Pagination from '@mui/material/Pagination';
 import { IoIosRefreshCircle } from 'react-icons/io'
 import Tooltip from '@mui/material/Tooltip';
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+import { getCsrfToken } from 'next-auth/react';
+const fetcher = (url: string,csrfToken:string) => fetch(url,{ headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
 const RecordItem = (props: any) => {
     return <div className="m-1 border-solid border-4 border-blue-900	
     bg-white rounded-xl shadow-md overflow-hidden item-center">
@@ -32,11 +33,11 @@ const RecordItem = (props: any) => {
     </div>
 }
 
-const QueueRecord = () => {
-    const chapterRequestsSWR = useRequestsCount("chapter_url:requests")
-    const chapterStartUrlsCountSWR = useStartUrlsCount("chapter_url:start_urls")
-    const commicRequestsSWR = useRequestsCount("commic_url:requests")
-    const commicStartUrlsCountSWR = useStartUrlsCount("commic_url:start_urls")
+const QueueRecord = ({csrfToken}:any) => {
+    const chapterRequestsSWR = useRequestsCount("chapter_url:requests",csrfToken)
+    const chapterStartUrlsCountSWR = useStartUrlsCount("chapter_url:start_urls",csrfToken)
+    const commicRequestsSWR = useRequestsCount("commic_url:requests",csrfToken)
+    const commicStartUrlsCountSWR = useStartUrlsCount("commic_url:start_urls",csrfToken)
     return <div className=" flex flex-col justify-center
     2xl:space-x-4 
     xl:space-x-4
@@ -85,18 +86,15 @@ const QueueRecord = () => {
     </div>
 }
 
-const DashBoard: NextPage = () => {
+const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     useSubTitleContext().updateSubTitle('DashBoard')
     const [page, setPage] = useState(1);
-    const { data, error, mutate } = useSWR(`/api/logs/items?page=${page}&row=5`, fetcher)
+    const { data, error, mutate } = useSWR([`/api/logs/items?page=${page}&row=5`,csrfToken], fetcher)
     if (error) return <Loading></Loading>
     if (!data) return <Loading></Loading>
-    data['data'].map((d: any) => {
-        console.log(d)
-    })
     return (
         <div className="p-10">
-            <QueueRecord />
+            <QueueRecord csrfToken={csrfToken}></QueueRecord>
             {
                 <div className="flex flex-col">
                     <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -176,5 +174,11 @@ const DashBoard: NextPage = () => {
         </div>
     );
 }
-
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+    return {
+        props: {
+            csrfToken: await getCsrfToken(ctx)
+        }
+    }
+}
 export default DashBoard;

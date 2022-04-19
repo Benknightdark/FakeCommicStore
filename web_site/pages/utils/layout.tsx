@@ -1,18 +1,20 @@
-import React, { Fragment, useState } from "react";
-import { NextPage } from "next";
-import { useRouter } from "next/dist/client/router";
+import React, { Fragment, useEffect, useState } from "react";
+import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from "next";
 import { SubTitleContext } from "../../context/sub-title-context";
 import { useStartUrlsCount } from '../../helpers/starts-url-helper';
 import { GiSpiderMask, GiHamburgerMenu } from 'react-icons/gi'
 import { AiOutlineBarChart } from "react-icons/ai";
 import { signOut, useSession } from "next-auth/react";
 import Tooltip from "@mui/material/Tooltip";
+import { useRouter } from "next/router";
+import DownloadCount from "../../components/download-count";
 
 
-const Layout: NextPage = ({ children }) => {
+const Layout: NextPage = ({ children }: React.PropsWithChildren<{}>) => {
+
     const router = useRouter()
     const [subTitle, setSubTitle] = useState<string>("");
-    const startUrlsCountSWR = useStartUrlsCount("chapter_url:start_urls")
+    // const startUrlsCountSWR = useStartUrlsCount("chapter_url:start_urls",csrfToken)
     const session = useSession();
     const [openMenu, setOpenMenu] = useState<string>("-translate-x-full")
     const updateSubTitle = (text: string) => {
@@ -23,7 +25,6 @@ const Layout: NextPage = ({ children }) => {
     };
     return (
         <SubTitleContext.Provider value={{ updateSubTitle }}>
-
             <Fragment>
                 <div className="flex flex-col h-screen">
                     <header className="bg-gradient-to-r from-yellow-400 to-orange-200  w-full">
@@ -84,11 +85,12 @@ const Layout: NextPage = ({ children }) => {
                                         <div className="flex space-x-2">
                                             <AiOutlineBarChart className='text-gray-100 dark:text-gray-800 h-5 w-5'></AiOutlineBarChart>
                                             下載進度查詢
+                                            {/* 
                                             {
                                                 !startUrlsCountSWR.isLoading && <span className="bg-red-100 text-red-800 text-sm font-medium 
                                                 mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{startUrlsCountSWR.data['count']}</span>
-                                            }
-
+                                            } */}
+                                            <DownloadCount/>
                                         </div>
                                     </button>
                                     {session.status == 'unauthenticated' && (
@@ -103,7 +105,6 @@ const Layout: NextPage = ({ children }) => {
                                                 onClick={() => { signOut() }}>
                                                 {session?.data?.user?.name}</button>
                                         </Tooltip>
-
                                     }
                                     {session.status == 'authenticated' &&
                                         <button className='grow red-btn' onClick={() => { router.push("/favorite") }}>我的最愛</button>
@@ -164,10 +165,7 @@ const Layout: NextPage = ({ children }) => {
                                 <div className="flex space-x-2">
                                     <AiOutlineBarChart className='text-gray-100 dark:text-gray-800 h-5 w-5'></AiOutlineBarChart>
                                     下載進度查詢
-                                    {
-                                        !startUrlsCountSWR.isLoading && <span className="bg-red-100 text-red-800 text-sm font-medium 
-                                                mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{startUrlsCountSWR.data['count']}</span>
-                                    }
+                                    <DownloadCount/>
 
                                 </div>
                             </div>
@@ -195,7 +193,7 @@ const Layout: NextPage = ({ children }) => {
                         </nav>
                     </div>
                     <footer className="py-5 bg-gray-700 text-center text-white">
-                        made by ben 😎 
+                        made by ben 😎
                     </footer>
                 </div>
             </Fragment>

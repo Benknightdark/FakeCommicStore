@@ -8,9 +8,7 @@
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 from dotenv import load_dotenv, find_dotenv
 import os
-from scrapy.utils.reactor import install_reactor
 
-install_reactor('twisted.internet.asyncioreactor.AsyncioSelectorReactor')
 load_dotenv(find_dotenv())
 BOT_NAME = 'crawler'
 

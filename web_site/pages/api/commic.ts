@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import * as cheerio from 'cheerio';
 import fetch from 'node-fetch';
+import { csrTokenCheck } from '../../helpers/csr-token-helper';
 
 type Data = {
     title: string | undefined,
@@ -24,6 +25,8 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<Data[]>
 ) {
+    await csrTokenCheck(req,res)
+
     const url: string = req.query['url'].toString()
     const page: string = req.query['page'].toString()
     console.log(`${url}&page=${page}`)

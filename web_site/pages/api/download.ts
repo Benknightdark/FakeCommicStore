@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { createClient } from 'redis';
+import { csrTokenCheck } from '../../helpers/csr-token-helper';
 
 /**
  * 下載漫畫資料
@@ -13,8 +14,7 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    console.log(req.body)
-
+    await csrTokenCheck(req,res)
     const selectData=req.body
     if(selectData.length>0){
         
