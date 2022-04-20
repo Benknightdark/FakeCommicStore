@@ -4,7 +4,7 @@ import { SubTitleContext } from "../../context/sub-title-context";
 import { useStartUrlsCount } from '../../helpers/starts-url-helper';
 import { GiSpiderMask, GiHamburgerMenu } from 'react-icons/gi'
 import { AiOutlineBarChart } from "react-icons/ai";
-import { signOut, useSession } from "next-auth/react";
+import { getSession, signOut, useSession } from "next-auth/react";
 import Tooltip from "@mui/material/Tooltip";
 import { useRouter } from "next/router";
 import DownloadCount from "../../components/download-count";

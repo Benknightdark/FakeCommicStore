@@ -3,7 +3,7 @@ WORKDIR /app
 COPY . .
 RUN npm i 
 RUN npm run build
-ENV NODE_ENV production
+# ENV NODE_ENV production
 CMD ["npm", "start"]
 # # Production image, copy all the files and run next
 # FROM node:16.13 AS runner

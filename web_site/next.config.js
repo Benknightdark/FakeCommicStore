@@ -4,4 +4,5 @@ module.exports = {
   images: {
     domains: ['localhost', 'img.comicun.com', 'www.jjmhw.cc','i.giphy.com'],
   },
+  swcMinify: true
 }

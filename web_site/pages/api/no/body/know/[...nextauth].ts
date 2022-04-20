@@ -1,6 +1,6 @@
 import NextAuth, { NextAuthOptions } from "next-auth"
 import Credentials from "next-auth/providers/credentials";
-import clientPromise from '../../../helpers/mongodb-client'
+import clientPromise from '../../../../../helpers/mongodb-client'
 const options: NextAuthOptions = {
     providers: [
         Credentials({
