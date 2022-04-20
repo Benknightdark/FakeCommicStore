@@ -42,12 +42,11 @@ export const csrTokenCheck = async (
   // }
   // return
   let nextCsrToken = req.cookies['next-auth.csrf-token'] !== undefined ? req.cookies['next-auth.csrf-token'].split('|')[0] : ""
-  // let headerCsrfToken = req.headers['x-csrf-token'] === '' ? nextCsrToken : req.headers['x-csrf-token'];
+  let headerCsrfToken = req.headers['x-csrf-token'] === '' ? nextCsrToken : req.headers['x-csrf-token'];
   // console.log(`FROM HEADR=> ${headerCsrfToken}`)
-  console.log(nextCsrToken)
   const currentServerCsrToken = await getCsrfToken({ req })
   console.log(currentServerCsrToken)
-  if ((nextCsrToken !== currentServerCsrToken)) {//headerCsrfToken
+  if ((headerCsrfToken !== currentServerCsrToken)) {//headerCsrfToken
     res.status(403).json({ message: "Fuck off!!! You are not allowed to use this api!!!" })
     return;
   }
