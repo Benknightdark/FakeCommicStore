@@ -6,9 +6,13 @@ import Stack from "@mui/material/Stack";
 import LinearProgress from '@mui/material/LinearProgress';
 import Loading from "../utils/loading";
 import Image from 'next/image'
+import useSWR from "swr";
+import { globalSettingStore, initialGlobalSettingStore } from "../../stores/global-setting-store";
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const Index = () => {
+    const { data:globalStoreData,mutate:mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
+
     const session = useSession();
     const router = useRouter()
     const [showLoading, setShowLoading] = useState(false)
@@ -49,16 +53,16 @@ const Index = () => {
                                 return (
                                     <div className="rounded-lg shadow-xl bg-white py-3 px-6  border-2 border-purple-500 
                             hover:shadow-md  transform hover:-translate-y-1 transition-all duration-200 hover:border-red-500 hover:ring-indigo-300" key={itemData.image}>
-                                        <Image
-                                            layout='responsive'
-                                            width='100%'
-                                            height='100%'
-                                            src={itemData.image}
-                                            alt={itemData.title}
-                                            className="rounded-t-lg h-120 w-full object-cover z-0 "
-                                            placeholder="blur"
-                                            blurDataURL="./blur.jpg"
-                                        />
+                                    {globalStoreData?.showImage&&<Image
+                                        layout='responsive'
+                                        width='100%'
+                                        height='100%'
+                                        src={itemData.image}
+                                        alt={itemData.title}
+                                        className="rounded-t-lg h-120 w-full object-cover z-0 "
+                                        placeholder="blur"
+                                        blurDataURL="./blur.jpg"
+                                    />}
                                         <header className=" text-xl font-extrabold p-4">{itemData.title}</header>
 
                                         <footer className="text-center py-3 px-5 text-gray-500">
