@@ -51,10 +51,25 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                                         mutateGlobalStoreData({ ...globalStoreData, showImage: false }, false)
                                     }}
                                     ></AiFillEyeInvisible>}
-                                    <button id="dropdownDefault" data-dropdown-toggle="dropdown" className="text-white bg-blue-700
-                                     hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg 
-                                     text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 
-                                     dark:focus:ring-blue-800" type="button">切換來源 </button>
+
+                                    <div className="dropdown">
+                                        <label tabIndex={0} className="btn m-1">切換來源 ({ globalStoreData?.selectedSource?.name})</label>
+                                        <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+
+                                            {
+                                                globalStoreData && globalStoreData.sourceList.map((s: any) =>
+                                                    <li key={s.id} className={`${globalStoreData.selectedSource.id === s.id ? "text-red-500" : ""}`}
+                                                        onClick={() => {
+                                                            mutateGlobalStoreData({ ...globalStoreData, selectedSource: s }, false)
+
+                                                        }}
+                                                    >
+                                                        <a> {s.name}</a>
+                                                    </li>
+                                                )
+                                            }
+                                        </ul>
+                                    </div>
 
                                 </div>
                                 <div className="justify-end flex-row">
