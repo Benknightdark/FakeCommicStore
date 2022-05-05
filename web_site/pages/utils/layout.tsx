@@ -53,15 +53,13 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                                     ></AiFillEyeInvisible>}
 
                                     <div className="dropdown">
-                                        <label tabIndex={0} className="btn m-1">切換來源 ({ globalStoreData?.selectedSource?.name})</label>
+                                        <label tabIndex={0} className="btn m-1">切換來源 ({globalStoreData?.selectedSource?.name})</label>
                                         <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-
                                             {
                                                 globalStoreData && globalStoreData.sourceList.map((s: any) =>
                                                     <li key={s.id} className={`${globalStoreData.selectedSource.id === s.id ? "text-red-500" : ""}`}
                                                         onClick={() => {
                                                             mutateGlobalStoreData({ ...globalStoreData, selectedSource: s }, false)
-
                                                         }}
                                                     >
                                                         <a> {s.name}</a>
@@ -94,7 +92,14 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                                                         return
                                                     }
                                                     setTimeout(() => {
-                                                        const link = `https://www.comicun.com/search-index?q=${subTitle}`
+                                                        let link = ''
+                                                        if (globalStoreData.selectedSource.id === 1) {
+
+                                                            link = `https://www.comicun.com/search-index?q=${subTitle}`
+                                                        } else {
+                                                            link = `https://18comic.org/search/photos?search_query=${subTitle}&main_tag=0`
+
+                                                        }
                                                         router.push({ pathname: '/commic', query: { url: link, subTitle: subTitle } })
                                                     }, 500);
 
@@ -211,8 +216,19 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                                             return
                                         }
                                         setTimeout(() => {
-                                            const link = `https://www.comicun.com/search-index?q=${subTitle}`
+                                            let link = ''
+                                            if (globalStoreData.selectedSource.id === 1) {
+
+                                                link = `https://www.comicun.com/search-index?q=${subTitle}`
+                                            } else {
+                                                link = `https://18comic.org/search/photos?search_query=${subTitle}&main_tag=0`
+
+                                            }
                                             router.push({ pathname: '/commic', query: { url: link, subTitle: subTitle } })
+
+
+
+
                                         }, 500);
 
                                     }}
