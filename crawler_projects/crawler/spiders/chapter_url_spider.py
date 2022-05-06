@@ -49,11 +49,9 @@ class ChapterUrlSpider(RedisSpider):
                 i.save(temp_title)
             if channel_id == "2":
                 cc=cloudscraper.create_scraper(
-                    browser='firefox', delay=10)
+                    browser='firefox', delay=30)
                 cc.adapters.DEFAULT_RETRIES =1000
                 r =cc.get(response.url)
-                # r = httpx.Client(timeout=None, transport=self.transport).get(
-                #     commic_image_url)
                 i = Image.open(BytesIO(r.content))
                 temp_title = f'{folder_name}/{index}.jpg'
                 i.save(temp_title)
