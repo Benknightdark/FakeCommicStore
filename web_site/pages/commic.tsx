@@ -20,7 +20,7 @@ const Commic: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getS
     const [showLoading, setShowLoading] = useState(false)
     subTitleContext.updateSubTitle(router.query['subTitle']?.toString()!)
     const { data, size, setSize, error } = useSWRInfinite(index =>
-        [`/api/commic?url=${router.query['url']}&page=${index + 1}`,csrfToken],
+        [`/api/commic?url=${router.query['url']}&page=${index + 1}&id=${globalStoreData.selectedSource.id}`,csrfToken],
         fetcher)
     useEffect(() => {
         document.getElementById('contentBody')!.onscroll = async () => {

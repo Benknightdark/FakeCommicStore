@@ -10,7 +10,7 @@ import Pagination from '@mui/material/Pagination';
 import { IoIosRefreshCircle } from 'react-icons/io'
 import Tooltip from '@mui/material/Tooltip';
 import { getCsrfToken } from 'next-auth/react';
-const fetcher = (url: string,csrfToken:string) => fetch(url,{ headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
+const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
 const RecordItem = (props: any) => {
     return <div className="m-1 border-solid border-4 border-blue-900	
     bg-white rounded-xl shadow-md overflow-hidden item-center">
@@ -33,11 +33,11 @@ const RecordItem = (props: any) => {
     </div>
 }
 
-const QueueRecord = ({csrfToken}:any) => {
-    const chapterRequestsSWR = useRequestsCount("chapter_url:requests",csrfToken)
-    const chapterStartUrlsCountSWR = useStartUrlsCount("chapter_url:start_urls",csrfToken)
-    const commicRequestsSWR = useRequestsCount("commic_url:requests",csrfToken)
-    const commicStartUrlsCountSWR = useStartUrlsCount("commic_url:start_urls",csrfToken)
+const QueueRecord = ({ csrfToken }: any) => {
+    const chapterRequestsSWR = useRequestsCount("chapter_url:requests", csrfToken)
+    const chapterStartUrlsCountSWR = useStartUrlsCount("chapter_url:start_urls", csrfToken)
+    const commicRequestsSWR = useRequestsCount("commic_url:requests", csrfToken)
+    const commicStartUrlsCountSWR = useStartUrlsCount("commic_url:start_urls", csrfToken)
     return <div className=" flex flex-col justify-center
     2xl:space-x-4 
     xl:space-x-4
@@ -89,7 +89,7 @@ const QueueRecord = ({csrfToken}:any) => {
 const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     useSubTitleContext().updateSubTitle('DashBoard')
     const [page, setPage] = useState(1);
-    const { data, error, mutate } = useSWR([`/api/logs/items?page=${page}&row=5`,csrfToken], fetcher)
+    const { data, error, mutate } = useSWR([`/api/logs/items?page=${page}&row=5`, csrfToken], fetcher)
     if (error) return <Loading></Loading>
     if (!data) return <Loading></Loading>
     return (
@@ -149,6 +149,24 @@ const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof g
                                                             className="monochrome-cyan-btn">
                                                             前往網址
                                                         </a>
+                                                        <button className="monochrome-lime-btn"
+                                                            onClick={async  () => {
+                                                                const req = await fetch(`/api/download-image`, {
+                                                                    body: JSON.stringify({url:d['chapterUrl']}), // must match 'Content-Type' header
+                                                                    headers: {
+                                                                        'content-type': 'application/json',
+                                                                        'x-csrf-token': csrfToken
+                                                                    },
+                                                                    method: 'POST',
+                                                                })
+                                                                if (req.status === 200) {
+                                                                   
+                                                                    alert("開始下載")
+                                                                } else {
+                                                                    alert((await req.json())['message'])
+                                                                }
+                                                            }}>
+                                                            下載</button>
                                                     </td>
                                                 </tr>
                                             }

@@ -24,10 +24,34 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
         else
             setSubTitle(``)
     };
+    const searchCommic = async (value: any) => {
+        const subTitle = value.currentTarget.value
+        if (subTitle.replace(/\s/g, "") == "") {
+            router.push({ pathname: '/' })
+            return
+        }
+        setTimeout(() => {
+            let link = ''
+            switch (globalStoreData.selectedSource.id) {
+                case 1:
+                    link = `https://www.comicun.com/search-index?q=${subTitle}`
+                    break;
+                case 2:
+                    link = `https://18comic.org/search/photos?search_query=${subTitle}&main_tag=0`
+                    break;
+                case 3:
+                    link = `https://www.jjmhw.cc/search?keyword=${subTitle}`
+                    break;
+            }
+
+            router.push({ pathname: '/commic', query: { url: link, subTitle: subTitle } })
+        }, 500);
+    }
     return (
         <SubTitleContext.Provider value={{ updateSubTitle }}>
             <Fragment>
                 <div className="flex flex-col h-screen">
+                    {/* 標題列 */}
                     <header className="bg-gradient-to-r from-yellow-400 to-orange-200  w-full">
                         <div className="p-3">
                             <div className="flex items-center justify-between flex-wrap">
@@ -51,10 +75,23 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                                         mutateGlobalStoreData({ ...globalStoreData, showImage: false }, false)
                                     }}
                                     ></AiFillEyeInvisible>}
-                                    <button id="dropdownDefault" data-dropdown-toggle="dropdown" className="text-white bg-blue-700
-                                     hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg 
-                                     text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 
-                                     dark:focus:ring-blue-800" type="button">切換來源 </button>
+
+                                    <div className="dropdown">
+                                        <label tabIndex={0} className="btn m-1">切換來源 ({globalStoreData?.selectedSource?.name})</label>
+                                        <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                                            {
+                                                globalStoreData && globalStoreData.sourceList.map((s: any) =>
+                                                    <li key={s.id} className={`${globalStoreData.selectedSource.id === s.id ? "text-red-500" : ""}`}
+                                                        onClick={() => {
+                                                            mutateGlobalStoreData({ ...globalStoreData, selectedSource: s }, false)
+                                                        }}
+                                                    >
+                                                        <a> {s.name}</a>
+                                                    </li>
+                                                )
+                                            }
+                                        </ul>
+                                    </div>
 
                                 </div>
                                 <div className="justify-end flex-row">
@@ -73,16 +110,8 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                                                dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
                                                dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="搜尋漫畫"
                                                 onBlur={async (value) => {
-                                                    const subTitle = value.currentTarget.value
-                                                    if (subTitle.replace(/\s/g, "") == "") {
-                                                        router.push({ pathname: '/' })
-                                                        return
-                                                    }
-                                                    setTimeout(() => {
-                                                        const link = `https://www.comicun.com/search-index?q=${subTitle}`
-                                                        router.push({ pathname: '/commic', query: { url: link, subTitle: subTitle } })
-                                                    }, 500);
 
+                                                    await searchCommic(value)
                                                 }}
                                             />
                                         </div>
@@ -98,11 +127,6 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                                         <div className="flex space-x-2">
                                             <AiOutlineBarChart className='text-gray-100 dark:text-gray-800 h-5 w-5'></AiOutlineBarChart>
                                             下載進度查詢
-                                            {/* 
-                                            {
-                                                !startUrlsCountSWR.isLoading && <span className="bg-red-100 text-red-800 text-sm font-medium 
-                                                mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{startUrlsCountSWR.data['count']}</span>
-                                            } */}
                                             <DownloadCount />
                                         </div>
                                     </button>
@@ -145,9 +169,7 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                             </div>
                         </div>
                     </header>
-                    <div className=" bg-slate-50 dark:bg-black flex-1 overflow-y-auto overflow-x-hidden" id="contentBody">
-                        {children}
-                    </div>
+                    {/* 行動裝置版面的標題列 */}
                     <div
                         className={
                             `sidebar bg-blue-800 text-blue-100 w-64 space-y-6 py-7 px-2
@@ -190,21 +212,17 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                                                dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
                                                dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="搜尋漫畫"
                                     onBlur={async (value) => {
-                                        const subTitle = value.currentTarget.value
-                                        if (subTitle.replace(/\s/g, "") == "") {
-                                            router.push({ pathname: '/' })
-                                            return
-                                        }
-                                        setTimeout(() => {
-                                            const link = `https://www.comicun.com/search-index?q=${subTitle}`
-                                            router.push({ pathname: '/commic', query: { url: link, subTitle: subTitle } })
-                                        }, 500);
-
+                                        await searchCommic(value)
                                     }}
                                 />
                             </div>
                         </nav>
                     </div>
+                    {/* 內容主頁 */}
+                    <div className=" bg-slate-50 dark:bg-black flex-1 overflow-y-auto overflow-x-hidden" id="contentBody">
+                        {children}
+                    </div>
+                    {/* 頁腳 */}
                     <footer className="py-5 bg-gray-700 text-center text-white">
                         made by ben 😎
                     </footer>
