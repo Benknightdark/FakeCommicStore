@@ -34,12 +34,13 @@ class ChapterUrlSpider(RedisSpider):
             sub_folder_name = parse_qs(parsed_url.query)['subFolderName'][0]
             channel_id = parse_qs(parsed_url.query)['id'][0]
             index = parse_qs(parsed_url.query)['index'][0]
-            commic_res = response.text
-            commic_root = BeautifulSoup(commic_res, 'lxml')
+
             folder_name = f"./commics/{root_folder_name}/{sub_folder_name}"
             if os.path.isdir(folder_name) == False:
                 os.makedirs(folder_name)
             if channel_id == "1":
+                commic_res = response.text
+                commic_root = BeautifulSoup(commic_res, 'lxml')
                 commic_image_url = commic_root.find(
                     'img', id='ComicPic')['src']
                 r = httpx.Client(timeout=None, transport=self.transport).get(
@@ -47,11 +48,13 @@ class ChapterUrlSpider(RedisSpider):
                 i = Image.open(BytesIO(r.content))
                 temp_title = f'{folder_name}/{index}.jpg'
                 i.save(temp_title)
-            if channel_id == "2":
+            if channel_id == "2" or channel_id == "3":
                 cc=cloudscraper.create_scraper(
-                    browser='firefox', delay=30)
+                     delay=30)#browser='firefox',
                 cc.adapters.DEFAULT_RETRIES =1000
+                logging.info(response.url)
                 r =cc.get(response.url)
+                logging.info(r.text)
                 i = Image.open(BytesIO(r.content))
                 temp_title = f'{folder_name}/{index}.jpg'
                 i.save(temp_title)

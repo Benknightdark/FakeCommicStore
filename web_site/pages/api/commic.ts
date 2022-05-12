@@ -79,7 +79,7 @@ export default async function handler(
                 data.push({
                     title: target.attr('title'),
                     image: target.find('p').css()['background-image'].replace('url(', '').replace(')', ''),
-                    link: `https://www.jjmhw.cc/booklist${target.attr('href')}`,
+                    link: `https://www.jjmhw.cc${target.attr('href')}`,
                     modifiedDate: '',
                     status: '',
                     category: '',

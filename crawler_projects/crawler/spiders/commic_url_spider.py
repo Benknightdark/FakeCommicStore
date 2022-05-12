@@ -54,4 +54,21 @@ class CommicUrlSpider(RedisSpider):
                 redis_client.lpush('chapter_url:start_urls', new_url)
                 i = i+1
             pass
+        if channel_id == "3":
+            cc = cloudscraper.create_scraper(
+                 delay=30)#browser='firefox',
+            cc.adapters.DEFAULT_RETRIES = 1000
+            htmlfile = cc.get(response.url)
+            commic_root = BeautifulSoup(htmlfile.text, 'lxml')
+            image_el = commic_root.find_all(
+                'img', attrs={'class': 'lazy'})
+            i = 1
+            for im in image_el:
+                src = im['data-original']
+                new_url = f"{src}?index={i}&rootFolderName={root_folder_name}&subFolderName={sub_folder_name}&id={channel_id}"
+                new_url_array.append(new_url)
+                print(new_url)
+                redis_client.lpush('chapter_url:start_urls', new_url)
+                i = i+1
+            pass        
         return {'data': new_url_array}

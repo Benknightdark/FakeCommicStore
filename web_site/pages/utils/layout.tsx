@@ -24,6 +24,29 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
         else
             setSubTitle(``)
     };
+    const searchCommic = async (value: any) => {
+        const subTitle = value.currentTarget.value
+        if (subTitle.replace(/\s/g, "") == "") {
+            router.push({ pathname: '/' })
+            return
+        }
+        setTimeout(() => {
+            let link = ''
+            switch (globalStoreData.selectedSource.id) {
+                case 1:
+                    link = `https://www.comicun.com/search-index?q=${subTitle}`
+                    break;
+                case 2:
+                    link = `https://18comic.org/search/photos?search_query=${subTitle}&main_tag=0`
+                    break;
+                case 3:
+                    link = `https://www.jjmhw.cc/search?keyword=${subTitle}`
+                    break;
+            }
+
+            router.push({ pathname: '/commic', query: { url: link, subTitle: subTitle } })
+        }, 500);
+    }
     return (
         <SubTitleContext.Provider value={{ updateSubTitle }}>
             <Fragment>
@@ -87,23 +110,8 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                                                dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
                                                dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="搜尋漫畫"
                                                 onBlur={async (value) => {
-                                                    const subTitle = value.currentTarget.value
-                                                    if (subTitle.replace(/\s/g, "") == "") {
-                                                        router.push({ pathname: '/' })
-                                                        return
-                                                    }
-                                                    setTimeout(() => {
-                                                        let link = ''
-                                                        if (globalStoreData.selectedSource.id === 1) {
 
-                                                            link = `https://www.comicun.com/search-index?q=${subTitle}`
-                                                        } else {
-                                                            link = `https://18comic.org/search/photos?search_query=${subTitle}&main_tag=0`
-
-                                                        }
-                                                        router.push({ pathname: '/commic', query: { url: link, subTitle: subTitle } })
-                                                    }, 500);
-
+                                                    await searchCommic(value)
                                                 }}
                                             />
                                         </div>
@@ -119,11 +127,6 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                                         <div className="flex space-x-2">
                                             <AiOutlineBarChart className='text-gray-100 dark:text-gray-800 h-5 w-5'></AiOutlineBarChart>
                                             下載進度查詢
-                                            {/* 
-                                            {
-                                                !startUrlsCountSWR.isLoading && <span className="bg-red-100 text-red-800 text-sm font-medium 
-                                                mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{startUrlsCountSWR.data['count']}</span>
-                                            } */}
                                             <DownloadCount />
                                         </div>
                                     </button>
@@ -209,27 +212,7 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                                                dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
                                                dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="搜尋漫畫"
                                     onBlur={async (value) => {
-                                        const subTitle = value.currentTarget.value
-                                        if (subTitle.replace(/\s/g, "") == "") {
-                                            router.push({ pathname: '/' })
-                                            return
-                                        }
-                                        setTimeout(() => {
-                                            let link = ''
-                                            if (globalStoreData.selectedSource.id === 1) {
-
-                                                link = `https://www.comicun.com/search-index?q=${subTitle}`
-                                            } else {
-                                                link = `https://18comic.org/search/photos?search_query=${subTitle}&main_tag=0`
-
-                                            }
-                                            router.push({ pathname: '/commic', query: { url: link, subTitle: subTitle } })
-
-
-
-
-                                        }, 500);
-
+                                        await searchCommic(value)
                                     }}
                                 />
                             </div>
