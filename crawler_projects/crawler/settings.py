@@ -14,7 +14,7 @@ BOT_NAME = 'crawler'
 
 SPIDER_MODULES = ['crawler.spiders']
 NEWSPIDER_MODULE = 'crawler.spiders'
-HTTPERROR_ALLOWED_CODES = [403]#上面报的是403，就把403加入。
+HTTPERROR_ALLOWED_CODES = [403]
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'crawler (+http://www.yourdomain.com)'

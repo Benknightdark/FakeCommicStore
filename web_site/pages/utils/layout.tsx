@@ -28,6 +28,7 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
         <SubTitleContext.Provider value={{ updateSubTitle }}>
             <Fragment>
                 <div className="flex flex-col h-screen">
+                    {/* 標題列 */}
                     <header className="bg-gradient-to-r from-yellow-400 to-orange-200  w-full">
                         <div className="p-3">
                             <div className="flex items-center justify-between flex-wrap">
@@ -165,9 +166,7 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                             </div>
                         </div>
                     </header>
-                    <div className=" bg-slate-50 dark:bg-black flex-1 overflow-y-auto overflow-x-hidden" id="contentBody">
-                        {children}
-                    </div>
+                    {/* 行動裝置版面的標題列 */}
                     <div
                         className={
                             `sidebar bg-blue-800 text-blue-100 w-64 space-y-6 py-7 px-2
@@ -236,6 +235,11 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                             </div>
                         </nav>
                     </div>
+                    {/* 內容主頁 */}
+                    <div className=" bg-slate-50 dark:bg-black flex-1 overflow-y-auto overflow-x-hidden" id="contentBody">
+                        {children}
+                    </div>
+                    {/* 頁腳 */}
                     <footer className="py-5 bg-gray-700 text-center text-white">
                         made by ben 😎
                     </footer>
