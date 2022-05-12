@@ -25,14 +25,15 @@ export default async function handler(
     case "2":
       const $2 = (await getCherrioData('https://18comic.org/'))
       $2('.phoneclass').children('a').each(function (index, element) {
-        categories.push({ title: $2(element).find('span').text(), link: `https://18comic.org${$(element).attr('href')}` })
+        categories.push({ title: $2(element).find('span').text(), link: `https://18comic.org${$2(element).attr('href')}` })
       });
       break;
     case "3":
       const $3 = (await getCherrioData('https://www.jjmhw.cc/booklist'))
+      let area=-1;
       $3('#areas').find('a').each(function (index, element) {
-        console.log($3(element).text())
-        categories.push({ title: $3(element).text(), link: `https://www.jjmhw.cc/booklist?tag=${$3(element).text()}&area=-1&end=-1` })
+        categories.push({ title: $3(element).text(), link: `https://www.jjmhw.cc/booklist?tag=全部&area=${area}&end=-1` })
+        area=area+2
       });
       break;
   }
