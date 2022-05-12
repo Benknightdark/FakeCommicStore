@@ -5,3 +5,4 @@ BeautifulSoup4
 scrapy-redis
 Pillow
 python-dotenv
+cloudscraper

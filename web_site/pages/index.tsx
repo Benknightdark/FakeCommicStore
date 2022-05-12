@@ -5,11 +5,14 @@ import Loading from './utils/loading'
 import useSWR from 'swr'
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import { getCsrfToken } from 'next-auth/react'
+import { globalSettingStore, initialGlobalSettingStore } from '../stores/global-setting-store'
 
 
 const fetcher = (url: string,csrfToken:string) => fetch(url,{headers:{'x-csrf-token':csrfToken}}).then((res) => res.json());
 const Index: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { data, error } = useSWR(['/api/category', csrfToken], fetcher)
+  const { data:globalStoreData,mutate:mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
+
+  const { data, error } = useSWR([`/api/category?id=${globalStoreData.selectedSource.id}`, csrfToken], fetcher)
   const router = useRouter()
   const subTitleContext = useSubTitleContext()
   subTitleContext.updateSubTitle('漫畫類別')

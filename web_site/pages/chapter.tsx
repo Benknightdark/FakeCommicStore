@@ -16,6 +16,7 @@ import { useTheme } from '@mui/material/styles';
 import Checkbox from '@mui/material/Checkbox';
 import { AiTwotoneDelete, AiOutlineCloudDownload, AiOutlineDownload } from 'react-icons/ai'
 import { getCsrfToken } from 'next-auth/react'
+import { globalSettingStore, initialGlobalSettingStore } from '../stores/global-setting-store'
 const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
 
 const Chapter: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
@@ -25,9 +26,12 @@ const Chapter: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof get
     subTitleContext.updateSubTitle(router.query['subTitle']?.toString()!)
     const [open, setOpen] = useState(false);
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-    const { data, error, mutate } = useSWR([`/api/chapter?url=${router.query['url']}`, csrfToken], fetcher, {
+    const { data:globalStoreData,mutate:mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
+
+    const { data, error, mutate } = useSWR([`/api/chapter?url=${router.query['url']}&id=${globalStoreData.selectedSource.id}`, csrfToken], fetcher, {
         revalidateOnFocus: false
     })
+    
     const [selectData, updateSelectData] = useState<string[]>([])
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const link = event.target.ariaLabel
@@ -41,7 +45,7 @@ const Chapter: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof get
         })
         mutate([])
         mutate([...newData])
-        const newLink = `${link}?subFolderName=${title}&rootFolderName=${router.query['subTitle']?.toString()!}`
+        const newLink = `${link}?subFolderName=${title}&rootFolderName=${router.query['subTitle']?.toString()!}&id=${globalStoreData.selectedSource.id}`
         if (checked) {
             selectData.push(newLink)
             updateSelectData(selectData)
@@ -86,7 +90,7 @@ const Chapter: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof get
             hover:bg-gradient-to-br focus:ring-4 focus:ring-lime-300 dark:focus:ring-lime-800 shadow-lg shadow-lime-500/50 
             dark:shadow-lg dark:shadow-lime-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
                 onClick={async () => {
-                    const allData = data.map((r: any) => `${r.link}?subFolderName=${r.title}&rootFolderName=${router.query['subTitle']?.toString()!}`)
+                    const allData = data.map((r: any) => `${r.link}?subFolderName=${r.title}&rootFolderName=${router.query['subTitle']?.toString()!}&id=${globalStoreData.selectedSource.id}`)
                     console.log(allData)
                     const req = await fetch(`/api/download`, {
                         body: JSON.stringify(allData),
