@@ -56,7 +56,7 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                                     ></GiSpiderMask>
                                 </span>
                                 <p className="ml-3 mr-3 font-medium text-white truncate">
-                                    <span className='dark:text-white text-black hover:font-bold'>🔥Fake Commic Store  {globalStoreData.subTitle}</span>
+                                    <span className='dark:text-white text-black hover:font-bold'>🔥Fake Commic Store  {globalStoreData.subTitle!==''?' / '+globalStoreData.subTitle:''}</span>
                                 </p>
                                 {!globalStoreData?.showImage ? <AiFillEye className='cursor-pointer w-7 h-7' onClick={() => {
                                     mutateGlobalStoreData({ ...globalStoreData, showImage: true }, false)
@@ -176,7 +176,7 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                         ${openMenu}`
                     }>
                     <a href="#" className="text-white flex items-center space-x-2 px-4">
-                        <span className="text-2xl font-extrabold">🔥Fake Commic Store {globalStoreData.subTitle}</span>
+                        <span className="text-2xl font-extrabold">🔥Fake Commic Store {globalStoreData.subTitle!==''?' / '+globalStoreData.subTitle:''}</span>
                     </a>
                     <nav>
                         <div className='block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white cursor-pointer'

@@ -1,5 +1,4 @@
 import React from 'react'
-import { useSubTitleContext } from '../context/sub-title-context'
 import { useRouter } from 'next/router'
 import Loading from '../components/loading'
 import useSWR from 'swr'

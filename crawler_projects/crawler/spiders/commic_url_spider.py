@@ -56,7 +56,7 @@ class CommicUrlSpider(RedisSpider):
             pass
         if channel_id == "3":
             cc = cloudscraper.create_scraper(
-                 delay=30)#browser='firefox',
+                 delay=30)
             cc.adapters.DEFAULT_RETRIES = 1000
             htmlfile = cc.get(response.url)
             commic_root = BeautifulSoup(htmlfile.text, 'lxml')
