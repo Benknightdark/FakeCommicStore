@@ -2,12 +2,11 @@ import React, { Fragment, useState } from "react";
 import { GiSpiderMask, GiHamburgerMenu } from 'react-icons/gi'
 import { AiFillEye, AiFillEyeInvisible, AiOutlineBarChart } from "react-icons/ai";
 import { signOut, useSession } from "next-auth/react";
-import Tooltip from "@mui/material/Tooltip";
 import { useRouter } from "next/router";
 import DownloadCount from "../../components/download-count";
 import useSWR from "swr";
 import { initialGlobalSettingStore, globalSettingStore } from "../../stores/global-setting-store";
-
+import Image from 'next/image' 
 
 const Layout = ({ children }: React.PropsWithChildren<{}>) => {
     const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
@@ -56,7 +55,7 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                                     ></GiSpiderMask>
                                 </span>
                                 <p className="ml-3 mr-3 font-medium text-white truncate">
-                                    <span className='dark:text-white text-black hover:font-bold'>🔥Fake Commic Store  {globalStoreData.subTitle!==''?' / '+globalStoreData.subTitle:''}</span>
+                                    <span className='dark:text-white text-black hover:font-bold'>🔥Fake Commic Store  {globalStoreData.subTitle !== '' ? ' / ' + globalStoreData.subTitle : ''}</span>
                                 </p>
                                 {!globalStoreData?.showImage ? <AiFillEye className='cursor-pointer w-7 h-7' onClick={() => {
                                     mutateGlobalStoreData({ ...globalStoreData, showImage: true }, false)
@@ -127,11 +126,13 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                                 }
 
                                 {session.status == 'authenticated' &&
-                                    <Tooltip title="是否要登出?" placement="top-start">
-                                        <button type='button' className='grow  blue-btn'
-                                            onClick={() => { signOut() }}>
-                                            {session?.data?.user?.name}</button>
-                                    </Tooltip>
+
+                                    <div className="tooltip tooltip-bottom" data-tip="你是否要登出？">
+                                        <label htmlFor="logout-modal" className='blue-btn  modal-button'
+                                        >
+                                            {session?.data?.user?.name}</label>
+                                    </div>
+
                                 }
                                 {session.status == 'authenticated' &&
                                     <button className='grow red-btn' onClick={() => { router.push("/favorite") }}>我的最愛</button>
@@ -176,7 +177,7 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                         ${openMenu}`
                     }>
                     <a href="#" className="text-white flex items-center space-x-2 px-4">
-                        <span className="text-2xl font-extrabold">🔥Fake Commic Store {globalStoreData.subTitle!==''?' / '+globalStoreData.subTitle:''}</span>
+                        <span className="text-2xl font-extrabold">🔥Fake Commic Store {globalStoreData.subTitle !== '' ? ' / ' + globalStoreData.subTitle : ''}</span>
                     </a>
                     <nav>
                         <div className='block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white cursor-pointer'
@@ -216,6 +217,22 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                 <footer className="py-5 bg-gray-700 text-center text-white">
                     made by ben 😎
                 </footer>
+                <div>
+                    <input type="checkbox" id="logout-modal" className="modal-toggle" />
+                    <label htmlFor="logout-modal" className="modal cursor-pointer">
+                        <label className="modal-box relative" htmlFor="">
+                            <h3 className="text-lg font-bold">你確定要登出嗎？</h3>
+                            <Image src='https://media3.giphy.com/media/UrzZ4TmQK17yJpYPIL/giphy.gif?cid=ecf05e47gj882bfm331v6bl56st37vs0ma3a9yy6ywswxz9t&rid=giphy.gif&ct=s'
+                            alt=''></Image>
+                            <div className="modal-action">
+                                <label htmlFor="logout-modal" className="btn btn-success" onClick={() => { signOut() }}>確定</label>
+                                <label htmlFor="logout-modal" className="btn btn-warning">取消</label>
+                            </div>
+                        </label>
+
+                    </label>
+                    {/* signOut() */}
+                </div>
             </div>
         </Fragment>
     );
