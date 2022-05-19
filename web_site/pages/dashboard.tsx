@@ -84,7 +84,7 @@ const QueueRecord = ({ csrfToken }: any) => {
 const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
     mutateGlobalStoreData({ ...globalStoreData, subTitle: 'DashBoard' }, false)
-    const defaultPageList=[1, 2, 3, 4, 5]
+    const defaultPageList = [1, 2, 3, 4, 5]
     const [page, setPage] = useState(1);
     const [pageList, setPageList] = useState(defaultPageList)
     const { data, error, mutate } = useSWR([`/api/logs/items?page=${page}&row=5`, csrfToken], fetcher)
@@ -96,9 +96,10 @@ const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof g
         } else {
             setPageList(defaultPageList)
         }
-        console.log(pageList)
+        
 
         await mutate()
+        document.getElementById('contentBody')!.scrollTo(0,9999);
     }
     if (error) return <Loading></Loading>
     if (!data) return <Loading></Loading>
@@ -197,7 +198,7 @@ const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof g
                             }
                             <button className="btn btn-disabled">...</button>
                             <button className="btn" onClick={() => changePage(data['count'])}>{data['count']}</button>
-                        </div>     
+                        </div>
                     }
                 </div>
             }
