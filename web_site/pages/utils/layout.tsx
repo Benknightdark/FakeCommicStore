@@ -221,9 +221,9 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                     <input type="checkbox" id="logout-modal" className="modal-toggle" />
                     <label htmlFor="logout-modal" className="modal cursor-pointer">
                         <label className="modal-box relative" htmlFor="">
-                            <h3 className="text-lg font-bold">你確定要登出嗎？</h3>
+                            <h3 className="text-2xl font-bold">你確定要登出嗎？</h3>
                             <Image src='https://media3.giphy.com/media/UrzZ4TmQK17yJpYPIL/giphy.gif?cid=ecf05e47gj882bfm331v6bl56st37vs0ma3a9yy6ywswxz9t&rid=giphy.gif&ct=s'
-                            alt=''></Image>
+                            alt='' layout='responsive' width='20px' height='20px'></Image>
                             <div className="modal-action">
                                 <label htmlFor="logout-modal" className="btn btn-success" onClick={() => { signOut() }}>確定</label>
                                 <label htmlFor="logout-modal" className="btn btn-warning">取消</label>
@@ -231,7 +231,6 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                         </label>
 
                     </label>
-                    {/* signOut() */}
                 </div>
             </div>
         </Fragment>
