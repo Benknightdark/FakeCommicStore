@@ -6,7 +6,6 @@ import { useRequestsCount } from '../helpers/requests-count-helper';
 import { useStartUrlsCount } from '../helpers/starts-url-helper';
 import Pagination from '@mui/material/Pagination';
 import { IoIosRefreshCircle } from 'react-icons/io'
-import Tooltip from '@mui/material/Tooltip';
 import { getCsrfToken } from 'next-auth/react';
 import { globalSettingStore, initialGlobalSettingStore } from '../stores/global-setting-store';
 const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
@@ -48,14 +47,12 @@ const QueueRecord = ({ csrfToken }: any) => {
             <div className="shadow-md rounded-md overflow-hidden text-center border-solid border-4 border-blue-400">
                 <div className="flex bg-gray-100">
                     <div className="py-3 px-5 flex-grow">漫畫佇列資訊</div>
-                    <Tooltip title="重新取得漫畫佇列資訊" placement="top">
-                        <div>
+                        <div className="tooltip tooltip-left" data-tip="重新取得漫畫佇列資訊">
                             <IoIosRefreshCircle className="py-1 h-8 w-8 text-blue-500 cursor-pointer hover:h-10 hover:w-10" onClick={() => {
                                 commicRequestsSWR.mutate();
                                 commicStartUrlsCountSWR.mutate();
                             }} />
                         </div>
-                    </Tooltip>
                 </div>
                 <div className="flex-1 2xl:flex xl:flex lg:flex flex-wrap mx-8 p-5">
                     <RecordItem key="commicRequestsSWR" itemBackgroundColor='bg-red-200' itemName='等待下載數量' itemValue={!commicRequestsSWR.isLoading && commicRequestsSWR.data['count']} />
@@ -67,14 +64,14 @@ const QueueRecord = ({ csrfToken }: any) => {
             <div className="shadow-md rounded-md overflow-hidden text-center border-solid border-4 border-blue-400">
                 <div className="flex bg-gray-100">
                     <div className="py-3 px-5 flex-grow">章節佇列資訊</div>
-                    <Tooltip title="重新取得章節佇列資訊" placement="top">
-                        <div>
+                    <div className="tooltip tooltip-left" data-tip="重新取得章節佇列資訊">
+                    
                             <IoIosRefreshCircle className="py-1 h-8 w-8 text-blue-500 cursor-pointer hover:h-10 hover:w-10" onClick={() => {
                                 chapterRequestsSWR.mutate();
                                 chapterStartUrlsCountSWR.mutate();
                             }} />
-                        </div>
-                    </Tooltip>
+                      
+                    </div>
                 </div>
                 <div className="flex-1 2xl:flex xl:flex lg:flex  flex-wrap mx-8 p-5">
                     <RecordItem key="chapterRequestsSWR" itemBackgroundColor='bg-red-200' itemName='等待下載數量' itemValue={!chapterRequestsSWR.isLoading && chapterRequestsSWR.data['count']} />
@@ -86,7 +83,6 @@ const QueueRecord = ({ csrfToken }: any) => {
 }
 
 const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    //DashBoard
     const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
     mutateGlobalStoreData({ ...globalStoreData, subTitle: 'DashBoard' }, false)
     const [page, setPage] = useState(1);
@@ -104,15 +100,13 @@ const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof g
                                 <div className="flex p-4 text-sm text-gray-700 bg-green-100 rounded-lg dark:bg-green-700 
                                 dark:text-gray-300 justify-between" role="alert">
                                     <span className="text-2xl">下載記錄</span>
-                                    <Tooltip title="重新取得下載資料" placement="top">
-                                        <div>
+                                    <div className="tooltip tooltip-left" data-tip="重新取得下載資料">
                                             <IoIosRefreshCircle className="inline flex-shrink-0 mr-3 w-8 h-8 cursor-pointer hover:h-10 hover:w-10" onClick={() => {
                                                 setPage(1);
                                                 mutate();
                                             }}>
                                             </IoIosRefreshCircle>
-                                        </div>
-                                    </Tooltip>
+                                    </div>
                                 </div>
                                 <table className="min-w-full">
                                     <thead className="bg-gray-200 dark:bg-gray-700">

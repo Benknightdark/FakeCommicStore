@@ -3,7 +3,6 @@ import useSWR from 'swr'
 import React, { useState } from 'react'
 import Loading from '../components/loading'
 import { useRouter } from 'next/router'
-import Checkbox from '@mui/material/Checkbox';
 import { AiTwotoneDelete, AiOutlineCloudDownload, AiOutlineDownload } from 'react-icons/ai'
 import { getCsrfToken } from 'next-auth/react'
 import { globalSettingStore, initialGlobalSettingStore } from '../stores/global-setting-store'
@@ -181,11 +180,6 @@ const Chapter: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof get
                                         onChange={handleChange}
                                     />
                                 </div>
-
-                                {/* <Checkbox
-                                    checked={d.checked}
-                                    inputProps={{ 'aria-label': d.link, 'aria-current': d.title }}
-                                    onChange={handleChange} /> */}
                                 <h2 className="text-2xl font-bold  text-gray-800 text-center cursor-pointer	">
                                     {d.title}
                                 </h2>
