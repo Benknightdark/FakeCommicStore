@@ -85,18 +85,17 @@ const QueueRecord = ({ csrfToken }: any) => {
 const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
     mutateGlobalStoreData({ ...globalStoreData, subTitle: 'DashBoard' }, false)
+    const defaultPageList=[1, 2, 3, 4, 5]
     const [page, setPage] = useState(1);
-    const [pageList, setPageList] = useState([1, 2, 3, 4, 5])
+    const [pageList, setPageList] = useState(defaultPageList)
     const { data, error, mutate } = useSWR([`/api/logs/items?page=${page}&row=5`, csrfToken], fetcher)
     const changePage = async (curretnPage: number) => {
         console.log(curretnPage)
         await setPage(curretnPage)
         if (curretnPage >= 5) {
-            setPageList([])
             setPageList([curretnPage - 2, curretnPage - 1, curretnPage, curretnPage + 1, curretnPage + 2])
         } else {
-            setPageList([])
-            setPageList([1, 2, 3, 4, 5])
+            setPageList(defaultPageList)
         }
         console.log(pageList)
 
@@ -189,30 +188,17 @@ const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof g
                     </div>
                     {
                         data && <div className="flex justify-center btn-group">
-
-
                             <button className='btn' onClick={() => changePage(1)}>1</button>
-                            {page >= 5 && <button className="btn btn-disabled">...</button>
-                            }
+                            {page >= 5 && <button className="btn btn-disabled">...</button>}
                             {
                                 pageList.filter(a => a !== 1).map(a => <button key={a} className="btn"
                                     onClick={() => changePage(a)
                                     }
                                 >{a}</button>)
                             }
-
                             <button className="btn btn-disabled">...</button>
                             <button className="btn" onClick={() => changePage(data['count'])}>{data['count']}</button>
-                        </div>
-
-                        // <div className='flex justify-center'>
-                        //     <Pagination count={data['count']} page={page}
-                        //         onChange={async (event: React.ChangeEvent<unknown>, currentPage: number) => {
-                        //             console.log(currentPage)
-                        //             await setPage(currentPage)
-                        //             await mutate()
-                        //         }} />
-                        // </div>
+                        </div>     
                     }
                 </div>
             }
