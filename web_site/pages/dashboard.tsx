@@ -86,11 +86,21 @@ const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof g
     const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
     mutateGlobalStoreData({ ...globalStoreData, subTitle: 'DashBoard' }, false)
     const [page, setPage] = useState(1);
+    const [pageList, setPageList] = useState([1, 2, 3, 4, 5])
     const { data, error, mutate } = useSWR([`/api/logs/items?page=${page}&row=5`, csrfToken], fetcher)
-    const changePage = (curretnPage: number) => {
+    const changePage = async (curretnPage: number) => {
         console.log(curretnPage)
-        setPage(curretnPage)
-        mutate()
+        await setPage(curretnPage)
+        if (curretnPage >= 5) {
+            setPageList([])
+            setPageList([curretnPage - 2, curretnPage - 1, curretnPage, curretnPage + 1, curretnPage + 2])
+        } else {
+            setPageList([])
+            setPageList([1, 2, 3, 4, 5])
+        }
+        console.log(pageList)
+
+        await mutate()
     }
     if (error) return <Loading></Loading>
     if (!data) return <Loading></Loading>
@@ -182,17 +192,15 @@ const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof g
 
 
                             <button className='btn' onClick={() => changePage(1)}>1</button>
-                            {page >= 2 && <button className="btn btn-disabled">...</button>}
-                            {
-                                page !== 1 && <button className="btn" onClick={() => changePage(page)}>{page}</button>
-
+                            {page >= 5 && <button className="btn btn-disabled">...</button>
                             }
                             {
-                                Array.from(Array(4).keys()).filter(f => f !== 0).map(a => <button key={a + page} className="btn"
-                                    onClick={() => changePage(a + page)
+                                pageList.filter(a => a !== 1).map(a => <button key={a} className="btn"
+                                    onClick={() => changePage(a)
                                     }
-                                >{a + page}</button>)
+                                >{a}</button>)
                             }
+
                             <button className="btn btn-disabled">...</button>
                             <button className="btn" onClick={() => changePage(data['count'])}>{data['count']}</button>
                         </div>
