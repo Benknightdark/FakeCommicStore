@@ -22,7 +22,6 @@ const Commic: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getS
         fetcher)
     useEffect(() => {
         document.getElementById('contentBody')!.onscroll = async () => {
-            // console.log((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight)
             if (showLoading) return
             if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) {
                 console.log("開始撈下一頁")

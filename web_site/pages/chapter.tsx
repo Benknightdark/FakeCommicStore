@@ -3,33 +3,21 @@ import useSWR from 'swr'
 import React, { useState } from 'react'
 import Loading from '../components/loading'
 import { useRouter } from 'next/router'
-
-import useMediaQuery from '@mui/material/useMediaQuery';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import { useTheme } from '@mui/material/styles';
-import Checkbox from '@mui/material/Checkbox';
 import { AiTwotoneDelete, AiOutlineCloudDownload, AiOutlineDownload } from 'react-icons/ai'
 import { getCsrfToken } from 'next-auth/react'
 import { globalSettingStore, initialGlobalSettingStore } from '../stores/global-setting-store'
 const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
 
 const Chapter: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    const theme = useTheme();
     const router = useRouter()
-    const [open, setOpen] = useState(false);
-    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-    const { data:globalStoreData,mutate:mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
+    // const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+    const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
     mutateGlobalStoreData({ ...globalStoreData, subTitle: router.query['subTitle']?.toString()! }, false)
 
     const { data, error, mutate } = useSWR([`/api/chapter?url=${router.query['url']}&id=${globalStoreData.selectedSource.id}`, csrfToken], fetcher, {
         revalidateOnFocus: false
     })
-    
+
     const [selectData, updateSelectData] = useState<string[]>([])
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const link = event.target.ariaLabel
@@ -94,7 +82,7 @@ const Chapter: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof get
                         body: JSON.stringify(allData),
                         headers: {
                             'content-type': 'application/json',
-                            'x-csrf-token':csrfToken
+                            'x-csrf-token': csrfToken
                         },
                         method: 'POST',
                     })
@@ -106,7 +94,7 @@ const Chapter: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof get
                     mutate([])
                     mutate([...newData])
                     console.log(res)
-                    setOpen(true)
+                    document.getElementById('show-modal-btn')?.click();
                 }}
             >
                 <div className="flex space-x-2">
@@ -114,7 +102,7 @@ const Chapter: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof get
                     下載全部
                 </div>
             </button>
-           
+
             <button type="button"
                 className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br 
  focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg
@@ -124,7 +112,7 @@ const Chapter: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof get
                         body: JSON.stringify(selectData), // must match 'Content-Type' header
                         headers: {
                             'content-type': 'application/json',
-                          'x-csrf-token':csrfToken
+                            'x-csrf-token': csrfToken
                         },
                         method: 'POST',
                     })
@@ -137,8 +125,9 @@ const Chapter: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof get
                         mutate([])
                         mutate([...newData])
                         console.log(res)
-                        setOpen(true)
-                    }else{
+                        document.getElementById('show-modal-btn')?.click();
+
+                    } else {
                         alert((await req.json())['message'])
                     }
 
@@ -153,26 +142,18 @@ const Chapter: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof get
 
         </div>
         {/* Alert Window */}
-        <Dialog
-            fullScreen={fullScreen}
-            open={open}
-            onClose={() => setOpen(false)}
-            aria-labelledby="responsive-dialog-title"
-        >
-            <DialogTitle id="responsive-dialog-title">
-                開始下載
-            </DialogTitle>
-            <DialogContent>
-                <DialogContentText>
-                    {router.query['subTitle']}
-                </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                <Button autoFocus onClick={() => setOpen(false)}>
-                    關閉
-                </Button>
-            </DialogActions>
-        </Dialog>
+        <div>
+            <label htmlFor="show-modal" className="btn modal-button hidden" id='show-modal-btn'></label>
+            <input type="checkbox" id="show-modal" className="modal-toggle" />
+            <label htmlFor="show-modal" className="modal cursor-pointer">
+                <label className="modal-box relative" htmlFor="">
+                    <h3 className="text-2xl font-bold">開始下載</h3>
+                    <p className="py-4">
+                        {router.query['subTitle']}
+                    </p>
+                </label>
+            </label>
+        </div>
         {/* 漫畫章節列表 */}
         <div className="flex flex-col">
             <div className="fixed  top-20 animated z-50 w-full">
@@ -193,10 +174,12 @@ const Chapter: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof get
                                             hover:shadow-md  transform hover:-translate-y-1 transition-all duration-200 
                                             hover:border-red-500 hover:ring-indigo-300 flex-1
                                             ">
-                                <Checkbox
-                                    checked={d.checked}
-                                    inputProps={{ 'aria-label': d.link, 'aria-current': d.title }}
-                                    onChange={handleChange} />
+                                <div className='justify-items-end	justify-end	flex'>
+                                    <input type="checkbox" checked={d.checked} className="checkbox"
+                                        aria-label={d.link} aria-current={d.title}
+                                        onChange={handleChange}
+                                    />
+                                </div>
                                 <h2 className="text-2xl font-bold  text-gray-800 text-center cursor-pointer	">
                                     {d.title}
                                 </h2>
