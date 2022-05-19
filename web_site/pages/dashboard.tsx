@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
-
-import Loading from './utils/loading'
+import Loading from '../components/loading'
 import useSWR from 'swr';
-import { useSubTitleContext } from '../context/sub-title-context';
 import { useRequestsCount } from '../helpers/requests-count-helper';
 import { useStartUrlsCount } from '../helpers/starts-url-helper';
 import Pagination from '@mui/material/Pagination';
 import { IoIosRefreshCircle } from 'react-icons/io'
 import Tooltip from '@mui/material/Tooltip';
 import { getCsrfToken } from 'next-auth/react';
+import { globalSettingStore, initialGlobalSettingStore } from '../stores/global-setting-store';
 const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
 const RecordItem = (props: any) => {
     return <div className="m-1 border-solid border-4 border-blue-900	
@@ -87,7 +86,9 @@ const QueueRecord = ({ csrfToken }: any) => {
 }
 
 const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    useSubTitleContext().updateSubTitle('DashBoard')
+    //DashBoard
+    const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
+    mutateGlobalStoreData({ ...globalStoreData, subTitle: 'DashBoard' }, false)
     const [page, setPage] = useState(1);
     const { data, error, mutate } = useSWR([`/api/logs/items?page=${page}&row=5`, csrfToken], fetcher)
     if (error) return <Loading></Loading>
@@ -150,9 +151,9 @@ const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof g
                                                             前往網址
                                                         </a>
                                                         <button className="monochrome-lime-btn"
-                                                            onClick={async  () => {
+                                                            onClick={async () => {
                                                                 const req = await fetch(`/api/download-image`, {
-                                                                    body: JSON.stringify({url:d['chapterUrl']}), // must match 'Content-Type' header
+                                                                    body: JSON.stringify({ url: d['chapterUrl'] }), // must match 'Content-Type' header
                                                                     headers: {
                                                                         'content-type': 'application/json',
                                                                         'x-csrf-token': csrfToken
@@ -160,7 +161,7 @@ const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof g
                                                                     method: 'POST',
                                                                 })
                                                                 if (req.status === 200) {
-                                                                   
+
                                                                     alert("開始下載")
                                                                 } else {
                                                                     alert((await req.json())['message'])

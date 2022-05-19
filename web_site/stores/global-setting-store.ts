@@ -15,6 +15,7 @@ const sourceList = [
 export const initialGlobalSettingStore = {
    showImage: true,
    sourceList: sourceList as any,
-   selectedSource: sourceList[0] as any
+   selectedSource: sourceList[0] as any,
+   subTitle:''
 } as any;
 export const globalSettingStore = "globalSettingStore"

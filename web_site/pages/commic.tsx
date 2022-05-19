@@ -1,24 +1,22 @@
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from "next";
 import React, { useEffect, useState } from "react";
 import useSWRInfinite from 'swr/infinite'
-import { useSubTitleContext } from "../context/sub-title-context";
-import Loading from "./utils/loading";
+import Loading from "../components/loading";
 import Image from 'next/image'
 import { useRouter } from "next/router";
 import { getCsrfToken } from "next-auth/react";
 import useSWR from "swr";
 import { globalSettingStore, initialGlobalSettingStore } from "../stores/global-setting-store";
+import LoadingProgress from "../components/loading-progress";
 
 
 const fetcher = (url: string,csrfToken:string) => fetch(url,{headers:{'x-csrf-token':csrfToken}}).then((res) => res.json());
 
 const Commic: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const { data:globalStoreData,mutate:mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
-
     const router = useRouter()
-    const subTitleContext = useSubTitleContext()
     const [showLoading, setShowLoading] = useState(false)
-    subTitleContext.updateSubTitle(router.query['subTitle']?.toString()!)
+    mutateGlobalStoreData({ ...globalStoreData, subTitle: router.query['subTitle']?.toString()! }, false)
     const { data, size, setSize, error } = useSWRInfinite(index =>
         [`/api/commic?url=${router.query['url']}&page=${index + 1}&id=${globalStoreData.selectedSource.id}`,csrfToken],
         fetcher)
@@ -112,13 +110,7 @@ const Commic: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getS
                         })
                     ))}
                 </div>
-                {showLoading && <div className="pt-10">
-                    {/* <LinearProgress color="secondary" /> */}
-                    <div className="mb-1 text-base font-bold text-green-700">載入中......</div>
-                    <div className="w-full bg-gray-200 rounded-full h-2.5">
-                        <div className="bg-green-600 h-2.5 rounded-full animate-bounce"></div>
-                    </div>
-                </div>}
+                {showLoading &&<LoadingProgress></LoadingProgress>}
             </div>
         </div>
     );

@@ -1,8 +1,7 @@
 import type { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import useSWR from 'swr'
 import React, { useState } from 'react'
-import { useSubTitleContext } from '../context/sub-title-context'
-import Loading from './utils/loading'
+import Loading from '../components/loading'
 import { useRouter } from 'next/router'
 
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -22,11 +21,10 @@ const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-c
 const Chapter: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const theme = useTheme();
     const router = useRouter()
-    const subTitleContext = useSubTitleContext()
-    subTitleContext.updateSubTitle(router.query['subTitle']?.toString()!)
     const [open, setOpen] = useState(false);
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const { data:globalStoreData,mutate:mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
+    mutateGlobalStoreData({ ...globalStoreData, subTitle: router.query['subTitle']?.toString()! }, false)
 
     const { data, error, mutate } = useSWR([`/api/chapter?url=${router.query['url']}&id=${globalStoreData.selectedSource.id}`, csrfToken], fetcher, {
         revalidateOnFocus: false
