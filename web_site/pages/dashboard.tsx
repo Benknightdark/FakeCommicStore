@@ -4,7 +4,6 @@ import Loading from '../components/loading'
 import useSWR from 'swr';
 import { useRequestsCount } from '../helpers/requests-count-helper';
 import { useStartUrlsCount } from '../helpers/starts-url-helper';
-import Pagination from '@mui/material/Pagination';
 import { IoIosRefreshCircle } from 'react-icons/io'
 import { getCsrfToken } from 'next-auth/react';
 import { globalSettingStore, initialGlobalSettingStore } from '../stores/global-setting-store';
