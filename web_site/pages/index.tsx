@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSubTitleContext } from '../context/sub-title-context'
 import { useRouter } from 'next/router'
-import Loading from './utils/loading'
+import Loading from '../components/loading'
 import useSWR from 'swr'
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import { getCsrfToken } from 'next-auth/react'
@@ -14,8 +14,7 @@ const Index: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getSe
 
   const { data, error } = useSWR([`/api/category?id=${globalStoreData.selectedSource.id}`, csrfToken], fetcher)
   const router = useRouter()
-  const subTitleContext = useSubTitleContext()
-  subTitleContext.updateSubTitle('漫畫類別')
+  mutateGlobalStoreData({ ...globalStoreData, subTitle: '漫畫類別' }, false)
   if (error) return <Loading></Loading>
   if (!data) return <Loading></Loading>
 

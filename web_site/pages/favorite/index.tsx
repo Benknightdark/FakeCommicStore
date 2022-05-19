@@ -2,16 +2,15 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import useSWRInfinite from 'swr/infinite'
-import Stack from "@mui/material/Stack";
-import LinearProgress from '@mui/material/LinearProgress';
-import Loading from "../utils/loading";
+import Loading from "../../components/loading";
 import Image from 'next/image'
 import useSWR from "swr";
 import { globalSettingStore, initialGlobalSettingStore } from "../../stores/global-setting-store";
+import LoadingProgress from "../../components/loading-progress";
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const Index = () => {
-    const { data:globalStoreData,mutate:mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
+    const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
 
     const session = useSession();
     const router = useRouter()
@@ -33,10 +32,10 @@ const Index = () => {
         return (
             <div>
                 <Image src="https://i.giphy.com/media/lvQe7YwEEJoaIluvs6/giphy.webp" alt="not accessed" layout="fill"
-                className="cursor-pointer"
-                onClick={()=>{
-                    router.back()
-                }}
+                    className="cursor-pointer"
+                    onClick={() => {
+                        router.back()
+                    }}
                 ></Image>
             </div>
         );
@@ -53,16 +52,16 @@ const Index = () => {
                                 return (
                                     <div className="rounded-lg shadow-xl bg-white py-3 px-6  border-2 border-purple-500 
                             hover:shadow-md  transform hover:-translate-y-1 transition-all duration-200 hover:border-red-500 hover:ring-indigo-300" key={itemData.image}>
-                                    {globalStoreData?.showImage&&<Image
-                                        layout='responsive'
-                                        width='100%'
-                                        height='100%'
-                                        src={itemData.image}
-                                        alt={itemData.title}
-                                        className="rounded-t-lg h-120 w-full object-cover z-0 "
-                                        placeholder="blur"
-                                        blurDataURL="./blur.jpg"
-                                    />}
+                                        {globalStoreData?.showImage && <Image
+                                            layout='responsive'
+                                            width='100%'
+                                            height='100%'
+                                            src={itemData.image}
+                                            alt={itemData.title}
+                                            className="rounded-t-lg h-120 w-full object-cover z-0 "
+                                            placeholder="blur"
+                                            blurDataURL="./blur.jpg"
+                                        />}
                                         <header className=" text-xl font-extrabold p-4">{itemData.title}</header>
 
                                         <footer className="text-center py-3 px-5 text-gray-500">
@@ -108,10 +107,7 @@ const Index = () => {
                             })
                         ))}
                     </div>
-                    {showLoading && <Stack sx={{ width: '100%', color: 'grey.500', paddingTop: 10 }}>
-                        <h2>載入中......</h2>
-                        <LinearProgress color="secondary" />
-                    </Stack>}
+                    {showLoading && <LoadingProgress></LoadingProgress>}
                 </div>
             </div>
         );

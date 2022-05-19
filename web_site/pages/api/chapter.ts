@@ -42,7 +42,7 @@ export default async function handler(
             break;
         case "2":
             $($('.btn-toolbar')[0]).find('a').each((i, el) => {
-                data.push({
+                data.unshift({
                     title: $(el).find('li').text(),
                     link: `https://18comic.org${$(el).attr('href')}`,
                     checked: false
@@ -52,7 +52,7 @@ export default async function handler(
         case "3":
             $('#detail-list-select').children('li').each((i,el)=>{
                 const target=$(el).find('a')
-                data.push({
+                data.unshift({
                     title: target.text(),
                     link: `https://www.jjmhw.cc${target.attr('href')}`,
                     checked: false
