@@ -15,12 +15,10 @@ docker-compose  up   --scale comic-crawler=50 -d
 ```
 
 ## prepare to do
-- add redis cache
-  - https://github.com/knovator/next-redis-cache
-  - https://pythonrepo.com/repo/comeuplater-fastapi_cache-python-fastapi-utilities
-- https://codepen.io/chris__sev/pen/RwKWXpJ
-- 待拿掉material ui套件頁面
-  - [web_site\pages\favorite\index.tsx](web_site\pages\favorite\index.tsx)
-  - [web_site\pages\chapter.tsx](web_site\pages\chapter.tsx)
-  - [web_site\pages\dashboard.tsx](web_site\pages\dashboard.tsx)
-  - [web_site\pages\utils\layout.tsx](web_site\pages\utils\layout.tsx)
+``` bash
+### 展開陣列資料
+db.commic_url
+.aggregate( [ { $unwind : "$data" } ] )
+.sort({_id:-1})
+.limit(100)
+```

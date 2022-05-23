@@ -1,6 +1,5 @@
 import logging
 import sys
-import scrapy
 from scrapy_redis.spiders import RedisSpider
 from bs4 import BeautifulSoup
 import httpx
@@ -52,9 +51,7 @@ class ChapterUrlSpider(RedisSpider):
                 cc=cloudscraper.create_scraper(
                      delay=30)#browser='firefox',
                 cc.adapters.DEFAULT_RETRIES =1000
-                logging.info(response.url)
                 r =cc.get(response.url)
-                logging.info(r.text)
                 i = Image.open(BytesIO(r.content))
                 temp_title = f'{folder_name}/{index}.jpg'
                 i.save(temp_title)
@@ -70,9 +67,7 @@ class ChapterUrlSpider(RedisSpider):
             func_name = last_call_stack[2]  # 取得發生的函數名稱
             error_msg_log = "File \"{}\", line {}, in {}: [{}] {}".format(
                 file_name, line_num, func_name, error_class, detail)
-            logging.error('🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥')
             logging.error(error_msg_log)
-            logging.error('🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥')
         finally:
             now = datetime.now()
             dt_string = now.strftime("%Y/%m/%d %H:%M:%S")

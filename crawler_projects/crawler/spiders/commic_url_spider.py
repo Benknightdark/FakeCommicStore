@@ -1,7 +1,6 @@
 from scrapy_redis.spiders import RedisSpider
 from bs4 import BeautifulSoup
 import os
-import logging
 from urllib.parse import urlparse
 from urllib.parse import parse_qs
 import redis
@@ -34,7 +33,6 @@ class CommicUrlSpider(RedisSpider):
 
             for v in max_page_option_value:
                 new_url = f"{root_url}-p-{v['value']}?index={v['value']}&rootFolderName={root_folder_name}&subFolderName={sub_folder_name}&id={channel_id}"
-                logging.info(new_url)
                 new_url_array.append(new_url)
                 redis_client.lpush('chapter_url:start_urls', new_url)
 
@@ -67,7 +65,6 @@ class CommicUrlSpider(RedisSpider):
                 src = im['data-original']
                 new_url = f"{src}?index={i}&rootFolderName={root_folder_name}&subFolderName={sub_folder_name}&id={channel_id}"
                 new_url_array.append(new_url)
-                print(new_url)
                 redis_client.lpush('chapter_url:start_urls', new_url)
                 i = i+1
             pass        

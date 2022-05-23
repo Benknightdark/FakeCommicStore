@@ -63,6 +63,12 @@ DEFAULT_REQUEST_HEADERS = {
 #EXTENSIONS = {
 #    'scrapy.extensions.telnet.TelnetConsole': None,
 #}
+MYEXT_ENABLED=True
+MYEXT_ITEMCOUNT=1000
+EXTENSIONS = {
+    'crawler.extensions.SpiderOpenCloseLogging':666
+   #'scrapy.extensions.telnet.TelnetConsole': None,
+}
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
