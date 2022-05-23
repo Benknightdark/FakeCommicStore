@@ -97,7 +97,9 @@ const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof g
             setPageList(defaultPageList)
         }
         await mutate()
-        document.getElementById('contentBody')!.scrollTo(0, 9999);
+        setTimeout(() =>{
+            document.getElementById('contentBody')!.scrollTo(0, 9999);
+        },200)  
     }
     if (error) return <Loading></Loading>
     if (!data) return <Loading></Loading>
