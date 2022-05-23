@@ -96,10 +96,8 @@ const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof g
         } else {
             setPageList(defaultPageList)
         }
-        
-
         await mutate()
-        document.getElementById('contentBody')!.scrollTo(0,9999);
+        document.getElementById('contentBody')!.scrollTo(0, 9999);
     }
     if (error) return <Loading></Loading>
     if (!data) return <Loading></Loading>
@@ -188,16 +186,16 @@ const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof g
                     </div>
                     {
                         data && <div className="flex justify-center btn-group">
-                            <button className='btn' onClick={() => changePage(1)}>1</button>
+                            <button className={`btn ${page === 1 ? 'btn-info' : ''}`} onClick={() => changePage(1)}>1</button>
                             {page >= 5 && <button className="btn btn-disabled">...</button>}
                             {
-                                pageList.filter(a => a !== 1).map(a => <button key={a} className="btn"
+                                pageList.filter(a => a !== 1 && a < data['count']).map(a => <button key={a} className={`btn ${page === a ? 'btn-info' : ''}`}
                                     onClick={() => changePage(a)
                                     }
                                 >{a}</button>)
                             }
-                            <button className="btn btn-disabled">...</button>
-                            <button className="btn" onClick={() => changePage(data['count'])}>{data['count']}</button>
+                            {data['count'] !== page && <button className="btn btn-disabled">...</button>}
+                            <button className={`btn ${page === data['count'] ? 'btn-info' : ''}`} onClick={() => changePage(data['count'])}>{data['count']}</button>
                         </div>
                     }
                 </div>
