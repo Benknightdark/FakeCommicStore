@@ -6,3 +6,4 @@ scrapy-redis
 Pillow
 python-dotenv
 cloudscraper
+pymongo
