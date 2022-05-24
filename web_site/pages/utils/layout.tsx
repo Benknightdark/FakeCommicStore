@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import { GiSpellBook, GiHamburgerMenu } from 'react-icons/gi'
+import { GiBurningBook, GiHamburgerMenu } from 'react-icons/gi'
 import { AiFillEye, AiFillEyeInvisible, AiOutlineBarChart } from "react-icons/ai";
 import { ImBooks } from 'react-icons/im';
 import { signOut, useSession } from "next-auth/react";
@@ -8,9 +8,11 @@ import DownloadCount from "../../components/download-count";
 import useSWR from "swr";
 import { initialGlobalSettingStore, globalSettingStore } from "../../stores/global-setting-store";
 import Image from 'next/image'
+import ToastMessage from "../../components/toast-message";
 
 const Layout = ({ children }: React.PropsWithChildren<{}>) => {
     const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
+    
     const router = useRouter()
     const session = useSession();
     const [openMenu, setOpenMenu] = useState<string>("-translate-x-full")
@@ -43,31 +45,34 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
             <div className="flex flex-col h-screen">
                 {/* 標題列 */}
                 <header className="bg-gradient-to-r from-blue-100 to-green-200  w-full">
+                    {globalStoreData.showToast && <ToastMessage />}
                     <div className="p-3">
                         <div className="flex items-center justify-between flex-wrap">
                             <div className="w-0 flex-1 flex items-center">
-                                <span className="flex p-2 rounded-lg  bg-yellow-300">
-                                    <GiSpellBook className="h-6 w-6 text-white cursor-pointer" aria-hidden="true"
+                                <span className="flex p-2 rounded-lg  home-icon-background background-animate">
+                                    <GiBurningBook className="h-6 w-6 text-white cursor-pointer" aria-hidden="true"
                                         onClick={
                                             () => {
                                                 router.push('/')
                                             }
                                         }
-                                    ></GiSpellBook>
+                                    ></GiBurningBook>
                                 </span>
                                 <p className="ml-3 mr-3 font-medium text-white truncate  hidden
                                 sm:inline-flex 
                                 ">
                                     <span className='dark:text-white text-black hover:font-bold'>🔥Fake Commic Store  {globalStoreData.subTitle !== '' ? ' / ' + globalStoreData.subTitle : ''}</span>
                                 </p>
-                                {!globalStoreData?.showImage ?<div className="tooltip tooltip-bottom" data-tip="顯示圖片"> 
-                                <AiFillEye className='cursor-pointer w-7 h-7' onClick={() => {
-                                    mutateGlobalStoreData({ ...globalStoreData, showImage: true }, false)
-                                }}
-                                ></AiFillEye></div> : <div className="tooltip tooltip-bottom" data-tip="隱藏圖片"> <AiFillEyeInvisible className='cursor-pointer w-7 h-7' onClick={() => {
-                                    mutateGlobalStoreData({ ...globalStoreData, showImage: false }, false)
-                                }}
-                                ></AiFillEyeInvisible></div>}
+                                {!globalStoreData?.showImage ? <div className="tooltip tooltip-bottom" data-tip="顯示圖片">
+                                    <AiFillEye className='cursor-pointer w-7 h-7' onClick={() => {
+                                        mutateGlobalStoreData({ ...globalStoreData, showImage: true,
+                                             showToast: true, toastMessage: '顯示圖片' }, false)
+                                    }}
+                                    ></AiFillEye></div> : <div className="tooltip tooltip-bottom" data-tip="隱藏圖片"> <AiFillEyeInvisible className='cursor-pointer w-7 h-7' onClick={() => {
+                                        mutateGlobalStoreData({ ...globalStoreData, showImage: false, 
+                                            showToast: true, toastMessage: '隱藏圖片' }, false)
+                                    }}
+                                    ></AiFillEyeInvisible></div>}
 
                                 <div className="dropdown">
                                     <label tabIndex={0} className=" m-1 hidden xl:btn">切換來源 ({globalStoreData?.selectedSource?.name})</label>
