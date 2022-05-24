@@ -46,7 +46,7 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                     <div className="p-3">
                         <div className="flex items-center justify-between flex-wrap">
                             <div className="w-0 flex-1 flex items-center">
-                                <span className="flex p-2 rounded-lg  bg-yellow-300">
+                                <span className="flex p-2 rounded-lg  home-icon-background background-animate">
                                     <GiBurningBook className="h-6 w-6 text-white cursor-pointer" aria-hidden="true"
                                         onClick={
                                             () => {

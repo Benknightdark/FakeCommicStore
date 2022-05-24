@@ -18,7 +18,6 @@ a {
   box-sizing: border-box;
 }
 
-
 .sk-cube-grid {
   width: 40px;
   height: 40px;
@@ -31,132 +30,168 @@ a {
   background-color: #333;
   float: left;
   -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
-          animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; 
+  animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
 }
 .sk-cube-grid .sk-cube1 {
   -webkit-animation-delay: 0.2s;
-          animation-delay: 0.2s; }
+  animation-delay: 0.2s;
+}
 .sk-cube-grid .sk-cube2 {
   -webkit-animation-delay: 0.3s;
-          animation-delay: 0.3s; }
+  animation-delay: 0.3s;
+}
 .sk-cube-grid .sk-cube3 {
   -webkit-animation-delay: 0.4s;
-          animation-delay: 0.4s; }
+  animation-delay: 0.4s;
+}
 .sk-cube-grid .sk-cube4 {
   -webkit-animation-delay: 0.1s;
-          animation-delay: 0.1s; }
+  animation-delay: 0.1s;
+}
 .sk-cube-grid .sk-cube5 {
   -webkit-animation-delay: 0.2s;
-          animation-delay: 0.2s; }
+  animation-delay: 0.2s;
+}
 .sk-cube-grid .sk-cube6 {
   -webkit-animation-delay: 0.3s;
-          animation-delay: 0.3s; }
+  animation-delay: 0.3s;
+}
 .sk-cube-grid .sk-cube7 {
   -webkit-animation-delay: 0s;
-          animation-delay: 0s; }
+  animation-delay: 0s;
+}
 .sk-cube-grid .sk-cube8 {
   -webkit-animation-delay: 0.1s;
-          animation-delay: 0.1s; }
+  animation-delay: 0.1s;
+}
 .sk-cube-grid .sk-cube9 {
   -webkit-animation-delay: 0.2s;
-          animation-delay: 0.2s; }
+  animation-delay: 0.2s;
+}
 
 @-webkit-keyframes sk-cubeGridScaleDelay {
-  0%, 70%, 100% {
+  0%,
+  70%,
+  100% {
     -webkit-transform: scale3D(1, 1, 1);
-            transform: scale3D(1, 1, 1);
-  } 35% {
+    transform: scale3D(1, 1, 1);
+  }
+  35% {
     -webkit-transform: scale3D(0, 0, 1);
-            transform: scale3D(0, 0, 1); 
+    transform: scale3D(0, 0, 1);
   }
 }
 
 @keyframes sk-cubeGridScaleDelay {
-  0%, 70%, 100% {
+  0%,
+  70%,
+  100% {
     -webkit-transform: scale3D(1, 1, 1);
-            transform: scale3D(1, 1, 1);
-  } 35% {
+    transform: scale3D(1, 1, 1);
+  }
+  35% {
     -webkit-transform: scale3D(0, 0, 1);
-            transform: scale3D(0, 0, 1);
-  } 
+    transform: scale3D(0, 0, 1);
+  }
 }
 
 /* simple button */
-.green-btn{
+.green-btn {
   @apply bg-green-700 hover:bg-green-800 focus:ring-4 
                           focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 text-center mr-1 mb-1
-                          dark:bg-green-200 dark:hover:bg-green-400 dark:focus:ring-green-500 text-gray-100 dark:text-gray-800 font-bold
+                          dark:bg-green-200 dark:hover:bg-green-400 dark:focus:ring-green-500 text-gray-100 dark:text-gray-800 font-bold;
 }
-.red-btn{
+.red-btn {
   @apply bg-red-700 hover:bg-red-800 focus:ring-4 
                           focus:ring-red-300  rounded-lg text-sm px-3 py-2.5 text-center mr-1 mb-1
-                          dark:bg-red-200 dark:hover:bg-red-400 dark:focus:ring-red-500 text-gray-100 dark:text-gray-800 font-bold
+                          dark:bg-red-200 dark:hover:bg-red-400 dark:focus:ring-red-500 text-gray-100 dark:text-gray-800 font-bold;
 }
-.purple-btn{
+.purple-btn {
   @apply bg-purple-700 hover:bg-purple-800 focus:ring-4 
                           focus:ring-purple-300  rounded-lg text-sm px-3 py-2.5 text-center mr-1 mb-1
-                          dark:bg-purple-200 dark:hover:bg-purple-400 dark:focus:ring-purple-500 text-gray-100 dark:text-gray-800 font-bold
+                          dark:bg-purple-200 dark:hover:bg-purple-400 dark:focus:ring-purple-500 text-gray-100 dark:text-gray-800 font-bold;
 }
 
-.blue-btn{
+.blue-btn {
   @apply bg-blue-700 hover:bg-blue-800 focus:ring-4 
                           focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 text-center mr-1 mb-1
-                          dark:bg-blue-200 dark:hover:bg-blue-400 dark:focus:ring-blue-500 text-gray-100 dark:text-gray-800 font-bold
+                          dark:bg-blue-200 dark:hover:bg-blue-400 dark:focus:ring-blue-500 text-gray-100 dark:text-gray-800 font-bold;
 }
 
 /* pill button */
 .pill-blue-btn {
-  @apply text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
+  @apply text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800;
 }
 .pill-green-btn {
-  @apply text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800
+  @apply text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800;
 }
 .pill-red-btn {
-  @apply text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900
+  @apply text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900;
 }
 
 .pill-yellow-btn {
-  @apply text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:focus:ring-yellow-900
+  @apply text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:focus:ring-yellow-900;
 }
 .pill-purple-btn {
-  @apply text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900
+  @apply text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900;
 }
 
-
-.monochrome-blue-btn{
-  @apply text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2
+.monochrome-blue-btn {
+  @apply text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2;
 }
 
-.monochrome-green-btn{
-  @apply text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2
+.monochrome-green-btn {
+  @apply text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2;
 }
 
-.monochrome-cyan-btn{
-  @apply text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2
-
+.monochrome-cyan-btn {
+  @apply text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2;
 }
-.monochrome-teal-btn{
-  @apply text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2
-
+.monochrome-teal-btn {
+  @apply text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2;
 }
-.monochrome-lime-btn{
-  @apply text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-4 focus:ring-lime-300 dark:focus:ring-lime-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2
-
+.monochrome-lime-btn {
+  @apply text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-4 focus:ring-lime-300 dark:focus:ring-lime-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2;
 }
-.monochrome-red-btn{
-  @apply text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2
-
+.monochrome-red-btn {
+  @apply text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2;
 }
-.monochrome-pink-btn{
-  @apply text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:ring-pink-300 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2
-
+.monochrome-pink-btn {
+  @apply text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:ring-pink-300 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2;
 }
-.monochrome-purple-btn{
-  @apply text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2
+.monochrome-purple-btn {
+  @apply text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2;
 }
 
 /* alert css */
-.red-alert{
-  @apply p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800
+.red-alert {
+  @apply p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800;
 }
 /* input css */
+.home-icon-background{
+  @apply bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500;
+}
+.card-background{
+  @apply bg-gradient-to-r from-green-300 via-orange-300 to-blue-300  ;
+}
+.background-animate-hover:hover {
+  background-size: 400%;
+  -webkit-animation: AnimationName 3s ease infinite;
+  -moz-animation: AnimationName 3s ease infinite;
+  animation: AnimationName 3s ease infinite;
+}
+.background-animate {
+  background-size: 400%;
+  -webkit-animation: AnimationName 3s ease infinite;
+  -moz-animation: AnimationName 3s ease infinite;
+  animation: AnimationName 3s ease infinite;
+}
+@keyframes AnimationName {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}

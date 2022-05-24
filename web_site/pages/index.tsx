@@ -21,7 +21,8 @@ const Index: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getSe
     <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
       {data.map((d: any) => (
         <div key={d.title} className="rounded-full py-3 px-6 ">
-          <div className="p-10 bg-gradient-to-br from-yellow-400 via-yellow-500 to-orange-200">
+          <div className="p-10 card-background background-animate-hover">
+            {/* bg-gradient-to-br from-yellow-400 via-yellow-500 to-orange-200 */}
             <div className="bg-white p-3 rounded-lg shadow-lg border-2 border-purple-500 
             hover:shadow-md  transform hover:-translate-y-1 transition-all duration-200 hover:border-red-500 hover:ring-indigo-300
             ">
