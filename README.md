@@ -5,7 +5,6 @@
 ## Features
 - 使用Redis Scrapy設計下載漫畫排程
 ## 系統啟動方式
-- 先在根目錄建立名為`commics`的資料夾
 - docker-compose up -d
 
 ## Scale Container
