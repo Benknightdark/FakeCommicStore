@@ -1,12 +1,13 @@
 import React, { Fragment, useState } from "react";
-import { GiSpiderMask, GiHamburgerMenu } from 'react-icons/gi'
+import { GiSpellBook, GiHamburgerMenu } from 'react-icons/gi'
 import { AiFillEye, AiFillEyeInvisible, AiOutlineBarChart } from "react-icons/ai";
+import { ImBooks } from 'react-icons/im';
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import DownloadCount from "../../components/download-count";
 import useSWR from "swr";
 import { initialGlobalSettingStore, globalSettingStore } from "../../stores/global-setting-store";
-import Image from 'next/image' 
+import Image from 'next/image'
 
 const Layout = ({ children }: React.PropsWithChildren<{}>) => {
     const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
@@ -41,32 +42,39 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
         <Fragment>
             <div className="flex flex-col h-screen">
                 {/* 標題列 */}
-                <header className="bg-gradient-to-r from-yellow-400 to-orange-200  w-full">
+                <header className="bg-gradient-to-r from-blue-100 to-green-200  w-full">
                     <div className="p-3">
                         <div className="flex items-center justify-between flex-wrap">
                             <div className="w-0 flex-1 flex items-center">
-                                <span className="flex p-2 rounded-lg dark:bg-indigo-800 bg-yellow-600">
-                                    <GiSpiderMask className="h-6 w-6 text-white cursor-pointer" aria-hidden="true"
+                                <span className="flex p-2 rounded-lg  bg-yellow-300">
+                                    <GiSpellBook className="h-6 w-6 text-white cursor-pointer" aria-hidden="true"
                                         onClick={
                                             () => {
                                                 router.push('/')
                                             }
                                         }
-                                    ></GiSpiderMask>
+                                    ></GiSpellBook>
                                 </span>
-                                <p className="ml-3 mr-3 font-medium text-white truncate">
+                                <p className="ml-3 mr-3 font-medium text-white truncate  hidden
+                                sm:inline-flex 
+                                ">
                                     <span className='dark:text-white text-black hover:font-bold'>🔥Fake Commic Store  {globalStoreData.subTitle !== '' ? ' / ' + globalStoreData.subTitle : ''}</span>
                                 </p>
-                                {!globalStoreData?.showImage ? <AiFillEye className='cursor-pointer w-7 h-7' onClick={() => {
+                                {!globalStoreData?.showImage ?<div className="tooltip tooltip-bottom" data-tip="顯示圖片"> 
+                                <AiFillEye className='cursor-pointer w-7 h-7' onClick={() => {
                                     mutateGlobalStoreData({ ...globalStoreData, showImage: true }, false)
                                 }}
-                                ></AiFillEye> : <AiFillEyeInvisible className='cursor-pointer w-7 h-7' onClick={() => {
+                                ></AiFillEye></div> : <div className="tooltip tooltip-bottom" data-tip="隱藏圖片"> <AiFillEyeInvisible className='cursor-pointer w-7 h-7' onClick={() => {
                                     mutateGlobalStoreData({ ...globalStoreData, showImage: false }, false)
                                 }}
-                                ></AiFillEyeInvisible>}
+                                ></AiFillEyeInvisible></div>}
 
                                 <div className="dropdown">
-                                    <label tabIndex={0} className="btn m-1">切換來源 ({globalStoreData?.selectedSource?.name})</label>
+                                    <label tabIndex={0} className=" m-1 hidden xl:btn">切換來源 ({globalStoreData?.selectedSource?.name})</label>
+                                    <div className="tooltip tooltip-bottom" data-tip="切換來源">
+                                        <ImBooks tabIndex={0} className="w-7 h-7 m-1  flex xl:hidden
+                                     text-red-900 cursor-pointer"></ImBooks>
+                                    </div>
                                     <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
                                         {
                                             globalStoreData && globalStoreData.sourceList.map((s: any) =>
@@ -215,15 +223,16 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                 </div>
                 {/* 頁腳 */}
                 <footer className="py-5 bg-gray-700 text-center text-white">
-                    made by ben 😎
+                    made by ben 😎 ({`${process.env.NEXT_PUBLIC_ENV}`})
                 </footer>
+                {/* 登出Modal視窗 */}
                 <div>
                     <input type="checkbox" id="logout-modal" className="modal-toggle" />
                     <label htmlFor="logout-modal" className="modal cursor-pointer">
                         <label className="modal-box relative" htmlFor="">
                             <h3 className="text-2xl font-bold">你確定要登出嗎？</h3>
                             <Image src='https://media3.giphy.com/media/UrzZ4TmQK17yJpYPIL/giphy.gif?cid=ecf05e47gj882bfm331v6bl56st37vs0ma3a9yy6ywswxz9t&rid=giphy.gif&ct=s'
-                            alt='' layout='responsive' width='20px' height='20px'></Image>
+                                alt='' layout='responsive' width='20px' height='20px'></Image>
                             <div className="modal-action">
                                 <label htmlFor="logout-modal" className="btn btn-success" onClick={() => { signOut() }}>確定</label>
                                 <label htmlFor="logout-modal" className="btn btn-warning">取消</label>
