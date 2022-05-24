@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import { GiSpellBook, GiHamburgerMenu } from 'react-icons/gi'
+import { GiBurningBook, GiHamburgerMenu } from 'react-icons/gi'
 import { AiFillEye, AiFillEyeInvisible, AiOutlineBarChart } from "react-icons/ai";
 import { ImBooks } from 'react-icons/im';
 import { signOut, useSession } from "next-auth/react";
@@ -47,13 +47,13 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                         <div className="flex items-center justify-between flex-wrap">
                             <div className="w-0 flex-1 flex items-center">
                                 <span className="flex p-2 rounded-lg  bg-yellow-300">
-                                    <GiSpellBook className="h-6 w-6 text-white cursor-pointer" aria-hidden="true"
+                                    <GiBurningBook className="h-6 w-6 text-white cursor-pointer" aria-hidden="true"
                                         onClick={
                                             () => {
                                                 router.push('/')
                                             }
                                         }
-                                    ></GiSpellBook>
+                                    ></GiBurningBook>
                                 </span>
                                 <p className="ml-3 mr-3 font-medium text-white truncate  hidden
                                 sm:inline-flex 
