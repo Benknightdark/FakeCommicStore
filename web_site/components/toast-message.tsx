@@ -23,8 +23,6 @@ const ToastMessage = () => {
                     z-50
                     ">
                         <div className="flex space-x-2 text-green-500 justify-between">
-                            {/* <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg> */}
                             {globalStoreData.toastMessage}
                             <AiFillCloseCircle className="w-6 h-6 cursor-pointer"
                                 onClick={() => {
