@@ -95,8 +95,8 @@ const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof g
             document.getElementById('contentBody')!.scrollTo(0, 9999);
         }, 200)
     }
-    if (error) return <Loading></Loading>
-    if (!data) return <Loading></Loading>
+    // if (error) return <Loading></Loading>
+    // if (!data) return <Loading></Loading>
     return (
         <div className="p-10">
             <div className="flex xl:flex-row flex-col">
@@ -136,7 +136,7 @@ const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof g
                                         </thead>
                                         <tbody>
                                             {
-                                                data && data['data'].map((d: any) => {
+                                                data&&!error &&data['data'].map((d: any) => {
                                                     return <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={d['chapterUrl']}>
                                                         <td className="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
                                                         >
