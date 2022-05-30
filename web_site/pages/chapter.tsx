@@ -11,7 +11,6 @@ const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-c
 
 const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const router = useRouter()
-    // const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
     mutateGlobalStoreData({ ...globalStoreData, subTitle: router.query['subTitle']?.toString()! }, false)
 
