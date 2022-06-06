@@ -40,7 +40,6 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
         }, 500);
     }
     return (
-
         <Fragment>
             <div className="flex flex-col h-screen">
                 {/* 標題列 */}

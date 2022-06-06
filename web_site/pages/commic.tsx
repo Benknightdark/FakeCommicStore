@@ -1,5 +1,5 @@
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from "next";
-import React, { useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import useSWRInfinite from 'swr/infinite'
 import Loading from "../components/loading";
 import Image from 'next/image'
@@ -8,17 +8,18 @@ import { getCsrfToken } from "next-auth/react";
 import useSWR from "swr";
 import { globalSettingStore, initialGlobalSettingStore } from "../stores/global-setting-store";
 import LoadingProgress from "../components/loading-progress";
+import FloatBtnLayout from "./utils/float-btn-layout";
 
 
-const fetcher = (url: string,csrfToken:string) => fetch(url,{headers:{'x-csrf-token':csrfToken}}).then((res) => res.json());
+const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
 
-const Commic: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    const { data:globalStoreData,mutate:mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
+const Commic = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
     const router = useRouter()
     const [showLoading, setShowLoading] = useState(false)
     mutateGlobalStoreData({ ...globalStoreData, subTitle: router.query['subTitle']?.toString()! }, false)
     const { data, size, setSize, error } = useSWRInfinite(index =>
-        [`/api/commic?url=${router.query['url']}&page=${index + 1}&id=${globalStoreData.selectedSource.id}`,csrfToken],
+        [`/api/commic?url=${router.query['url']}&page=${index + 1}&id=${globalStoreData.selectedSource.id}`, csrfToken],
         fetcher)
     useEffect(() => {
         document.getElementById('contentBody')!.onscroll = async () => {
@@ -37,7 +38,7 @@ const Commic: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getS
     if (!data) return <Loading></Loading>
     return (
         <div className="flex flex-col">
-            <div className="fixed  top-20 animated z-50 w-full">
+            {/* <div className="fixed  top-20 animated z-50 w-full">
                 <button
                     className="  py-2 px-4 mt-5 bg-red-300 rounded-lg text-white font-semibold hover:bg-red-600"
                     onClick={() => {
@@ -48,7 +49,7 @@ const Commic: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getS
                 >
                     回上一頁
                 </button>
-            </div>
+            </div> */}
             <div className='grid  grid-rows-1 pt-20' >
                 <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5  gap-4">
                     {data && data.map((item: any) => (
@@ -56,7 +57,7 @@ const Commic: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getS
                             return (
                                 <div className="rounded-lg shadow-xl bg-white py-3 px-6  border-2 border-purple-500 
                             hover:shadow-md  transform hover:-translate-y-1 transition-all duration-200 hover:border-red-500 hover:ring-indigo-300" key={itemData.image}>
-                                    {globalStoreData?.showImage&&<Image
+                                    {globalStoreData?.showImage && <Image
                                         layout='responsive'
                                         width='100%'
                                         height='100%'
@@ -109,10 +110,17 @@ const Commic: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getS
                         })
                     ))}
                 </div>
-                {showLoading &&<LoadingProgress></LoadingProgress>}
+                {showLoading && <LoadingProgress></LoadingProgress>}
             </div>
         </div>
     );
+}
+Commic.getLayout = function getLayout(page: ReactElement) {
+    return (
+        <div>
+            <FloatBtnLayout>{page}</FloatBtnLayout>
+        </div>
+    )
 }
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     return {
@@ -120,5 +128,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             csrfToken: await getCsrfToken(ctx)
         }
     }
-  }
+}
+
 export default Commic;

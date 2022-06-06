@@ -1,16 +1,16 @@
 import type { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import useSWR from 'swr'
-import React, { useState } from 'react'
+import React, { ReactElement, useState } from 'react'
 import Loading from '../components/loading'
 import { useRouter } from 'next/router'
 import { AiTwotoneDelete, AiOutlineCloudDownload, AiOutlineDownload } from 'react-icons/ai'
 import { getCsrfToken } from 'next-auth/react'
 import { globalSettingStore, initialGlobalSettingStore } from '../stores/global-setting-store'
+import FloatBtnLayout from './utils/float-btn-layout'
 const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
 
-const Chapter: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const router = useRouter()
-    // const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
     mutateGlobalStoreData({ ...globalStoreData, subTitle: router.query['subTitle']?.toString()! }, false)
 
@@ -190,6 +190,13 @@ const Chapter: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof get
             </div>
         </div>
     </div>
+}
+Chapter.getLayout = function getLayout(page: ReactElement) {
+    return (
+        <div>
+            <FloatBtnLayout>{page}</FloatBtnLayout>
+        </div>
+    )
 }
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     return {

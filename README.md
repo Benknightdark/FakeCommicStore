@@ -5,8 +5,8 @@
 ## Features
 - 使用Redis Scrapy設計下載漫畫排程
 ## 系統啟動方式
-- docker-compose up -d
-
+1. docker-compose up -d
+2. 使用瀏覽器打開 http://localhost:3000
 ## Scale Container
 ```
 docker-compose  up   --scale chapter-crawler=50 -d 
@@ -21,3 +21,4 @@ db.commic_url
 .sort({_id:-1})
 .limit(100)
 ```
+- https://zh-hant.reactjs.org/docs/composition-vs-inheritance.html
