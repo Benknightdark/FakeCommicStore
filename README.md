@@ -21,3 +21,4 @@ db.commic_url
 .sort({_id:-1})
 .limit(100)
 ```
+- https://zh-hant.reactjs.org/docs/composition-vs-inheritance.html
