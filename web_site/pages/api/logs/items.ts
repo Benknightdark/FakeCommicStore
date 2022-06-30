@@ -10,8 +10,8 @@ export default async function handler(
 ) {
     await csrTokenCheck(req,res)
 
-    const page=Number.parseInt(req.query['page'].toString()) //1
-    const row=Number.parseInt(req.query['row'].toString()) //10
+    const page=Number.parseInt(req.query['page']!.toString()) //1
+    const row=Number.parseInt(req.query['row']!.toString()) //10
     const client = createClient(
         {
             url: `redis://${process.env['REDIS_HOST']}:${process.env['REDIS_PORT']}`,

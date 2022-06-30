@@ -23,8 +23,8 @@ export default async function handler(
     res: NextApiResponse<Data[]>
 ) {
     await csrTokenCheck(req, res)
-    const id: string = req.query['id'].toString();
-    const url: string = req.query['url'].toString();
+    const id: string = req.query['id']!.toString();
+    const url: string = req.query['url']!.toString();
     const $ = (await getCherrioData(url))//cheerio.load(resData);
     const data: Data[] = []
     console.log(url)

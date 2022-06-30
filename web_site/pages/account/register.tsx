@@ -65,7 +65,7 @@ const Register: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof ge
                             dark:focus:border-blue-500"   id="userName"
                                             {...register("username")} />
                                         {errors.username?.message && <div className="text-red-600" role="alert">
-                                            <p>{errors.username?.message}</p>
+                                            <p>{(errors as any).username?.message}</p>
                                         </div>}
                                     </div>
 
@@ -78,7 +78,7 @@ const Register: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof ge
                             dark:focus:border-blue-500"   id="password"
                                             {...register("password")} />
                                         {errors.password?.message && <div className="text-red-600" role="alert">
-                                            <p>{errors.password?.message}</p>
+                                            <p>{(errors as any).password?.message}</p>
                                         </div>}
                                     </div>
 
@@ -91,7 +91,7 @@ const Register: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof ge
                             dark:focus:border-blue-500"   id="email"
                                             {...register("email")} />
                                         {errors.email?.message && <div className="text-red-600" role="alert">
-                                            <p>{errors.email?.message}</p>
+                                            <p>{(errors as any).email?.message}</p>
                                         </div>}
                                     </div>
 
@@ -106,7 +106,7 @@ const Register: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof ge
                             dark:focus:border-blue-500"   id="displayName"
                                             {...register("displayName")} />
                                         {errors.displayName?.message && <div className="text-red-600" role="alert">
-                                            <p>{errors.displayName?.message}</p>
+                                            <p>{(errors as any).displayName?.message}</p>
                                         </div>}
                                     </div>
 
