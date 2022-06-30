@@ -45,7 +45,7 @@ const Login: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getSe
                                 dark:focus:border-blue-500"   id="userName"
                                             {...register("username")} />
                                         {errors.username?.message && <div className="text-red-600" role="alert">
-                                            <p>{errors.username?.message}</p>
+                                            <p>{(errors as any).username?.message}</p>
                                         </div>}
                                     </div>
 
@@ -58,7 +58,7 @@ const Login: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getSe
                                 dark:focus:border-blue-500"   id="password"
                                             {...register("password")} />
                                         {errors.password?.message && <div className="text-red-600" role="alert">
-                                            <p>{errors.password?.message}</p>
+                                            <p>{(errors as any).password?.message}</p>
                                         </div>}
                                     </div>
 

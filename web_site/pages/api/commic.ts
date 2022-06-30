@@ -26,9 +26,9 @@ export default async function handler(
 ) {
     await csrTokenCheck(req, res)
     const data: Data[] = []
-    const url: string = req.query['url'].toString()
-    const page: string = req.query['page'].toString()
-    const id: string = req.query['id'].toString();
+    const url: string = req.query['url']!.toString()
+    const page: string = req.query['page']!.toString()
+    const id: string = req.query['id']!.toString();
 
     const $ = (await getCherrioData(`${url}&page=${page}`))
     switch (id) {
