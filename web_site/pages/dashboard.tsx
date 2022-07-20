@@ -81,7 +81,8 @@ const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof g
     const defaultPageList = [1, 2, 3, 4, 5]
     const [page, setPage] = useState(1);
     const [pageList, setPageList] = useState(defaultPageList)
-    const { data, error, mutate } = useSWR([`/api/logs/items?page=${page}&row=5`, csrfToken], fetcher)
+    const rowCount=5;
+    const { data, error, mutate } = useSWR([`/api/logs/items?page=${page}&row=${rowCount}`, csrfToken], fetcher)
     const changePage = async (curretnPage: number) => {
         console.log(curretnPage)
         await setPage(curretnPage)
@@ -95,8 +96,8 @@ const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof g
             document.getElementById('contentBody')!.scrollTo(0, 9999);
         }, 200)
     }
-    // if (error) return <Loading></Loading>
-    // if (!data) return <Loading></Loading>
+    if (error) return <Loading></Loading>
+    if (!data) return <Loading></Loading>
     return (
         <div className="p-10">
             <div className="flex xl:flex-row flex-col">
@@ -186,13 +187,13 @@ const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof g
                                 <button className={`btn ${page === 1 ? 'btn-info' : ''}`} onClick={() => changePage(1)}>1</button>
                                 {page >= 5 && <button className="btn btn-disabled">...</button>}
                                 {
-                                    pageList.filter(a => a !== 1 && a < data['count']).map(a => <button key={a} className={`btn ${page === a ? 'btn-info' : ''}`}
+                                    pageList.filter(a => a !== 1 && a < Math.floor(data['count']/rowCount)).map(a => <button key={a} className={`btn ${page === a ? 'btn-info' : ''}`}
                                         onClick={() => changePage(a)
                                         }
                                     >{a}</button>)
                                 }
-                                {data['count'] !== page && <button className="btn btn-disabled">...</button>}
-                                <button className={`btn ${page === data['count'] ? 'btn-info' : ''}`} onClick={() => changePage(data['count'])}>{data['count']}</button>
+                                { Math.floor(data['count']/rowCount) !== page && <button className="btn btn-disabled">...</button>}
+                                <button className={`btn ${page === data['count'] ? 'btn-info' : ''}`} onClick={() => changePage( Math.floor(data['count']/rowCount))}>{ Math.floor(data['count']/rowCount)}</button>
                             </div>
                         }
                     </div>

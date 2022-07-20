@@ -7,6 +7,8 @@ import Image from 'next/image'
 import useSWR from "swr";
 import { globalSettingStore, initialGlobalSettingStore } from "../../stores/global-setting-store";
 import LoadingProgress from "../../components/loading-progress";
+import { BsFillArrowUpRightCircleFill } from "react-icons/bs";
+import { GiBrokenHeart } from "react-icons/gi";
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const Index = () => {
@@ -67,7 +69,8 @@ const Index = () => {
                                         <footer className="text-center py-3 px-5 text-gray-500">
                                             <div className="flex flex-row space-x-4">
                                                 <button
-                                                    className="  py-2 px-4 mt-5 bg-green-500 rounded-lg text-white font-semibold hover:bg-green-600"
+                                                    className="  py-2 px-4 mt-5 bg-green-500 rounded-lg
+                                                     text-white font-semibold hover:bg-green-600 flex flex-row"
                                                     onClick={() => {
                                                         router.push({
                                                             pathname: '/chapter',
@@ -75,10 +78,12 @@ const Index = () => {
                                                         })
                                                     }}
                                                 >
+                                                    <BsFillArrowUpRightCircleFill className='w-5 h-5'></BsFillArrowUpRightCircleFill>
                                                     看更多
                                                 </button>
                                                 <button
-                                                    className="  py-2 px-4 mt-5 bg-red-400 rounded-lg text-white font-semibold hover:bg-red-600"
+                                                    className="  py-2 px-4 mt-5 bg-gray-600 rounded-lg
+                                                     text-white font-semibold hover:bg-gray-800  flex flex-row"
                                                     onClick={async () => {
                                                         const req = await fetch("/api/favorite/remove", {
                                                             method: "POST",
@@ -94,6 +99,7 @@ const Index = () => {
                                                         }
                                                     }}
                                                 >
+                                                    <GiBrokenHeart className='w-5 h-5'></GiBrokenHeart>
                                                     移除最愛
                                                 </button>
                                             </div>
