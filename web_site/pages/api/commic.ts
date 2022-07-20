@@ -37,8 +37,8 @@ export default async function handler(
                 const picDom = $(element).find('.pic')
                 const link = picDom.attr('href')
                 const picDomAttr = picDom.find('img').attr()
-                const image = picDomAttr['src']
-                const title = picDomAttr['alt']
+                const image = picDomAttr!['src']
+                const title = picDomAttr!['alt']
                 const modifiedDate = $(element).find('dd').find('p:nth-child(1)').find('span').text()
                 const status = $(element).find('dd').find('p:nth-child(2)').find('span').text()
                 const category = $(element).find('dd').find('p:nth-child(3)').find('a').text()
@@ -78,7 +78,7 @@ export default async function handler(
                 const target = $(el).find('a')
                 data.push({
                     title: target.attr('title'),
-                    image: target.find('p').css()['background-image'].replace('url(', '').replace(')', ''),
+                    image: target.find('p').css()!['background-image'].replace('url(', '').replace(')', ''),
                     link: `https://www.jjmhw.cc${target.attr('href')}`,
                     modifiedDate: '',
                     status: '',
