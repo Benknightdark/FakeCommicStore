@@ -173,7 +173,9 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                             <div className="bg-white p-3 rounded-lg shadow-lg border-2 border-purple-500 
                                             hover:shadow-md  transform hover:-translate-y-1 transition-all duration-200 
                                             hover:border-red-500 hover:ring-indigo-300 flex-1
-                                            ">
+                                            " onClick={()=>{
+                                                window.open(d.link)?.focus();
+                                            }}>
                                 <div className='justify-items-end	justify-end	flex'>
                                     <input type="checkbox" checked={d.checked} className="checkbox"
                                         aria-label={d.link} aria-current={d.title}
