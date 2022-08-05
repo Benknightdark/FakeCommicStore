@@ -180,7 +180,11 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                                         onChange={handleChange}
                                     />
                                 </div>
-                                <h2 className="text-2xl font-bold  text-gray-800 text-center cursor-pointer	">
+                                <h2 className="text-2xl font-bold  text-gray-800 text-center cursor-pointer	"
+                                 onClick={()=>{
+                                    window.open(d.link)?.focus();
+                                }}
+                                >
                                     {d.title}
                                 </h2>
                             </div>
