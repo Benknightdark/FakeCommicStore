@@ -163,6 +163,7 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                         className=" border-b-4 border-indigo-500">
                         <div className='justify-items-end	justify-arround	flex'>
                             <a>{d.title}</a>
+                            <div/>
                             <input type="checkbox" checked={d.checked} className="checkbox"
                                 aria-label={d.link} aria-current={d.title}
                                 onChange={handleChange}
