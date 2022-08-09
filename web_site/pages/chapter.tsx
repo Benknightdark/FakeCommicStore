@@ -155,19 +155,25 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
             </label>
         </div>
         {/* 漫畫章節列表 */}
-        <div className="flex flex-col">
-            <div className="fixed  top-20 animated z-50 w-full">
-                <button
-                    className="  py-2 px-4 mt-5 bg-red-300 rounded-lg text-white font-semibold hover:bg-red-600"
-                    onClick={() => {
-                        router.push(router.query['backUrl']?.toString()!)
-                    }}
-                >
-                    回上一頁
-                </button>
-            </div>
-            <div className=" flex flex-wrap pt-20">
+        {/* <div className="flex flex-col"> */}
+        <div className=" flex flex-wrap pt-20 p-5">
+            <ul className="menu bg-base-100  rounded-box w-1/2 border-4 border-indigo-600">
                 {data.map((d: any) => (
+                    <li key={d.title}
+                        className=" border-b-4 border-indigo-500">
+                        <div className='justify-items-end	justify-arround	flex'>
+                            <a>{d.title}</a>
+                            <input type="checkbox" checked={d.checked} className="checkbox"
+                                aria-label={d.link} aria-current={d.title}
+                                onChange={handleChange}
+                            />
+                        </div>
+                    </li>
+
+                ))}
+
+            </ul>
+            {/* {data.map((d: any) => (
                     <div key={d.title} className="rounded-full py-3 px-6 ">
                         <div className="p-5 bg-gradient-to-br from-yellow-400 via-yellow-500 to-orange-200">
                             <div className="bg-white p-3 rounded-lg shadow-lg border-2 border-purple-500 
@@ -181,18 +187,18 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                                     />
                                 </div>
                                 <h2 className="text-2xl font-bold  text-gray-800 text-center cursor-pointer	"
-                                 onClick={()=>{
-                                    window.open(d.link)?.focus();
-                                }}
+                                    onClick={() => {
+                                        window.open(d.link)?.focus();
+                                    }}
                                 >
                                     {d.title}
                                 </h2>
                             </div>
                         </div>
                     </div>
-                ))}
-            </div>
+                ))} */}
         </div>
+        {/* </div> */}
     </div>
 }
 Chapter.getLayout = function getLayout(page: ReactElement) {
