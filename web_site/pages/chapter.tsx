@@ -157,23 +157,34 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
         {/* 漫畫章節列表 */}
         {/* <div className="flex flex-col"> */}
         <div className=" flex flex-wrap pt-20 p-5">
-            <ul className="menu bg-base-100  rounded-box w-1/2 border-4 border-indigo-600">
-                {data.map((d: any) => (
-                    <li key={d.title}
-                        className=" border-b-4 border-indigo-500">
-                        <div className='justify-items-end	justify-arround	flex'>
-                            <a>{d.title}</a>
-                            <div/>
-                            <input type="checkbox" checked={d.checked} className="checkbox"
-                                aria-label={d.link} aria-current={d.title}
-                                onChange={handleChange}
-                            />
-                        </div>
-                    </li>
+            <div className="card  bg-base-100 shadow-xl w-full">
+                <div className="card-body">
+                    <h2 className="card-title">章節列表</h2>
+                    {data&&<ul className="menu bg-base-100  rounded-box  border-4 border-indigo-600 overflow-auto h-4/5			">
+                        {data.map((d: any) => (
+                            <li key={d.title}
+                                className=" border-b-4 border-indigo-500">
+                                <div className='justify-items-end	justify-arround	flex'>
+                                    <a>{d.title}</a>
+                                    <div />
+                                    <input type="checkbox" checked={d.checked} className="checkbox"
+                                        aria-label={d.link} aria-current={d.title}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                            </li>
 
-                ))}
+                        ))}
 
-            </ul>
+                    </ul>}
+                    {/* <p>If a dog chews shoes whose shoes does he choose?</p> */}
+                    {/* <div className="card-actions justify-end">
+                        <button className="btn btn-primary">Buy Now</button>
+                    </div> */}
+                </div>
+            </div>
+
+
             {/* {data.map((d: any) => (
                     <div key={d.title} className="rounded-full py-3 px-6 ">
                         <div className="p-5 bg-gradient-to-br from-yellow-400 via-yellow-500 to-orange-200">
