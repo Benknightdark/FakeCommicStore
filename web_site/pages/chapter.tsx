@@ -6,14 +6,17 @@ import { useRouter } from 'next/router'
 import { AiTwotoneDelete, AiOutlineCloudDownload, AiOutlineDownload } from 'react-icons/ai'
 import { getCsrfToken } from 'next-auth/react'
 import { globalSettingStore, initialGlobalSettingStore } from '../stores/global-setting-store'
+import {FcStackOfPhotos} from 'react-icons/fc'
+import {TbBrowser} from 'react-icons/tb'
 import FloatBtnLayout from './utils/float-btn-layout'
+import PhotoAlbum from 'react-photo-album'
 const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
 
 const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const router = useRouter()
     const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
     mutateGlobalStoreData({ ...globalStoreData, subTitle: router.query['subTitle']?.toString()! }, false)
-
+    const [imageList,setImageList]=useState([]);
     const { data, error, mutate } = useSWR([`/api/chapter?url=${router.query['url']}&id=${globalStoreData.selectedSource.id}`, csrfToken], fetcher, {
         revalidateOnFocus: false
     })
@@ -95,8 +98,7 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                     mutate([...newData])
                     console.log(res)
                     document.getElementById('show-modal-btn')?.click();
-                }}
-            >
+                }}>
                 <div className="flex space-x-2">
                     <AiOutlineCloudDownload className="mr-2 -ml-1 w-5 h-5"></AiOutlineCloudDownload>
                     下載全部
@@ -131,8 +133,7 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                         alert((await req.json())['message'])
                     }
 
-                }}
-            >
+                }}>
                 <div className="flex space-x-2">
                     <AiOutlineDownload className="mr-2 -ml-1 w-5 h-5"></AiOutlineDownload>
                     下載
@@ -171,17 +172,35 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                                         aria-label={d.link} aria-current={d.title}
                                         onChange={handleChange}
                                     />
+                                    <FcStackOfPhotos className='w-8 h-8' onClick={async ()=>{
+                                        const req = await fetch(`/api/view`, {
+                                            body: JSON.stringify({
+                                                id:globalStoreData.selectedSource.id,
+                                                url:d.link
+                                            }),
+                                            headers: {
+                                                'content-type': 'application/json',
+                                                'x-csrf-token': csrfToken
+                                            },
+                                            method: 'POST',
+                                        })
+                                        const res=await req.json();
+                                        console.log(res)
+                                        setImageList(res);
+                                    }}></FcStackOfPhotos>
+                                    <TbBrowser className='w-8 h-8' onClick={async ()=>{
+                                        window.open(d.link)?.focus();
+                                    }}></TbBrowser>
                                 </div>
                             </li>
 
                         ))}
 
                     </ul>}
-                    {/* <p>If a dog chews shoes whose shoes does he choose?</p> */}
-                    {/* <div className="card-actions justify-end">
-                        <button className="btn btn-primary">Buy Now</button>
-                    </div> */}
                 </div>
+                {
+                    imageList&&<PhotoAlbum layout="columns" photos={imageList} />
+                }
             </div>
 
 

@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { createClient } from 'redis';
+import { getCherrioData } from '../../helpers/cheerio-helper';
 import { csrTokenCheck } from '../../helpers/csr-token-helper';
 
 /**
@@ -16,14 +17,19 @@ export default async function handler(
 ) {
     await csrTokenCheck(req,res)
     const selectData=req.body
-    if(selectData.length>0){
-        console.log(selectData)
-        const client = createClient( {
-            url: `redis://${process.env['REDIS_HOST']}:${ process.env['REDIS_PORT'] }`,          
-          });
-        await client.connect();
-        const dd=await client.lPush("commic_url:start_urls",selectData)//chapter_url
-        console.log(dd)
+    const $ = (await getCherrioData(selectData.url))
+    let data:any[]=[]
+    switch (selectData.id) {
+        case 3:
+            const imgList=$('.lazy')
+            imgList.each((i,elem)=>{
+                console.log(elem.attributes[1].value)
+                data.push(elem.attributes[1].value)
+            })
+            break;
+    
+        default:
+            break;
     }
-    res.status(200).json({status:"OK"})
+    res.status(200).json(data)
 }
