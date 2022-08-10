@@ -24,7 +24,7 @@ export default async function handler(
             const imgList=$('.lazy')
             imgList.each((i,elem)=>{
                 console.log(elem.attributes[1].value)
-                data.push(elem.attributes[1].value)
+                data.push({src:elem.attributes[1].value})
             })
             break;
     
