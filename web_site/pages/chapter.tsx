@@ -11,7 +11,6 @@ import { TbBrowser } from 'react-icons/tb'
 import FloatBtnLayout from './utils/float-btn-layout'
 import PhotoAlbum from 'react-photo-album'
 import { HiSortAscending, HiSortDescending } from 'react-icons/hi'
-import { IoMdResize } from 'react-icons/io'
 import { BsArrowsFullscreen, BsFillArrowLeftSquareFill, BsFillArrowRightSquareFill } from 'react-icons/bs'
 const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
 
@@ -67,12 +66,13 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
         } catch (error) {
             console.log(error)
         }
-        
+
     }
     if (error) return <Loading></Loading>
     if (!data) return <Loading></Loading>
     return <div>
         {/* 浮動按鈕 */}
+
         <div style={{
             position: 'fixed',
             bottom: 40,
@@ -178,6 +178,16 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                 </label>
             </label>
         </div>
+        <label htmlFor="image-modal" className="btn modal-button hidden" id='image-modal-btn'></label>
+
+        <input type="checkbox" id="image-modal" className="modal-toggle" />
+        <label htmlFor="image-modal" className="modal cursor-pointer">
+            {
+                imageList.data && <div className='  h-screen overflow-auto'>
+                    <PhotoAlbum layout="columns" photos={imageList.data} columns={1} spacing={0} />
+                </div>
+            }
+        </label>
         {/* 漫畫章節列表 */}
         <div className=" flex flex-row pt-20 p-5 justify-around space-x-2">
             <div className="card  bg-base-100 shadow-xl w-full  h-96  ">
@@ -196,7 +206,7 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                         {data.map((d: any, i: any) => (
                             <li key={i}
                                 className=" border-b-4 border-indigo-500">
-                                <div className='flex justify-between	'>
+                                <div className='flex justify-between'>
                                     <a>{d.title}</a>
                                     <div className='flex space-x-3'>
                                         <input type="checkbox" checked={d.checked} className="checkbox"
@@ -222,14 +232,18 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                         <BsFillArrowLeftSquareFill
                             className='cursor-pointer h-5 w-5 text-blue-400 hover:text-red-400'
                             onClick={async () => {
-                                await handleShowImageList(data[imageList.prev],imageList.prev)
+                                await handleShowImageList(data[imageList.prev], imageList.prev)
                             }}
                         ></BsFillArrowLeftSquareFill>
                         <h2>
                             {imageList.title}
                         </h2>
                         <BsArrowsFullscreen
-                            className='cursor-pointer h-5 w-5 text-blue-400 hover:text-red-400'>
+                            className='cursor-pointer h-5 w-5 text-blue-400 hover:text-red-400'
+                            onClick={() => {
+                                document.getElementById('image-modal-btn')?.click();
+                            }}
+                        >
                         </BsArrowsFullscreen>
 
                         <AiFillCloseCircle className='cursor-pointer h-5 w-5 text-blue-400 hover:text-red-400'
@@ -241,7 +255,7 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                         <BsFillArrowRightSquareFill
                             className='cursor-pointer h-5 w-5 text-blue-400 hover:text-red-400'
                             onClick={async () => {
-                                await handleShowImageList(data[imageList.next],imageList.next)
+                                await handleShowImageList(data[imageList.next], imageList.next)
                             }}
                         ></BsFillArrowRightSquareFill>
                     </div>
@@ -252,6 +266,7 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                 </div>
             }
         </div>
+
     </div>
 }
 Chapter.getLayout = function getLayout(page: ReactElement) {
