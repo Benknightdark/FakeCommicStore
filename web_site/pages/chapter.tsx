@@ -6,8 +6,8 @@ import { useRouter } from 'next/router'
 import { AiTwotoneDelete, AiOutlineCloudDownload, AiOutlineDownload } from 'react-icons/ai'
 import { getCsrfToken } from 'next-auth/react'
 import { globalSettingStore, initialGlobalSettingStore } from '../stores/global-setting-store'
-import {FcStackOfPhotos} from 'react-icons/fc'
-import {TbBrowser} from 'react-icons/tb'
+import { FcStackOfPhotos } from 'react-icons/fc'
+import { TbBrowser } from 'react-icons/tb'
 import FloatBtnLayout from './utils/float-btn-layout'
 import PhotoAlbum from 'react-photo-album'
 const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
@@ -16,7 +16,7 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
     const router = useRouter()
     const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
     mutateGlobalStoreData({ ...globalStoreData, subTitle: router.query['subTitle']?.toString()! }, false)
-    const [imageList,setImageList]=useState([]);
+    const [imageList, setImageList] = useState([]);
     const { data, error, mutate } = useSWR([`/api/chapter?url=${router.query['url']}&id=${globalStoreData.selectedSource.id}`, csrfToken], fetcher, {
         revalidateOnFocus: false
     })
@@ -156,41 +156,42 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
             </label>
         </div>
         {/* 漫畫章節列表 */}
-        {/* <div className="flex flex-col"> */}
-        <div className=" flex flex-wrap pt-20 p-5">
-            <div className="card  bg-base-100 shadow-xl w-full">
-                <div className="card-body">
+        <div className=" flex flex-row pt-20 p-5 justify-around		">
+            <div className="card  bg-base-100 shadow-xl w-full  h-96  ">
+                <div className="card-body ">
                     <h2 className="card-title">章節列表</h2>
-                    {data&&<ul className="menu bg-base-100  rounded-box  border-4 border-indigo-600 overflow-auto h-4/5			">
+                    {data && <ul className="h-80 overflow-auto menu bg-base-100  rounded-box
+                      border-4 border-indigo-600">
                         {data.map((d: any) => (
                             <li key={d.title}
                                 className=" border-b-4 border-indigo-500">
-                                <div className='justify-items-end	justify-arround	flex'>
+                                <div className='flex justify-between	'>
                                     <a>{d.title}</a>
-                                    <div />
-                                    <input type="checkbox" checked={d.checked} className="checkbox"
-                                        aria-label={d.link} aria-current={d.title}
-                                        onChange={handleChange}
-                                    />
-                                    <FcStackOfPhotos className='w-8 h-8' onClick={async ()=>{
-                                        const req = await fetch(`/api/view`, {
-                                            body: JSON.stringify({
-                                                id:globalStoreData.selectedSource.id,
-                                                url:d.link
-                                            }),
-                                            headers: {
-                                                'content-type': 'application/json',
-                                                'x-csrf-token': csrfToken
-                                            },
-                                            method: 'POST',
-                                        })
-                                        const res=await req.json();
-                                        console.log(res)
-                                        setImageList(res);
-                                    }}></FcStackOfPhotos>
-                                    <TbBrowser className='w-8 h-8' onClick={async ()=>{
-                                        window.open(d.link)?.focus();
-                                    }}></TbBrowser>
+                                    <div className='flex space-x-3'>
+                                        <input type="checkbox" checked={d.checked} className="checkbox"
+                                            aria-label={d.link} aria-current={d.title}
+                                            onChange={handleChange}
+                                        />
+                                        <FcStackOfPhotos className='w-8 h-8' onClick={async () => {
+                                            const req = await fetch(`/api/view`, {
+                                                body: JSON.stringify({
+                                                    id: globalStoreData.selectedSource.id,
+                                                    url: d.link
+                                                }),
+                                                headers: {
+                                                    'content-type': 'application/json',
+                                                    'x-csrf-token': csrfToken
+                                                },
+                                                method: 'POST',
+                                            })
+                                            const res = await req.json();
+                                            console.log(res)
+                                            setImageList(res);
+                                        }}></FcStackOfPhotos>
+                                        <TbBrowser className='w-8 h-8' onClick={async () => {
+                                            window.open(d.link)?.focus();
+                                        }}></TbBrowser>
+                                    </div>
                                 </div>
                             </li>
 
@@ -198,38 +199,14 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
 
                     </ul>}
                 </div>
-                {
-                    imageList&&<PhotoAlbum layout="columns" photos={imageList} />
-                }
+
             </div>
-
-
-            {/* {data.map((d: any) => (
-                    <div key={d.title} className="rounded-full py-3 px-6 ">
-                        <div className="p-5 bg-gradient-to-br from-yellow-400 via-yellow-500 to-orange-200">
-                            <div className="bg-white p-3 rounded-lg shadow-lg border-2 border-purple-500 
-                                            hover:shadow-md  transform hover:-translate-y-1 transition-all duration-200 
-                                            hover:border-red-500 hover:ring-indigo-300 flex-1
-                                            ">
-                                <div className='justify-items-end	justify-end	flex'>
-                                    <input type="checkbox" checked={d.checked} className="checkbox"
-                                        aria-label={d.link} aria-current={d.title}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-                                <h2 className="text-2xl font-bold  text-gray-800 text-center cursor-pointer	"
-                                    onClick={() => {
-                                        window.open(d.link)?.focus();
-                                    }}
-                                >
-                                    {d.title}
-                                </h2>
-                            </div>
-                        </div>
-                    </div>
-                ))} */}
+            {
+                imageList && <div className='grow  h-[32rem] overflow-auto'>
+                    <PhotoAlbum layout="columns" photos={imageList} columns={1} spacing={0} />
+                </div>
+            }        
         </div>
-        {/* </div> */}
     </div>
 }
 Chapter.getLayout = function getLayout(page: ReactElement) {
