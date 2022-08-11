@@ -50,19 +50,24 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
 
     };
     const handleShowImageList = async (d: any, i: number) => {
-        const req = await fetch(`/api/view`, {
-            body: JSON.stringify({
-                id: globalStoreData.selectedSource.id,
-                url: d.link
-            }),
-            headers: {
-                'content-type': 'application/json',
-                'x-csrf-token': csrfToken
-            },
-            method: 'POST',
-        })
-        const res = await req.json();
-        setImageList({ ...imageList, data: res, title: d.title, prev: i - 1, next: i + 1, current: i });
+        try {
+            const req = await fetch(`/api/view`, {
+                body: JSON.stringify({
+                    id: globalStoreData.selectedSource.id,
+                    url: d.link
+                }),
+                headers: {
+                    'content-type': 'application/json',
+                    'x-csrf-token': csrfToken
+                },
+                method: 'POST',
+            })
+            const res = await req.json();
+            setImageList({ ...imageList, data: res, title: d.title, prev: i - 1, next: i + 1, current: i });
+        } catch (error) {
+            console.log(error)
+        }
+        
     }
     if (error) return <Loading></Loading>
     if (!data) return <Loading></Loading>
@@ -216,6 +221,9 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                     <div className='flex flex-row justify-center font-bold text-lg space-x-3'>
                         <BsFillArrowLeftSquareFill
                             className='cursor-pointer h-5 w-5 text-blue-400 hover:text-red-400'
+                            onClick={async () => {
+                                await handleShowImageList(data[imageList.prev],imageList.prev)
+                            }}
                         ></BsFillArrowLeftSquareFill>
                         <h2>
                             {imageList.title}
@@ -232,6 +240,9 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                         </AiFillCloseCircle>
                         <BsFillArrowRightSquareFill
                             className='cursor-pointer h-5 w-5 text-blue-400 hover:text-red-400'
+                            onClick={async () => {
+                                await handleShowImageList(data[imageList.next],imageList.next)
+                            }}
                         ></BsFillArrowRightSquareFill>
                     </div>
 
