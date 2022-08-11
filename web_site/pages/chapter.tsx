@@ -3,21 +3,25 @@ import useSWR from 'swr'
 import React, { ReactElement, useState } from 'react'
 import Loading from '../components/loading'
 import { useRouter } from 'next/router'
-import { AiTwotoneDelete, AiOutlineCloudDownload, AiOutlineDownload } from 'react-icons/ai'
+import { AiTwotoneDelete, AiOutlineCloudDownload, AiOutlineDownload, AiFillCloseCircle } from 'react-icons/ai'
 import { getCsrfToken } from 'next-auth/react'
 import { globalSettingStore, initialGlobalSettingStore } from '../stores/global-setting-store'
 import { FcStackOfPhotos } from 'react-icons/fc'
 import { TbBrowser } from 'react-icons/tb'
 import FloatBtnLayout from './utils/float-btn-layout'
 import PhotoAlbum from 'react-photo-album'
+import { HiSortAscending, HiSortDescending } from 'react-icons/hi'
+import { IoMdResize } from 'react-icons/io'
+import { BsArrowsFullscreen, BsFillArrowLeftSquareFill, BsFillArrowRightSquareFill } from 'react-icons/bs'
 const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
 
 const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    const [desc, setDesc] = useState(1);
     const router = useRouter()
     const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
     mutateGlobalStoreData({ ...globalStoreData, subTitle: router.query['subTitle']?.toString()! }, false)
-    const [imageList, setImageList] = useState([]);
-    const { data, error, mutate } = useSWR([`/api/chapter?url=${router.query['url']}&id=${globalStoreData.selectedSource.id}`, csrfToken], fetcher, {
+    const [imageList, setImageList] = useState<any>({});
+    const { data, error, mutate } = useSWR([`/api/chapter?url=${router.query['url']}&id=${globalStoreData.selectedSource.id}&desc=${desc}`, csrfToken], fetcher, {
         revalidateOnFocus: false
     })
 
@@ -45,7 +49,21 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
         }
 
     };
-
+    const handleShowImageList = async (d: any, i: number) => {
+        const req = await fetch(`/api/view`, {
+            body: JSON.stringify({
+                id: globalStoreData.selectedSource.id,
+                url: d.link
+            }),
+            headers: {
+                'content-type': 'application/json',
+                'x-csrf-token': csrfToken
+            },
+            method: 'POST',
+        })
+        const res = await req.json();
+        setImageList({ ...imageList, data: res, title: d.title, prev: i - 1, next: i + 1, current: i });
+    }
     if (error) return <Loading></Loading>
     if (!data) return <Loading></Loading>
     return <div>
@@ -156,14 +174,22 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
             </label>
         </div>
         {/* 漫畫章節列表 */}
-        <div className=" flex flex-row pt-20 p-5 justify-around		">
+        <div className=" flex flex-row pt-20 p-5 justify-around space-x-2">
             <div className="card  bg-base-100 shadow-xl w-full  h-96  ">
                 <div className="card-body ">
-                    <h2 className="card-title">章節列表</h2>
+                    <h2 className="card-title">章節列表
+                        {desc == 1 ? <HiSortAscending className='cursor-pointer' onClick={() => {
+                            setDesc(0)
+                            mutate();
+                        }}></HiSortAscending> : <HiSortDescending className='cursor-pointer' onClick={() => {
+                            setDesc(1)
+                            mutate();
+                        }}></HiSortDescending>}
+                    </h2>
                     {data && <ul className="h-80 overflow-auto menu bg-base-100  rounded-box
                       border-4 border-indigo-600">
-                        {data.map((d: any) => (
-                            <li key={d.title}
+                        {data.map((d: any, i: any) => (
+                            <li key={i}
                                 className=" border-b-4 border-indigo-500">
                                 <div className='flex justify-between	'>
                                     <a>{d.title}</a>
@@ -173,20 +199,7 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                                             onChange={handleChange}
                                         />
                                         <FcStackOfPhotos className='w-8 h-8' onClick={async () => {
-                                            const req = await fetch(`/api/view`, {
-                                                body: JSON.stringify({
-                                                    id: globalStoreData.selectedSource.id,
-                                                    url: d.link
-                                                }),
-                                                headers: {
-                                                    'content-type': 'application/json',
-                                                    'x-csrf-token': csrfToken
-                                                },
-                                                method: 'POST',
-                                            })
-                                            const res = await req.json();
-                                            console.log(res)
-                                            setImageList(res);
+                                            await handleShowImageList(d, i)
                                         }}></FcStackOfPhotos>
                                         <TbBrowser className='w-8 h-8' onClick={async () => {
                                             window.open(d.link)?.focus();
@@ -194,18 +207,39 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                                     </div>
                                 </div>
                             </li>
-
                         ))}
-
                     </ul>}
                 </div>
-
             </div>
             {
-                imageList && <div className='grow  h-[32rem] overflow-auto'>
-                    <PhotoAlbum layout="columns" photos={imageList} columns={1} spacing={0} />
+                imageList.data && <div className=' flex flex-col justify-center'>
+                    <div className='flex flex-row justify-center font-bold text-lg space-x-3'>
+                        <BsFillArrowLeftSquareFill
+                            className='cursor-pointer h-5 w-5 text-blue-400 hover:text-red-400'
+                        ></BsFillArrowLeftSquareFill>
+                        <h2>
+                            {imageList.title}
+                        </h2>
+                        <BsArrowsFullscreen
+                            className='cursor-pointer h-5 w-5 text-blue-400 hover:text-red-400'>
+                        </BsArrowsFullscreen>
+
+                        <AiFillCloseCircle className='cursor-pointer h-5 w-5 text-blue-400 hover:text-red-400'
+                            onClick={() => {
+                                setImageList({})
+                            }}
+                        >
+                        </AiFillCloseCircle>
+                        <BsFillArrowRightSquareFill
+                            className='cursor-pointer h-5 w-5 text-blue-400 hover:text-red-400'
+                        ></BsFillArrowRightSquareFill>
+                    </div>
+
+                    <div className='  h-[32rem] overflow-auto'>
+                        <PhotoAlbum layout="columns" photos={imageList.data} columns={1} spacing={0} />
+                    </div>
                 </div>
-            }        
+            }
         </div>
     </div>
 }
