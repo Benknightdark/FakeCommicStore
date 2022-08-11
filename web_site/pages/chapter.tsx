@@ -3,18 +3,24 @@ import useSWR from 'swr'
 import React, { ReactElement, useState } from 'react'
 import Loading from '../components/loading'
 import { useRouter } from 'next/router'
-import { AiTwotoneDelete, AiOutlineCloudDownload, AiOutlineDownload } from 'react-icons/ai'
+import { AiTwotoneDelete, AiOutlineCloudDownload, AiOutlineDownload, AiFillCloseCircle } from 'react-icons/ai'
 import { getCsrfToken } from 'next-auth/react'
 import { globalSettingStore, initialGlobalSettingStore } from '../stores/global-setting-store'
+import { FcStackOfPhotos } from 'react-icons/fc'
+import { TbBrowser } from 'react-icons/tb'
 import FloatBtnLayout from './utils/float-btn-layout'
+import PhotoAlbum from 'react-photo-album'
+import { HiSortAscending, HiSortDescending } from 'react-icons/hi'
+import { BsArrowsFullscreen, BsFillArrowLeftSquareFill, BsFillArrowRightSquareFill } from 'react-icons/bs'
 const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
 
 const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    const [desc, setDesc] = useState(1);
     const router = useRouter()
     const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
     mutateGlobalStoreData({ ...globalStoreData, subTitle: router.query['subTitle']?.toString()! }, false)
-
-    const { data, error, mutate } = useSWR([`/api/chapter?url=${router.query['url']}&id=${globalStoreData.selectedSource.id}`, csrfToken], fetcher, {
+    const [imageList, setImageList] = useState<any>({});
+    const { data, error, mutate } = useSWR([`/api/chapter?url=${router.query['url']}&id=${globalStoreData.selectedSource.id}&desc=${desc}`, csrfToken], fetcher, {
         revalidateOnFocus: false
     })
 
@@ -42,11 +48,31 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
         }
 
     };
+    const handleShowImageList = async (d: any, i: number) => {
+        try {
+            const req = await fetch(`/api/view`, {
+                body: JSON.stringify({
+                    id: globalStoreData.selectedSource.id,
+                    url: d.link
+                }),
+                headers: {
+                    'content-type': 'application/json',
+                    'x-csrf-token': csrfToken
+                },
+                method: 'POST',
+            })
+            const res = await req.json();
+            setImageList({ ...imageList, data: res, title: d.title, prev: i - 1, next: i + 1, current: i });
+        } catch (error) {
+            console.log(error)
+        }
 
+    }
     if (error) return <Loading></Loading>
     if (!data) return <Loading></Loading>
     return <div>
         {/* 浮動按鈕 */}
+
         <div style={{
             position: 'fixed',
             bottom: 40,
@@ -95,8 +121,7 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                     mutate([...newData])
                     console.log(res)
                     document.getElementById('show-modal-btn')?.click();
-                }}
-            >
+                }}>
                 <div className="flex space-x-2">
                     <AiOutlineCloudDownload className="mr-2 -ml-1 w-5 h-5"></AiOutlineCloudDownload>
                     下載全部
@@ -131,8 +156,7 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                         alert((await req.json())['message'])
                     }
 
-                }}
-            >
+                }}>
                 <div className="flex space-x-2">
                     <AiOutlineDownload className="mr-2 -ml-1 w-5 h-5"></AiOutlineDownload>
                     下載
@@ -154,45 +178,95 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                 </label>
             </label>
         </div>
+        <label htmlFor="image-modal" className="btn modal-button hidden" id='image-modal-btn'></label>
+
+        <input type="checkbox" id="image-modal" className="modal-toggle" />
+        <label htmlFor="image-modal" className="modal cursor-pointer">
+            {
+                imageList.data && <div className='  h-screen overflow-auto'>
+                    <PhotoAlbum layout="columns" photos={imageList.data} columns={1} spacing={0} />
+                </div>
+            }
+        </label>
         {/* 漫畫章節列表 */}
-        <div className="flex flex-col">
-            <div className="fixed  top-20 animated z-50 w-full">
-                <button
-                    className="  py-2 px-4 mt-5 bg-red-300 rounded-lg text-white font-semibold hover:bg-red-600"
-                    onClick={() => {
-                        router.push(router.query['backUrl']?.toString()!)
-                    }}
-                >
-                    回上一頁
-                </button>
-            </div>
-            <div className=" flex flex-wrap pt-20">
-                {data.map((d: any) => (
-                    <div key={d.title} className="rounded-full py-3 px-6 ">
-                        <div className="p-5 bg-gradient-to-br from-yellow-400 via-yellow-500 to-orange-200">
-                            <div className="bg-white p-3 rounded-lg shadow-lg border-2 border-purple-500 
-                                            hover:shadow-md  transform hover:-translate-y-1 transition-all duration-200 
-                                            hover:border-red-500 hover:ring-indigo-300 flex-1
-                                            ">
-                                <div className='justify-items-end	justify-end	flex'>
-                                    <input type="checkbox" checked={d.checked} className="checkbox"
-                                        aria-label={d.link} aria-current={d.title}
-                                        onChange={handleChange}
-                                    />
+        <div className=" flex flex-row pt-20 p-5 justify-around space-x-2">
+            <div className="card  bg-base-100 shadow-xl w-full  h-96  ">
+                <div className="card-body ">
+                    <h2 className="card-title">章節列表
+                        {desc == 1 ? <HiSortAscending className='cursor-pointer' onClick={() => {
+                            setDesc(0)
+                            mutate();
+                        }}></HiSortAscending> : <HiSortDescending className='cursor-pointer' onClick={() => {
+                            setDesc(1)
+                            mutate();
+                        }}></HiSortDescending>}
+                    </h2>
+                    {data && <ul className="h-80 overflow-auto menu bg-base-100  rounded-box
+                      border-4 border-indigo-600">
+                        {data.map((d: any, i: any) => (
+                            <li key={i}
+                                className=" border-b-4 border-indigo-500">
+                                <div className='flex justify-between'>
+                                    <a>{d.title}</a>
+                                    <div className='flex space-x-3'>
+                                        <input type="checkbox" checked={d.checked} className="checkbox"
+                                            aria-label={d.link} aria-current={d.title}
+                                            onChange={handleChange}
+                                        />
+                                        <FcStackOfPhotos className='w-8 h-8' onClick={async () => {
+                                            await handleShowImageList(d, i)
+                                        }}></FcStackOfPhotos>
+                                        <TbBrowser className='w-8 h-8' onClick={async () => {
+                                            window.open(d.link)?.focus();
+                                        }}></TbBrowser>
+                                    </div>
                                 </div>
-                                <h2 className="text-2xl font-bold  text-gray-800 text-center cursor-pointer	"
-                                 onClick={()=>{
-                                    window.open(d.link)?.focus();
-                                }}
-                                >
-                                    {d.title}
-                                </h2>
-                            </div>
-                        </div>
-                    </div>
-                ))}
+                            </li>
+                        ))}
+                    </ul>}
+                </div>
             </div>
+            {
+                imageList.data && <div className=' flex flex-col justify-center'>
+                    <div className='flex flex-row justify-center font-bold text-lg space-x-3'>
+                        <BsFillArrowLeftSquareFill
+                            className='cursor-pointer h-5 w-5 text-blue-400 hover:text-red-400'
+                            onClick={async () => {
+                                await handleShowImageList(data[imageList.prev], imageList.prev)
+                            }}
+                        ></BsFillArrowLeftSquareFill>
+                        <h2>
+                            {imageList.title}
+                        </h2>
+                        <BsArrowsFullscreen
+                            className='cursor-pointer h-5 w-5 text-blue-400 hover:text-red-400'
+                            onClick={() => {
+                                document.getElementById('image-modal-btn')?.click();
+                            }}
+                        >
+                        </BsArrowsFullscreen>
+
+                        <AiFillCloseCircle className='cursor-pointer h-5 w-5 text-blue-400 hover:text-red-400'
+                            onClick={() => {
+                                setImageList({})
+                            }}
+                        >
+                        </AiFillCloseCircle>
+                        <BsFillArrowRightSquareFill
+                            className='cursor-pointer h-5 w-5 text-blue-400 hover:text-red-400'
+                            onClick={async () => {
+                                await handleShowImageList(data[imageList.next], imageList.next)
+                            }}
+                        ></BsFillArrowRightSquareFill>
+                    </div>
+
+                    <div className='  h-[32rem] overflow-auto'>
+                        <PhotoAlbum layout="columns" photos={imageList.data} columns={1} spacing={0} />
+                    </div>
+                </div>
+            }
         </div>
+
     </div>
 }
 Chapter.getLayout = function getLayout(page: ReactElement) {

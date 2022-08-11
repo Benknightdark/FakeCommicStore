@@ -39,18 +39,6 @@ const Commic = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideP
     if (!data) return <Loading></Loading>
     return (
         <div className="flex flex-col">
-            {/* <div className="fixed  top-20 animated z-50 w-full">
-                <button
-                    className="  py-2 px-4 mt-5 bg-red-300 rounded-lg text-white font-semibold hover:bg-red-600"
-                    onClick={() => {
-                        router.push({
-                            pathname: '/',
-                        })
-                    }}
-                >
-                    回上一頁
-                </button>
-            </div> */}
             <div className='grid  grid-rows-1 pt-20' >
                 <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5  gap-4">
                     {data && data.map((item: any) => (

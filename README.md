@@ -22,3 +22,5 @@ db.commic_url
 .limit(100)
 ```
 - https://zh-hant.reactjs.org/docs/composition-vs-inheritance.html
+- https://react-photo-album.com/examples/lightbox
+- https://www.npmjs.com/package/react-image-gallery

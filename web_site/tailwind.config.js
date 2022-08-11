@@ -11,6 +11,9 @@ module.exports = {
       '2xl': '1536px',
     },
     extend: {
+      height: {
+        '128': '32rem',
+      },
       typography: (theme) => ({
         dark: {
           css: {

@@ -24,6 +24,7 @@ export default async function handler(
 ) {
     await csrTokenCheck(req, res)
     const id: string = req.query['id']!.toString();
+    const desc: number = Number(req.query['desc']!.toString());
     const url: string = req.query['url']!.toString();
     const $ = (await getCherrioData(url))//cheerio.load(resData);
     const data: Data[] = []
@@ -32,31 +33,57 @@ export default async function handler(
     switch (id) {
         case "1":
             $('#play_1').find('ul').children('li').each((index, element) => {
+                if (desc === 1) {
+                    data.push({
+                        title: $(element).find('a').attr('title'),
+                        link: $(element).find('a').attr('href'),
+                        checked: false
+                    })
+                } else {
+                    data.unshift({
+                        title: $(element).find('a').attr('title'),
+                        link: $(element).find('a').attr('href'),
+                        checked: false
+                    })
+                }
 
-                data.push({
-                    title: $(element).find('a').attr('title'),
-                    link: $(element).find('a').attr('href'),
-                    checked: false
-                })
             })
             break;
         case "2":
             $($('.btn-toolbar')[0]).find('a').each((i, el) => {
-                data.unshift({
-                    title: $(el).find('li').text(),
-                    link: `https://18comic.org${$(el).attr('href')}`,
-                    checked: false
-                })
+                if (desc === 1) {
+                    data.unshift({
+                        title: $(el).find('li').text(),
+                        link: `https://18comic.org${$(el).attr('href')}`,
+                        checked: false
+                    })
+                } else {
+                    data.push({
+                        title: $(el).find('li').text(),
+                        link: `https://18comic.org${$(el).attr('href')}`,
+                        checked: false
+                    })
+                }
+
             })
             break;
         case "3":
-            $('#detail-list-select').children('li').each((i,el)=>{
-                const target=$(el).find('a')
-                data.unshift({
-                    title: target.text(),
-                    link: `https://www.jjmhw.cc${target.attr('href')}`,
-                    checked: false
-                })
+            $('#detail-list-select').children('li').each((i, el) => {
+                const target = $(el).find('a')
+                if (desc === 1) {
+                    data.unshift({
+                        title: target.text(),
+                        link: `https://www.jjmhw.cc${target.attr('href')}`,
+                        checked: false
+                    })
+                } else {
+                    data.push({
+                        title: target.text(),
+                        link: `https://www.jjmhw.cc${target.attr('href')}`,
+                        checked: false
+                    })
+                }
+
             })
             break;
     }

@@ -17,7 +17,7 @@ export default async function handler(
     await csrTokenCheck(req,res)
     const selectData=req.body
     if(selectData.length>0){
-        
+        console.log(selectData)
         const client = createClient( {
             url: `redis://${process.env['REDIS_HOST']}:${ process.env['REDIS_PORT'] }`,          
           });
