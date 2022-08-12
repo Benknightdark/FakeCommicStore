@@ -6,13 +6,14 @@ from urllib.parse import parse_qs
 import redis
 import os
 import cloudscraper
-
+import httpx
 
 class CommicUrlSpider(RedisSpider):
     name = 'commic_url'
     custom_settings = {
         'ROBOTSTXT_OBEY': False
     }
+    transport = httpx.HTTPTransport(retries=500)
 
     def parse(self, response):
         redis_client = redis.Redis(host=os.getenv(
@@ -27,7 +28,11 @@ class CommicUrlSpider(RedisSpider):
         new_url_array = []
 
         if channel_id == "1":
-            max_page = commic_root.find(
+            root_req = httpx.Client(timeout=None, transport=self.transport).get(
+                    root_url)
+            first_page_commic = BeautifulSoup(root_req.text, 'lxml')
+      
+            max_page = first_page_commic.find(
                 'select', attrs={"name": 'select1'})
             max_page_option_value = max_page.find_all('option')
 

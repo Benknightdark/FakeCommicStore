@@ -38,7 +38,9 @@ class ChapterUrlSpider(RedisSpider):
             if os.path.isdir(folder_name) == False:
                 os.makedirs(folder_name)
             if channel_id == "1":
-                commic_res = response.text
+                root_req = httpx.Client(timeout=None, transport=self.transport).get(
+                    root_url)
+                commic_res = root_req.text #response.text
                 commic_root = BeautifulSoup(commic_res, 'lxml')
                 commic_image_url = commic_root.find(
                     'img', id='ComicPic')['src']
