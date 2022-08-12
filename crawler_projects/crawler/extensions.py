@@ -38,6 +38,7 @@ class SpiderOpenCloseLogging:
         return ext
 
     def spider_opened(self, spider):
+        
         logger.info("opened spider %s", spider.name)
 
     def spider_closed(self, spider):
