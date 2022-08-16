@@ -3,7 +3,7 @@ import useSWR from 'swr'
 import React, { ReactElement, useState } from 'react'
 import Loading from '../components/loading'
 import { useRouter } from 'next/router'
-import { AiTwotoneDelete, AiOutlineCloudDownload, AiOutlineDownload, AiFillCloseCircle } from 'react-icons/ai'
+import { AiTwotoneDelete, AiOutlineCloudDownload, AiOutlineDownload, AiFillCloseCircle, AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
 import { getCsrfToken } from 'next-auth/react'
 import { globalSettingStore, initialGlobalSettingStore } from '../stores/global-setting-store'
 import { FcStackOfPhotos } from 'react-icons/fc'
@@ -181,17 +181,27 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
         <label htmlFor="image-modal" className="btn modal-button hidden" id='image-modal-btn'></label>
 
         <input type="checkbox" id="image-modal" className="modal-toggle" />
-        <label htmlFor="image-modal" className="modal cursor-pointer">
+        <label htmlFor="image-modal" className="modal cursor-pointer space-x-3">
+            <button className="btn btn-circle btn-error" onClick={async () => {
+                await handleShowImageList(data[imageList.prev], imageList.prev)
+            }}>
+                <AiOutlineArrowLeft className='text-white font-bold w-6 h-6'></AiOutlineArrowLeft>
+            </button>
             {
                 imageList.data && <div className='  h-screen overflow-auto'>
                     <PhotoAlbum layout="columns" photos={imageList.data} columns={1} spacing={0} />
                 </div>
             }
+            <button className="btn btn-circle btn-error" onClick={async () => {
+                await handleShowImageList(data[imageList.next], imageList.next)
+            }}>
+                <AiOutlineArrowRight className='text-white font-bold w-6 h-6'></AiOutlineArrowRight>
+            </button>
         </label>
         {/* 漫畫章節列表 */}
-        <div className=" flex flex-row pt-20 p-5 justify-around space-x-2">
-            <div className="card  bg-base-100 shadow-xl w-full  h-96  ">
-                <div className="card-body ">
+        <div className=" flex flex-row  flex-wrap pt-20 p-3 justify-center space-x-2">
+            <div className="card  bg-base-100 shadow-xl  md:w-1/2 w-full h-96 mt-2 ">
+                <div className="card-body h-80">
                     <h2 className="card-title">章節列表
                         {desc == 1 ? <HiSortAscending className='cursor-pointer' onClick={() => {
                             setDesc(0)
@@ -201,24 +211,29 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                             mutate();
                         }}></HiSortDescending>}
                     </h2>
-                    {data && <ul className="h-80 overflow-auto menu bg-base-100  rounded-box
+                    {data && <ul className=" overflow-auto menu bg-base-100  rounded-box 
                       border-4 border-indigo-600">
                         {data.map((d: any, i: any) => (
                             <li key={i}
-                                className=" border-b-4 border-indigo-500">
-                                <div className='flex justify-between'>
-                                    <a>{d.title}</a>
-                                    <div className='flex space-x-3'>
-                                        <input type="checkbox" checked={d.checked} className="checkbox"
+                                className={`border-b-4 border-indigo-500 ${imageList?.title == d.title ? 'bg-gradient-to-l from-yellow-200 via-green-200 to-green-300' : ''}`}>
+                                <div className='flex justify-arround '>
+                                    <a className='p-l-10'>{d.title}</a>
+                                    <div className='flex space-x-2'>
+                                        <input type="checkbox" checked={d.checked} className="checkbox "
                                             aria-label={d.link} aria-current={d.title}
                                             onChange={handleChange}
                                         />
-                                        <FcStackOfPhotos className='w-8 h-8' onClick={async () => {
-                                            await handleShowImageList(d, i)
-                                        }}></FcStackOfPhotos>
-                                        <TbBrowser className='w-8 h-8' onClick={async () => {
-                                            window.open(d.link)?.focus();
-                                        }}></TbBrowser>
+                                        <div className="tooltip  tooltip-bottom z-50" data-tip="看圖片">
+                                            <FcStackOfPhotos className='w-8 h-8' onClick={async () => {
+                                                await handleShowImageList(d, i)
+                                            }}></FcStackOfPhotos>
+                                        </div>
+                                        <div className="tooltip  tooltip-bottom z-50" data-tip="開啟外部網站">
+                                            <TbBrowser className='w-8 h-8' onClick={async () => {
+                                                window.open(d.link)?.focus();
+                                            }}></TbBrowser>
+                                        </div>
+
                                     </div>
                                 </div>
                             </li>
@@ -227,7 +242,7 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                 </div>
             </div>
             {
-                imageList.data && <div className=' flex flex-col justify-center'>
+                imageList.data && <div className=' flex flex-col justify-center border-4 hover:border-emerald-500	border-emerald-500/50 p-3'>
                     <div className='flex flex-row justify-center font-bold text-lg space-x-3'>
                         <BsFillArrowLeftSquareFill
                             className='cursor-pointer h-5 w-5 text-blue-400 hover:text-red-400'
