@@ -21,6 +21,7 @@ db.commic_url
 .sort({_id:-1})
 .limit(100)
 ```
+- log記錄查詢
 - https://zh-hant.reactjs.org/docs/composition-vs-inheritance.html
 - https://react-photo-album.com/examples/lightbox
 - https://www.npmjs.com/package/react-image-gallery
