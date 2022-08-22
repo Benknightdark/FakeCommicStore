@@ -215,7 +215,7 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                                                  text-white  font-semibold hover:bg-yellow-600 flex flex-row"
                             onClick={async () => {
                                
-                                await addToFavorite(JSON.parse( router.query['data']));
+                                await addToFavorite(JSON.parse( router.query['data'] as any));
                             }}
                         >
                             <BsHeartFill className='w-4 h-4 m-1'></BsHeartFill>
