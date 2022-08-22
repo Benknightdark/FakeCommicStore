@@ -9,6 +9,7 @@ import { globalSettingStore, initialGlobalSettingStore } from "../../stores/glob
 import LoadingProgress from "../../components/loading-progress";
 import { BsFillArrowUpRightCircleFill } from "react-icons/bs";
 import { GiBrokenHeart } from "react-icons/gi";
+import { removeFromFavorite } from '../../helpers/favorite-helper';
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const Index = () => {
@@ -85,18 +86,7 @@ const Index = () => {
                                                     className="  py-2 px-4 mt-5 bg-gray-600 rounded-lg
                                                      text-white font-semibold hover:bg-gray-800  flex flex-row"
                                                     onClick={async () => {
-                                                        const req = await fetch("/api/favorite/remove", {
-                                                            method: "POST",
-                                                            body: JSON.stringify(itemData),
-                                                            headers: { "content-type": "application/json" },
-                                                        });
-                                                        if (req.status === 200) {
-                                                            alert(`已移除『${itemData.title}』`)
-
-                                                        } else {
-                                                            const message = (await req.json());
-                                                            alert(message['message'])
-                                                        }
+                                                       await removeFromFavorite(itemData)
                                                     }}
                                                 >
                                                     <GiBrokenHeart className='w-5 h-5'></GiBrokenHeart>
