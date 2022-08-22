@@ -65,9 +65,12 @@ const Commic = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideP
                                                 className="  py-2 px-4 mt-5 bg-green-500 
                                                 rounded-lg text-white font-semibold hover:bg-green-600 flex flex-row"
                                                 onClick={() => {
+                                                    // console.log(itemData)
                                                     router.push({
                                                         pathname: '/chapter',
-                                                        query: { url: itemData.link, subTitle: itemData.title, backUrl: '/commic?url=' + router.query['url'] + '&subTitle=' + router.query['subTitle']?.toString()! }
+                                                        query: { url: itemData.link, subTitle: itemData.title, 
+                                                            data:JSON.stringify(itemData),
+                                                            backUrl: '/commic?url=' + router.query['url'] + '&subTitle=' + router.query['subTitle']?.toString()! }
                                                     })
                                                 }}
                                             ><BsFillArrowUpRightCircleFill className='w-5 h-5'></BsFillArrowUpRightCircleFill>
