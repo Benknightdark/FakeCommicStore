@@ -7,7 +7,7 @@ services:
     command: crawl chapter_url
     restart: always
     deploy:
-      replicas: 1 #20
+      replicas: 20
     environment:
       - REDIS_CONNECTION_STRING=redis-back-end
       - REDIS_CONNECTION_PORT=6379
@@ -25,7 +25,7 @@ services:
     command: crawl commic_url
     restart: always
     deploy:
-      replicas: 1 #5
+      replicas: 5
     environment:
       - REDIS_CONNECTION_STRING=redis-back-end
       - REDIS_CONNECTION_PORT=6379
