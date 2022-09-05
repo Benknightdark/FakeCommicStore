@@ -15,7 +15,7 @@
     "daisyui": "^2.24.0",
     "express": "^4.18.1",
     "express-ip": "^1.0.4",
-    "mongodb": "^4.9.0",
+    "mongodb": "^4.9.1",
     "next": "12.2.5",
     "next-auth": "^4.10.3",
     "next-redis-cache": "^1.0.3",
@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.0",
-    "@types/react": "18.0.17",
+    "@types/react": "18.0.18",
     "@types/react-dom": "^18.0.6",
     "@types/uuid": "^8.3.4",
     "autoprefixer": "10.4.8",
