@@ -34,16 +34,16 @@ type AppPropsWithLayout = AppProps & {
 export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout ?? ((page) => page)
-
+  const p=pageProps as any;
   return getLayout(
-  <SessionProvider session={pageProps.session} basePath={"/api/no/body/know"}>
+  <SessionProvider session={p.session} basePath={"/api/no/body/know"}>
     <Head>
       <meta charSet="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <title>Fake Commic Store</title>
     </Head>
     <Layout>
-      <Component {...pageProps} />
+      <Component {...p} />
     </Layout>
   </SessionProvider>
   )
