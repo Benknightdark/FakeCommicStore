@@ -11,7 +11,8 @@ import { TbBrowser } from 'react-icons/tb'
 import FloatBtnLayout from './utils/float-btn-layout'
 import PhotoAlbum from 'react-photo-album'
 import { HiSortAscending, HiSortDescending } from 'react-icons/hi'
-import { BsArrowsFullscreen, BsFillArrowLeftSquareFill, BsFillArrowRightSquareFill } from 'react-icons/bs'
+import { BsArrowsFullscreen, BsFillArrowLeftSquareFill, BsFillArrowRightSquareFill, BsHeartFill } from 'react-icons/bs'
+import { addToFavorite } from '../helpers/favorite-helper'
 const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
 
 const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
@@ -72,7 +73,6 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
     if (!data) return <Loading></Loading>
     return <div>
         {/* 浮動按鈕 */}
-
         <div style={{
             position: 'fixed',
             bottom: 40,
@@ -210,6 +210,17 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                             setDesc(1)
                             mutate();
                         }}></HiSortDescending>}
+                        <button
+                            className="  m-5  bg-yellow-400 rounded-lg
+                                                 text-white  font-semibold hover:bg-yellow-600 flex flex-row"
+                            onClick={async () => {
+                               
+                                await addToFavorite(JSON.parse( router.query['data'] as any));
+                            }}
+                        >
+                            <BsHeartFill className='w-4 h-4 m-1'></BsHeartFill>
+                            加入最愛
+                        </button>
                     </h2>
                     {data && <ul className=" overflow-auto menu bg-base-100  rounded-box 
                       border-4 border-indigo-600">

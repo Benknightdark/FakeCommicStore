@@ -10,6 +10,7 @@ import { globalSettingStore, initialGlobalSettingStore } from "../stores/global-
 import LoadingProgress from "../components/loading-progress";
 import FloatBtnLayout from "./utils/float-btn-layout";
 import { BsFillArrowUpRightCircleFill, BsHeartFill } from "react-icons/bs";
+import { addToFavorite } from "../helpers/favorite-helper";
 
 
 const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
@@ -64,9 +65,12 @@ const Commic = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideP
                                                 className="  py-2 px-4 mt-5 bg-green-500 
                                                 rounded-lg text-white font-semibold hover:bg-green-600 flex flex-row"
                                                 onClick={() => {
+                                                    // console.log(itemData)
                                                     router.push({
                                                         pathname: '/chapter',
-                                                        query: { url: itemData.link, subTitle: itemData.title, backUrl: '/commic?url=' + router.query['url'] + '&subTitle=' + router.query['subTitle']?.toString()! }
+                                                        query: { url: itemData.link, subTitle: itemData.title, 
+                                                            data:JSON.stringify(itemData),
+                                                            backUrl: '/commic?url=' + router.query['url'] + '&subTitle=' + router.query['subTitle']?.toString()! }
                                                     })
                                                 }}
                                             ><BsFillArrowUpRightCircleFill className='w-5 h-5'></BsFillArrowUpRightCircleFill>
@@ -76,18 +80,7 @@ const Commic = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideP
                                                 className="  py-2 px-4 mt-5 bg-yellow-400 rounded-lg
                                                  text-white font-semibold hover:bg-yellow-600 flex flex-row"
                                                 onClick={async () => {
-                                                    const req = await fetch("/api/favorite/add", {
-                                                        method: "POST",
-                                                        body: JSON.stringify(itemData),
-                                                        headers: { "content-type": "application/json" },
-                                                    });
-                                                    if (req.status === 200) {
-                                                        alert(`已新增『${itemData.title}』至我的最愛`)
-
-                                                    } else {
-                                                        const message = (await req.json());
-                                                        alert(message['message'])
-                                                    }
+                                                    await addToFavorite(itemData);
                                                 }}
                                             >
                                                 <BsHeartFill className='w-5 h-5 m-1'></BsHeartFill>

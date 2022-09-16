@@ -1,4 +1,4 @@
-scrapy==2.5.1
+scrapy #==2.5.1
 redis
 httpx
 BeautifulSoup4

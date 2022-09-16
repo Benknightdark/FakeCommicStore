@@ -1,17 +1,18 @@
 const express = require('express')
+const expressip = require('express-ip');
 const next = require('next')
 const port = process.env.PORT || 3033
-console.log(port)
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
+
 const handle = app.getRequestHandler()
 
 app.prepare().then(() => {
   const server = express()
+  server.use(expressip().getIpInfoMiddleware);
 
   server.all('*', (req, res) => {
-
-
+    console.log(req.ipInfo);
     return handle(req, res)
   })
 
