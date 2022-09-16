@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             res.status(404).json({"message":"未登入"})
             return;
         }
-        const limit:number=10
+        const limit:number=30
         const skip:number = Number.parseInt(req.query['page']!.toString()!)*limit;
         const favoriteCollection=await (await clientPromise).db().collection("favorite")
         const findData=await favoriteCollection.find({'username':session.user?.name},{projection:{_id:0}}).skip(skip).limit(limit).toArray();
