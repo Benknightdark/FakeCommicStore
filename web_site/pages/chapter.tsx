@@ -223,9 +223,10 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                         </button>
                     </h2>
                     {data && <ul className=" overflow-auto menu bg-base-100  rounded-box 
-                      border-4 border-indigo-600">
+                      border-4 border-indigo-600" style={{"display":"block"}}>
                         {data.map((d: any, i: any) => (
                             <li key={i}
+                            
                                 className={`border-b-4 border-indigo-500 ${imageList?.title == d.title ? 'bg-gradient-to-l from-yellow-200 via-green-200 to-green-300' : ''}`}>
                                 <div className='flex justify-arround '>
                                     <a className='p-l-10'>{d.title}</a>

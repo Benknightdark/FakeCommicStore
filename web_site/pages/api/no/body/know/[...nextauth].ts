@@ -1,9 +1,11 @@
 import NextAuth, { NextAuthOptions } from "next-auth"
-import Credentials from "next-auth/providers/credentials";
+// import Credentials from "next-auth/providers/credentials";
+import CredentialsProvider from "next-auth/providers/credentials";
+
 import clientPromise from '../../../../../helpers/mongodb-client'
 const options: NextAuthOptions = {
     providers: [
-        Credentials({
+        CredentialsProvider({
             name: 'Credentials',
             credentials: {
                 username: { label: "Username", type: "text", },
@@ -12,12 +14,12 @@ const options: NextAuthOptions = {
             async authorize(credentials, req) {
 
                 const collection = await (await clientPromise).db().collection('user');
-                const userData = await collection.findOne({ 'username': credentials?.username, 'password': credentials?.password }, {
+                let userData = await collection.findOne({ 'username': credentials?.username, 'password': credentials?.password }, {
                     projection: {
                         _id: 0
                     }
-                })
-                return userData
+                }) as any;
+                return userData!
             }
         })
     ],
@@ -51,7 +53,7 @@ const options: NextAuthOptions = {
     },
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {
-           user.name = user.username as string
+           user.name = (user as any).username as string
             return true
         },
         async redirect({ url, baseUrl }) {
