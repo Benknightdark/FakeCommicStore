@@ -21,8 +21,11 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
     const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
     mutateGlobalStoreData({ ...globalStoreData, subTitle: router.query['subTitle']?.toString()! }, false)
     const [imageList, setImageList] = useState<any>({});
-    const { data, error, mutate } = useSWR([`/api/chapter?url=${router.query['url']}&id=${globalStoreData.selectedSource.id}&desc=${desc}`, csrfToken], fetcher, {
-        revalidateOnFocus: false
+    const { data, error, mutate } = useSWR([`/api/chapter?url=${router.query['url']}&id=${globalStoreData.selectedSource.id}&desc=${desc}`, csrfToken], 
+    fetcher, {
+        revalidateOnFocus: false,
+        errorRetryInterval:5,
+        shouldRetryOnError:true,
     })
 
     const [selectData, updateSelectData] = useState<string[]>([])
