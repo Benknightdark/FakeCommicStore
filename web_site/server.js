@@ -12,7 +12,7 @@ app.prepare().then(() => {
   server.use(expressip().getIpInfoMiddleware);
 
   server.all('*', (req, res) => {
-    console.log(req.ipInfo);
+    // console.log(req.ipInfo);
     return handle(req, res)
   })
 

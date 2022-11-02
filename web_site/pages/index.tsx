@@ -5,6 +5,7 @@ import useSWR from 'swr'
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import { getCsrfToken } from 'next-auth/react'
 import { globalSettingStore, initialGlobalSettingStore } from '../stores/global-setting-store'
+import { useEffect } from 'react'
 
 
 const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
@@ -13,7 +14,9 @@ const Index: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getSe
 
   const { data, error } = useSWR([`/api/category?id=${globalStoreData.selectedSource.id}`, csrfToken], fetcher)
   const router = useRouter()
-  mutateGlobalStoreData({ ...globalStoreData, subTitle: '漫畫類別' }, false)
+  useEffect(()=>{
+    mutateGlobalStoreData({ ...globalStoreData, subTitle: '漫畫類別' }, false)
+  },[mutateGlobalStoreData,globalStoreData])
   if (error) return <Loading></Loading>
   if (!data) return <Loading></Loading>
 
