@@ -10,6 +10,7 @@ import LoadingProgress from "../../components/loading-progress";
 import { BsFillArrowUpRightCircleFill } from "react-icons/bs";
 import { GiBrokenHeart } from "react-icons/gi";
 import { removeFromFavorite } from '../../helpers/favorite-helper';
+import { CustomImage } from "../../components/custom-image";
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const Index = () => {
@@ -34,12 +35,14 @@ const Index = () => {
     if (session.status == "unauthenticated") {
         return (
             <div>
-                <Image src="https://i.giphy.com/media/lvQe7YwEEJoaIluvs6/giphy.webp" alt="not accessed" layout="fill"
+                {/* <Image src="https://i.giphy.com/media/lvQe7YwEEJoaIluvs6/giphy.webp" alt="not accessed" layout="fill"
                     className="cursor-pointer"
                     onClick={() => {
                         router.back()
                     }}
-                ></Image>
+                ></Image> */}
+
+                <CustomImage imageUrl='https://i.giphy.com/media/lvQe7YwEEJoaIluvs6/giphy.webp'></CustomImage>
             </div>
         );
     } else {
@@ -55,16 +58,12 @@ const Index = () => {
                                 return (
                                     <div className="rounded-lg shadow-xl bg-white py-3 px-6  border-2 border-purple-500 
                             hover:shadow-md  transform hover:-translate-y-1 transition-all duration-200 hover:border-red-500 hover:ring-indigo-300" key={itemData.image}>
-                                        {globalStoreData?.showImage && <Image
-                                            layout='responsive'
-                                            width='100%'
-                                            height='100%'
-                                            src={itemData.image}
-                                            alt={itemData.title}
-                                            className="rounded-t-lg h-120 w-full object-cover z-0 "
-                                            placeholder="blur"
-                                            blurDataURL="./blur.jpg"
-                                        />}
+                                        {globalStoreData?.showImage && 
+                                        <CustomImage imageUrl={itemData.image}
+                                        alt={itemData.title}
+                                        className="rounded-t-lg h-120 w-full object-cover z-0 "
+                                        ></CustomImage>
+                                        }
                                         <header className=" text-xl font-extrabold p-4">{itemData.title}</header>
 
                                         <footer className="text-center py-3 px-5 text-gray-500">
@@ -86,7 +85,7 @@ const Index = () => {
                                                     className="  py-2 px-4 mt-5 bg-gray-600 rounded-lg
                                                      text-white font-semibold hover:bg-gray-800  flex flex-row"
                                                     onClick={async () => {
-                                                       await removeFromFavorite(itemData)
+                                                        await removeFromFavorite(itemData)
                                                     }}
                                                 >
                                                     <GiBrokenHeart className='w-5 h-5'></GiBrokenHeart>

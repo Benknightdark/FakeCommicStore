@@ -9,6 +9,7 @@ import useSWR from "swr";
 import { initialGlobalSettingStore, globalSettingStore } from "../../stores/global-setting-store";
 import Image from 'next/image'
 import ToastMessage from "../../components/toast-message";
+import { CustomImage } from "../../components/custom-image";
 
 const Layout = ({ children }: React.PropsWithChildren<{}>) => {
     const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
@@ -235,8 +236,8 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                     <label htmlFor="logout-modal" className="modal cursor-pointer">
                         <label className="modal-box relative" htmlFor="">
                             <h3 className="text-2xl font-bold">你確定要登出嗎？</h3>
-                            <Image src='https://media3.giphy.com/media/UrzZ4TmQK17yJpYPIL/giphy.gif?cid=ecf05e47gj882bfm331v6bl56st37vs0ma3a9yy6ywswxz9t&rid=giphy.gif&ct=s'
-                                alt='' layout='responsive' width='20px' height='20px'></Image>
+                            <CustomImage
+                             imageUrl='https://media3.giphy.com/media/UrzZ4TmQK17yJpYPIL/giphy.gif?cid=ecf05e47gj882bfm331v6bl56st37vs0ma3a9yy6ywswxz9t&rid=giphy.gif&ct=s'></CustomImage>
                             <div className="modal-action">
                                 <label htmlFor="logout-modal" className="btn btn-success" onClick={() => { signOut() }}>確定</label>
                                 <label htmlFor="logout-modal" className="btn btn-warning">取消</label>

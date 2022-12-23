@@ -11,6 +11,7 @@ import LoadingProgress from "../components/loading-progress";
 import FloatBtnLayout from "./utils/float-btn-layout";
 import { BsFillArrowUpRightCircleFill, BsHeartFill } from "react-icons/bs";
 import { addToFavorite } from "../helpers/favorite-helper";
+import { CustomImage } from "../components/custom-image";
 
 
 const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
@@ -47,16 +48,25 @@ const Commic = () => {//{ csrfToken }: InferGetServerSidePropsType<typeof getSer
                             return (
                                 <div className="rounded-lg shadow-xl bg-white py-3 px-6  border-2 border-purple-500 
                             hover:shadow-md  transform hover:-translate-y-1 transition-all duration-200 hover:border-red-500 hover:ring-indigo-300" key={itemData.image}>
-                                    {globalStoreData?.showImage && <Image
-                                        layout='responsive'
-                                        width='100%'
-                                        height='100%'
-                                        src={itemData.image}
-                                        alt={itemData.title}
-                                        className="rounded-t-lg h-120 w-full object-cover z-0 "
-                                        placeholder="blur"
-                                        blurDataURL="./blur.jpg"
-                                    />}
+                                    {globalStoreData?.showImage && 
+                                     <CustomImage imageUrl={itemData.image}
+                                     alt={itemData.title}
+                                     className="rounded-t-lg h-120 w-full object-cover z-0 "
+                                     ></CustomImage>
+                                    
+                                    // <Image
+                                    //     layout='responsive'
+                                    //     width='100%'
+                                    //     height='100%'
+                                    //     src={itemData.image}
+                                    //     alt={itemData.title}
+                                    //     className="rounded-t-lg h-120 w-full object-cover z-0 "
+                                    //     placeholder="blur"
+                                    //     blurDataURL="./blur.jpg"
+                                    // />
+                                    
+                                    
+                                    }
                                     <header className=" text-xl font-extrabold p-4">{itemData.title}</header>
 
                                     <footer className="text-center py-3 px-5 text-gray-500">
