@@ -22,10 +22,10 @@ const Chapter = () => {
     mutateGlobalStoreData({ ...globalStoreData, subTitle: router.query['subTitle']?.toString()! }, false)
     const [imageList, setImageList] = useState<any>({});
     const { data, error, mutate } = useSWR([`/api/chapter?url=${router.query['url']}&id=${globalStoreData.selectedSource.id}&desc=${desc}`], //, csrfToken
-    fetcher, {
+        fetcher, {
         revalidateOnFocus: false,
-        errorRetryInterval:5,
-        shouldRetryOnError:true,
+        errorRetryInterval: 5,
+        shouldRetryOnError: true,
     })
 
     const [selectData, updateSelectData] = useState<string[]>([])
@@ -61,11 +61,12 @@ const Chapter = () => {
                 }),
                 headers: {
                     'content-type': 'application/json',
-                   // 'x-csrf-token': csrfToken
+                    // 'x-csrf-token': csrfToken
                 },
                 method: 'POST',
             })
             const res = await req.json();
+            console.log(res)
             setImageList({ ...imageList, data: res, title: d.title, prev: i - 1, next: i + 1, current: i });
         } catch (error) {
             console.log(error)
@@ -111,7 +112,7 @@ const Chapter = () => {
                         body: JSON.stringify(allData),
                         headers: {
                             'content-type': 'application/json',
-                           // 'x-csrf-token': csrfToken
+                            // 'x-csrf-token': csrfToken
                         },
                         method: 'POST',
                     })
@@ -140,7 +141,7 @@ const Chapter = () => {
                         body: JSON.stringify(selectData), // must match 'Content-Type' header
                         headers: {
                             'content-type': 'application/json',
-                          //  'x-csrf-token': csrfToken
+                            //  'x-csrf-token': csrfToken
                         },
                         method: 'POST',
                     })
@@ -184,6 +185,7 @@ const Chapter = () => {
         <label htmlFor="image-modal" className="btn modal-button hidden" id='image-modal-btn'></label>
 
         <input type="checkbox" id="image-modal" className="modal-toggle" />
+        {/* Modal */}
         <label htmlFor="image-modal" className="modal cursor-pointer space-x-3">
             <button className="btn btn-circle btn-error" onClick={async () => {
                 await handleShowImageList(data[imageList.prev], imageList.prev)
@@ -191,7 +193,7 @@ const Chapter = () => {
                 <AiOutlineArrowLeft className='text-white font-bold w-6 h-6'></AiOutlineArrowLeft>
             </button>
             {
-                imageList.data && <div className='  h-screen overflow-auto'>
+                imageList.data && <div className='h-screen overflow-auto'>
                     <PhotoAlbum layout="columns" photos={imageList.data} columns={1} spacing={0} />
                 </div>
             }
@@ -217,8 +219,8 @@ const Chapter = () => {
                             className="  m-5  bg-yellow-400 rounded-lg
                                                  text-white  font-semibold hover:bg-yellow-600 flex flex-row"
                             onClick={async () => {
-                               
-                                await addToFavorite(JSON.parse( router.query['data'] as any));
+
+                                await addToFavorite(JSON.parse(router.query['data'] as any));
                             }}
                         >
                             <BsHeartFill className='w-4 h-4 m-1'></BsHeartFill>
@@ -226,10 +228,10 @@ const Chapter = () => {
                         </button>
                     </h2>
                     {data && <ul className=" overflow-auto menu bg-base-100  rounded-box 
-                      border-4 border-indigo-600" style={{"display":"block"}}>
+                      border-4 border-indigo-600" style={{ "display": "block" }}>
                         {data.map((d: any, i: any) => (
                             <li key={i}
-                            
+
                                 className={`border-b-4 border-indigo-500 ${imageList?.title == d.title ? 'bg-gradient-to-l from-yellow-200 via-green-200 to-green-300' : ''}`}>
                                 <div className='flex justify-arround '>
                                     <a className='p-l-10'>{d.title}</a>
@@ -257,7 +259,7 @@ const Chapter = () => {
                 </div>
             </div>
             {
-                imageList.data && <div className=' flex flex-col justify-center border-4 hover:border-emerald-500	border-emerald-500/50 p-3'>
+                imageList.data && <div className='flex flex-col justify-center border-4 hover:border-emerald-500	border-emerald-500/50 p-3'>
                     <div className='flex flex-row justify-center font-bold text-lg space-x-3'>
                         <BsFillArrowLeftSquareFill
                             className='cursor-pointer h-5 w-5 text-blue-400 hover:text-red-400'
@@ -272,6 +274,7 @@ const Chapter = () => {
                             className='cursor-pointer h-5 w-5 text-blue-400 hover:text-red-400'
                             onClick={() => {
                                 document.getElementById('image-modal-btn')?.click();
+                                console.log(imageList.data)
                             }}
                         >
                         </BsArrowsFullscreen>
@@ -290,7 +293,7 @@ const Chapter = () => {
                         ></BsFillArrowRightSquareFill>
                     </div>
 
-                    <div className='  h-[32rem] overflow-auto'>
+                    <div className='h-[32rem] overflow-auto'>
                         <PhotoAlbum layout="columns" photos={imageList.data} columns={1} spacing={0} />
                     </div>
                 </div>
