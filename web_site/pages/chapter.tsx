@@ -1,10 +1,8 @@
-import type { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import useSWR from 'swr'
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useState, useEffect } from 'react'
 import Loading from '../components/loading'
 import { useRouter } from 'next/router'
 import { AiTwotoneDelete, AiOutlineCloudDownload, AiOutlineDownload, AiFillCloseCircle, AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
-import { getCsrfToken } from 'next-auth/react'
 import { globalSettingStore, initialGlobalSettingStore } from '../stores/global-setting-store'
 import { FcStackOfPhotos } from 'react-icons/fc'
 import { TbBrowser } from 'react-icons/tb'
@@ -13,13 +11,12 @@ import PhotoAlbum from 'react-photo-album'
 import { HiSortAscending, HiSortDescending } from 'react-icons/hi'
 import { BsArrowsFullscreen, BsFillArrowLeftSquareFill, BsFillArrowRightSquareFill, BsHeartFill } from 'react-icons/bs'
 import { addToFavorite } from '../helpers/favorite-helper'
-const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
-//{ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>
+import { CustomImage } from '../components/custom-image';
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const Chapter = () => {
     const [desc, setDesc] = useState(1);
     const router = useRouter()
     const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
-    mutateGlobalStoreData({ ...globalStoreData, subTitle: router.query['subTitle']?.toString()! }, false)
     const [imageList, setImageList] = useState<any>({});
     const { data, error, mutate } = useSWR([`/api/chapter?url=${router.query['url']}&id=${globalStoreData.selectedSource.id}&desc=${desc}`], //, csrfToken
         fetcher, {
@@ -68,11 +65,15 @@ const Chapter = () => {
             const res = await req.json();
             console.log(res)
             setImageList({ ...imageList, data: res, title: d.title, prev: i - 1, next: i + 1, current: i });
+            console.log(imageList)
         } catch (error) {
             console.log(error)
         }
 
     }
+    useEffect(() => {
+        mutateGlobalStoreData({ ...globalStoreData, subTitle: router.query['subTitle']?.toString()! }, false)
+    }, [mutateGlobalStoreData, globalStoreData, router.query])
     if (error) return <Loading></Loading>
     if (!data) return <Loading></Loading>
     return <div>
@@ -186,16 +187,24 @@ const Chapter = () => {
 
         <input type="checkbox" id="image-modal" className="modal-toggle" />
         {/* Modal */}
-        <label htmlFor="image-modal" className="modal cursor-pointer space-x-3">
+        <label htmlFor="image-modal"
+            className="modal cursor-pointer space-x-3">
             <button className="btn btn-circle btn-error" onClick={async () => {
                 await handleShowImageList(data[imageList.prev], imageList.prev)
             }}>
                 <AiOutlineArrowLeft className='text-white font-bold w-6 h-6'></AiOutlineArrowLeft>
             </button>
             {
-                imageList.data && <div className='h-screen overflow-auto'>
-                    <PhotoAlbum layout="columns" photos={imageList.data} columns={1} spacing={0} />
+                <div>
+                    {
+                        imageList.data && imageList.data.map((r: any) => {
+                            return <CustomImage key={r.src} imageUrl={r.src}></CustomImage>
+                        })
+                    }
                 </div>
+                // <div className='h-screen overflow-auto'>
+                //     <PhotoAlbum layout="columns" photos={imageList.data} columns={1} spacing={0} />
+                // </div>
             }
             <button className="btn btn-circle btn-error" onClick={async () => {
                 await handleShowImageList(data[imageList.next], imageList.next)
@@ -216,7 +225,7 @@ const Chapter = () => {
                             mutate();
                         }}></HiSortDescending>}
                         <button
-                            className="  m-5  bg-yellow-400 rounded-lg
+                            className="m-5  bg-yellow-400 rounded-lg
                                                  text-white  font-semibold hover:bg-yellow-600 flex flex-row"
                             onClick={async () => {
 
@@ -231,7 +240,6 @@ const Chapter = () => {
                       border-4 border-indigo-600" style={{ "display": "block" }}>
                         {data.map((d: any, i: any) => (
                             <li key={i}
-
                                 className={`border-b-4 border-indigo-500 ${imageList?.title == d.title ? 'bg-gradient-to-l from-yellow-200 via-green-200 to-green-300' : ''}`}>
                                 <div className='flex justify-arround '>
                                     <a className='p-l-10'>{d.title}</a>
@@ -259,7 +267,11 @@ const Chapter = () => {
                 </div>
             </div>
             {
-                imageList.data && <div className='flex flex-col justify-center border-4 hover:border-emerald-500	border-emerald-500/50 p-3'>
+                imageList.data && <div className={
+                    `flex flex-col justify-center border-4
+                    hover:border-emerald-500
+                       border-emerald-500/50 p-3`
+                }>
                     <div className='flex flex-row justify-center font-bold text-lg space-x-3'>
                         <BsFillArrowLeftSquareFill
                             className='cursor-pointer h-5 w-5 text-blue-400 hover:text-red-400'
@@ -272,9 +284,9 @@ const Chapter = () => {
                         </h2>
                         <BsArrowsFullscreen
                             className='cursor-pointer h-5 w-5 text-blue-400 hover:text-red-400'
-                            onClick={() => {
+                            onClick={async () => {
                                 document.getElementById('image-modal-btn')?.click();
-                                console.log(imageList.data)
+                                console.log(imageList)
                             }}
                         >
                         </BsArrowsFullscreen>
@@ -292,8 +304,9 @@ const Chapter = () => {
                             }}
                         ></BsFillArrowRightSquareFill>
                     </div>
-
-                    <div className='h-[32rem] overflow-auto'>
+                    <div
+                        className={'h-[32rem] overflow-auto'}
+                    >
                         <PhotoAlbum layout="columns" photos={imageList.data} columns={1} spacing={0} />
                     </div>
                 </div>
