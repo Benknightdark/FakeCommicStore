@@ -12,7 +12,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data[] | any>
 ) {
-  await csrTokenCheck(req, res)
+  // await csrTokenCheck(req, res)
   let categories: Data[] = []
   switch (req.query['id']) {
     case "1":

@@ -1,8 +1,7 @@
 import useSWR from "swr";
-const fetcher = (url: string, keyName: string, csrfToken: string) => fetch(url, {
+const fetcher = (url: string, keyName: string) => fetch(url, {
     method: 'POST',
     body: JSON.stringify({ keyName: keyName }),
-    headers: { 'x-csrf-token': csrfToken }
 }).then((res) => res.json())
 /**
  * 取得正要下載的網頁數量
@@ -10,8 +9,8 @@ const fetcher = (url: string, keyName: string, csrfToken: string) => fetch(url, 
  * chapter_url:start_urls
  * @return {*} 
  */
-export const useStartUrlsCount = (keyName: string, csrfToken: string = '') => {
-    const { data, error, mutate } = useSWR([`/api/logs/start-urls?requestId=${keyName}`, keyName, csrfToken],
+export const useStartUrlsCount = (keyName: string) => {
+    const { data, error, mutate } = useSWR([`/api/logs/start-urls?requestId=${keyName}`, keyName],
         fetcher,
         { refreshInterval: 10000 })
     return {

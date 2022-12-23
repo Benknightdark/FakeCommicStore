@@ -24,7 +24,7 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<Data[]>
 ) {
-    await csrTokenCheck(req, res)
+  //  await csrTokenCheck(req, res)
     const data: Data[] = []
     const url: string = req.query['url']!.toString()
     const page: string = req.query['page']!.toString()

@@ -14,14 +14,14 @@ import { HiSortAscending, HiSortDescending } from 'react-icons/hi'
 import { BsArrowsFullscreen, BsFillArrowLeftSquareFill, BsFillArrowRightSquareFill, BsHeartFill } from 'react-icons/bs'
 import { addToFavorite } from '../helpers/favorite-helper'
 const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
-
-const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+//{ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>
+const Chapter = () => {
     const [desc, setDesc] = useState(1);
     const router = useRouter()
     const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
     mutateGlobalStoreData({ ...globalStoreData, subTitle: router.query['subTitle']?.toString()! }, false)
     const [imageList, setImageList] = useState<any>({});
-    const { data, error, mutate } = useSWR([`/api/chapter?url=${router.query['url']}&id=${globalStoreData.selectedSource.id}&desc=${desc}`, csrfToken], 
+    const { data, error, mutate } = useSWR([`/api/chapter?url=${router.query['url']}&id=${globalStoreData.selectedSource.id}&desc=${desc}`], //, csrfToken
     fetcher, {
         revalidateOnFocus: false,
         errorRetryInterval:5,
@@ -61,7 +61,7 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                 }),
                 headers: {
                     'content-type': 'application/json',
-                    'x-csrf-token': csrfToken
+                   // 'x-csrf-token': csrfToken
                 },
                 method: 'POST',
             })
@@ -111,7 +111,7 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                         body: JSON.stringify(allData),
                         headers: {
                             'content-type': 'application/json',
-                            'x-csrf-token': csrfToken
+                           // 'x-csrf-token': csrfToken
                         },
                         method: 'POST',
                     })
@@ -140,7 +140,7 @@ const Chapter = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSide
                         body: JSON.stringify(selectData), // must match 'Content-Type' header
                         headers: {
                             'content-type': 'application/json',
-                            'x-csrf-token': csrfToken
+                          //  'x-csrf-token': csrfToken
                         },
                         method: 'POST',
                     })
@@ -306,11 +306,11 @@ Chapter.getLayout = function getLayout(page: ReactElement) {
         </div>
     )
 }
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    return {
-        props: {
-            csrfToken: await getCsrfToken(ctx)
-        }
-    }
-}
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+//     return {
+//         props: {
+//             csrfToken: await getCsrfToken(ctx)
+//         }
+//     }
+// }
 export default Chapter

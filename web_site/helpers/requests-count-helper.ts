@@ -1,8 +1,9 @@
 import useSWR from "swr";
-const fetcher = (url: string, keyName: string,csrfToken:string) => fetch(url, {
+import { string } from 'yup';
+const fetcher = (url: string, keyName: string) => fetch(url, {
     method: 'POST',
     body: JSON.stringify({ keyName: keyName }),
-    headers: { 'x-csrf-token': csrfToken }
+  //  headers: { 'x-csrf-token': csrfToken }
 }).then((res) => res.json())
 /**
  * 取得待下載的連結數量
@@ -10,9 +11,9 @@ const fetcher = (url: string, keyName: string,csrfToken:string) => fetch(url, {
  chapter_url:requests
  * @return {*} 
  */
-export const useRequestsCount = (keyName: string,csrfToken:string='') => {
+export const useRequestsCount = (keyName: string) => {
     const { data, error, mutate } = useSWR(
-        [`/api/logs/requests?requestId=${keyName}`, keyName,csrfToken],
+        [`/api/logs/requests?requestId=${keyName}`, keyName],
         fetcher,
         { refreshInterval: 10000 })
     return {

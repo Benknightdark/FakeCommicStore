@@ -15,13 +15,13 @@ import { addToFavorite } from "../helpers/favorite-helper";
 
 const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
 
-const Commic = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Commic = () => {//{ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>
     const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
     const router = useRouter()
     const [showLoading, setShowLoading] = useState(false)
     mutateGlobalStoreData({ ...globalStoreData, subTitle: router.query['subTitle']?.toString()! }, false)
     const { data, size, setSize, error } = useSWRInfinite(index =>
-        [`/api/commic?url=${router.query['url']}&page=${index + 1}&id=${globalStoreData.selectedSource.id}`, csrfToken],
+        [`/api/commic?url=${router.query['url']}&page=${index + 1}&id=${globalStoreData.selectedSource.id}`],//, csrfToken
         fetcher)
     useEffect(() => {
         document.getElementById('contentBody')!.onscroll = async () => {
@@ -107,12 +107,12 @@ Commic.getLayout = function getLayout(page: ReactElement) {
         </div>
     )
 }
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    return {
-        props: {
-            csrfToken: await getCsrfToken(ctx)
-        }
-    }
-}
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+//     return {
+//         props: {
+//             csrfToken: await getCsrfToken(ctx)
+//         }
+//     }
+// }
 
 export default Commic;
