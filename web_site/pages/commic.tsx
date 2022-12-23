@@ -11,17 +11,18 @@ import LoadingProgress from "../components/loading-progress";
 import FloatBtnLayout from "./utils/float-btn-layout";
 import { BsFillArrowUpRightCircleFill, BsHeartFill } from "react-icons/bs";
 import { addToFavorite } from "../helpers/favorite-helper";
+import { CustomImage } from "../components/custom-image";
 
 
 const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
 
-const Commic = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Commic = () => {//{ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>
     const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
     const router = useRouter()
     const [showLoading, setShowLoading] = useState(false)
     mutateGlobalStoreData({ ...globalStoreData, subTitle: router.query['subTitle']?.toString()! }, false)
     const { data, size, setSize, error } = useSWRInfinite(index =>
-        [`/api/commic?url=${router.query['url']}&page=${index + 1}&id=${globalStoreData.selectedSource.id}`, csrfToken],
+        [`/api/commic?url=${router.query['url']}&page=${index + 1}&id=${globalStoreData.selectedSource.id}`],//, csrfToken
         fetcher)
     useEffect(() => {
         document.getElementById('contentBody')!.onscroll = async () => {
@@ -47,16 +48,25 @@ const Commic = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideP
                             return (
                                 <div className="rounded-lg shadow-xl bg-white py-3 px-6  border-2 border-purple-500 
                             hover:shadow-md  transform hover:-translate-y-1 transition-all duration-200 hover:border-red-500 hover:ring-indigo-300" key={itemData.image}>
-                                    {globalStoreData?.showImage && <Image
-                                        layout='responsive'
-                                        width='100%'
-                                        height='100%'
-                                        src={itemData.image}
-                                        alt={itemData.title}
-                                        className="rounded-t-lg h-120 w-full object-cover z-0 "
-                                        placeholder="blur"
-                                        blurDataURL="./blur.jpg"
-                                    />}
+                                    {globalStoreData?.showImage && 
+                                     <CustomImage imageUrl={itemData.image}
+                                     alt={itemData.title}
+                                     className="rounded-t-lg h-120 w-full object-cover z-0 "
+                                     ></CustomImage>
+                                    
+                                    // <Image
+                                    //     layout='responsive'
+                                    //     width='100%'
+                                    //     height='100%'
+                                    //     src={itemData.image}
+                                    //     alt={itemData.title}
+                                    //     className="rounded-t-lg h-120 w-full object-cover z-0 "
+                                    //     placeholder="blur"
+                                    //     blurDataURL="./blur.jpg"
+                                    // />
+                                    
+                                    
+                                    }
                                     <header className=" text-xl font-extrabold p-4">{itemData.title}</header>
 
                                     <footer className="text-center py-3 px-5 text-gray-500">
@@ -107,12 +117,12 @@ Commic.getLayout = function getLayout(page: ReactElement) {
         </div>
     )
 }
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    return {
-        props: {
-            csrfToken: await getCsrfToken(ctx)
-        }
-    }
-}
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+//     return {
+//         props: {
+//             csrfToken: await getCsrfToken(ctx)
+//         }
+//     }
+// }
 
 export default Commic;

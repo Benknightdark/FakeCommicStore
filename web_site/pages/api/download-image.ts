@@ -14,7 +14,7 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    await csrTokenCheck(req, res)
+  //  await csrTokenCheck(req, res)
     const selectData = req.body
     console.log( selectData)
     const client = createClient({

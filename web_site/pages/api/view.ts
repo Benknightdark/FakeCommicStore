@@ -15,7 +15,7 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    await csrTokenCheck(req, res)
+    //await csrTokenCheck(req, res)
     const selectData = req.body
     const $ = (await getCherrioData(selectData.url))
     let data: any[] = []

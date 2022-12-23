@@ -17,7 +17,7 @@ export const initialGlobalSettingStore = {
    sourceList: sourceList as any,
    selectedSource: sourceList[0] as any,
    subTitle:'',
-   shoToast:false,
+   showToast:false,
    toastMessage:''
 } as any;
 export const globalSettingStore = "globalSettingStore"
