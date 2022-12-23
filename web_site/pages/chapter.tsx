@@ -195,16 +195,13 @@ const Chapter = () => {
                 <AiOutlineArrowLeft className='text-white font-bold w-6 h-6'></AiOutlineArrowLeft>
             </button>
             {
-                <div>
+                <div className="overflow-y-scroll h-screen">
                     {
                         imageList.data && imageList.data.map((r: any) => {
                             return <CustomImage key={r.src} imageUrl={r.src}></CustomImage>
                         })
                     }
                 </div>
-                // <div className='h-screen overflow-auto'>
-                //     <PhotoAlbum layout="columns" photos={imageList.data} columns={1} spacing={0} />
-                // </div>
             }
             <button className="btn btn-circle btn-error" onClick={async () => {
                 await handleShowImageList(data[imageList.next], imageList.next)
