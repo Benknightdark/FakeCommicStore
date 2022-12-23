@@ -13,7 +13,7 @@ import { CustomImage } from "../../components/custom-image";
 
 const Layout = ({ children }: React.PropsWithChildren<{}>) => {
     const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
-    
+
     const router = useRouter()
     const session = useSession();
     const [openMenu, setOpenMenu] = useState<string>("-translate-x-full")
@@ -65,12 +65,23 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                                 </p>
                                 {!globalStoreData?.showImage ? <div className="tooltip tooltip-bottom" data-tip="顯示圖片">
                                     <AiFillEye className='cursor-pointer w-7 h-7' onClick={() => {
-                                        mutateGlobalStoreData({ ...globalStoreData, showImage: true,
-                                             showToast: true, toastMessage: '顯示圖片' }, false)
+                                        setTimeout(() => {
+                                            mutateGlobalStoreData({
+                                                ...globalStoreData, showImage: true,
+                                                showToast: true, toastMessage: '顯示圖片'
+                                            }, false)
+                                        }, 500);
                                     }}
                                     ></AiFillEye></div> : <div className="tooltip tooltip-bottom" data-tip="隱藏圖片"> <AiFillEyeInvisible className='cursor-pointer w-7 h-7' onClick={() => {
-                                        mutateGlobalStoreData({ ...globalStoreData, showImage: false, 
-                                            showToast: true, toastMessage: '隱藏圖片' }, false)
+                                        
+                                        setTimeout(() => {
+                                            mutateGlobalStoreData({
+                                                ...globalStoreData, showImage: false,
+                                                showToast: true, toastMessage: '隱藏圖片'
+                                            }, false)
+                                        }, 500);
+                                        
+                    
                                     }}
                                     ></AiFillEyeInvisible></div>}
 
@@ -237,7 +248,7 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                         <label className="modal-box relative" htmlFor="">
                             <h3 className="text-2xl font-bold">你確定要登出嗎？</h3>
                             <CustomImage
-                             imageUrl='https://media3.giphy.com/media/UrzZ4TmQK17yJpYPIL/giphy.gif?cid=ecf05e47gj882bfm331v6bl56st37vs0ma3a9yy6ywswxz9t&rid=giphy.gif&ct=s'></CustomImage>
+                                imageUrl='https://media3.giphy.com/media/UrzZ4TmQK17yJpYPIL/giphy.gif?cid=ecf05e47gj882bfm331v6bl56st37vs0ma3a9yy6ywswxz9t&rid=giphy.gif&ct=s'></CustomImage>
                             <div className="modal-action">
                                 <label htmlFor="logout-modal" className="btn btn-success" onClick={() => { signOut() }}>確定</label>
                                 <label htmlFor="logout-modal" className="btn btn-warning">取消</label>

@@ -1,13 +1,13 @@
 import Image from 'next/image'
 
-export const CustomImage = (props: { imageUrl: string, className?: string, alt?: string }) => {
+export const CustomImage = (props: { imageUrl: string, className?: string, alt?: string,width?:number,height?:number }) => {
     return (
         <div>
             <Image src={props.imageUrl}
                 className={props.className}
                 alt={props.alt!}
-                width={700}
-                height={475}
+                width={!props.width?700:props.width}
+                height={!props.height?475:props.height}
                 sizes="100vw"
                 style={{
                     width: '100%',
