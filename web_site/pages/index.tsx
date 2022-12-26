@@ -2,14 +2,14 @@ import React from 'react'
 import { useRouter } from 'next/router'
 import Loading from '../components/loading'
 import useSWR from 'swr'
-import { globalSettingStore, initialGlobalSettingStore } from '../stores/global-setting-store'
 import { useEffect } from 'react'
 import { NextPage } from 'next'
+import { useGlobalData } from '../helpers/global-data-helper'
 
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const Index: NextPage = () => {
-  const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
+  const { globalStoreData, mutateGlobalStoreData } = useGlobalData();
 
   const { data, error } = useSWR([`/api/category?id=${globalStoreData.selectedSource.id}`], fetcher)
   const router = useRouter()

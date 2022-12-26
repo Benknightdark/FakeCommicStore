@@ -12,12 +12,13 @@ import FloatBtnLayout from "./utils/float-btn-layout";
 import { BsFillArrowUpRightCircleFill, BsHeartFill } from "react-icons/bs";
 import { addToFavorite } from "../helpers/favorite-helper";
 import { CustomImage } from "../components/custom-image";
+import { useGlobalData } from "../helpers/global-data-helper";
 
 
 const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
 
 const Commic = () => {//{ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>
-    const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
+    const { globalStoreData, mutateGlobalStoreData } = useGlobalData();
     const router = useRouter()
     const [showLoading, setShowLoading] = useState(false)
     mutateGlobalStoreData({ ...globalStoreData, subTitle: router.query['subTitle']?.toString()! }, false)

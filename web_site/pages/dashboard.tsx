@@ -7,6 +7,7 @@ import { useStartUrlsCount } from '../helpers/starts-url-helper';
 import { IoIosRefreshCircle } from 'react-icons/io'
 import { getCsrfToken } from 'next-auth/react';
 import { globalSettingStore, initialGlobalSettingStore } from '../stores/global-setting-store';
+import { useGlobalData } from '../helpers/global-data-helper';
 const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
 const RecordItem = (props: any) => {
     return <div className="m-1 border-solid border-4 border-blue-900	
@@ -76,7 +77,7 @@ const QueueRecord = () => {
 }
 //{ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>
 const DashBoard: NextPage = () => {
-    const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
+    const { globalStoreData, mutateGlobalStoreData } = useGlobalData();
     mutateGlobalStoreData({ ...globalStoreData, subTitle: 'DashBoard' }, false)
     const defaultPageList = [1, 2, 3, 4, 5]
     const [page, setPage] = useState(1);

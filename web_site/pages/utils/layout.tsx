@@ -6,13 +6,12 @@ import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import DownloadCount from "../../components/download-count";
 import useSWR from "swr";
-import { initialGlobalSettingStore, globalSettingStore } from "../../stores/global-setting-store";
-import Image from 'next/image'
 import ToastMessage from "../../components/toast-message";
 import { CustomImage } from "../../components/custom-image";
+import { useGlobalData } from "../../helpers/global-data-helper";
 
 const Layout = ({ children }: React.PropsWithChildren<{}>) => {
-    const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
+    const { globalStoreData, mutateGlobalStoreData } = useGlobalData();
 
     const router = useRouter()
     const session = useSession();

@@ -12,11 +12,12 @@ import { HiSortAscending, HiSortDescending } from 'react-icons/hi'
 import { BsArrowsFullscreen, BsFillArrowLeftSquareFill, BsFillArrowRightSquareFill, BsHeartFill } from 'react-icons/bs'
 import { addToFavorite } from '../helpers/favorite-helper'
 import { CustomImage } from '../components/custom-image';
+import { useGlobalData } from '../helpers/global-data-helper'
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const Chapter = () => {
     const [desc, setDesc] = useState(1);
     const router = useRouter()
-    const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
+    const { globalStoreData, mutateGlobalStoreData } = useGlobalData();
     const [imageList, setImageList] = useState<any>({});
     const { data, error, mutate } = useSWR([`/api/chapter?url=${router.query['url']}&id=${globalStoreData.selectedSource.id}&desc=${desc}`], //, csrfToken
         fetcher, {
