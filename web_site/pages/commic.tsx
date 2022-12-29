@@ -53,20 +53,7 @@ const Commic = () => {//{ csrfToken }: InferGetServerSidePropsType<typeof getSer
                                      <CustomImage imageUrl={itemData.image}
                                      alt={itemData.title}
                                      className="rounded-t-lg h-120 w-full object-cover z-0 "
-                                     ></CustomImage>
-                                    
-                                    // <Image
-                                    //     layout='responsive'
-                                    //     width='100%'
-                                    //     height='100%'
-                                    //     src={itemData.image}
-                                    //     alt={itemData.title}
-                                    //     className="rounded-t-lg h-120 w-full object-cover z-0 "
-                                    //     placeholder="blur"
-                                    //     blurDataURL="./blur.jpg"
-                                    // />
-                                    
-                                    
+                                     ></CustomImage>                                                                        
                                     }
                                     <header className=" text-xl font-extrabold p-4">{itemData.title}</header>
 

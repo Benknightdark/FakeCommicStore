@@ -24,7 +24,7 @@
     "promise-fn-retry": "^1.0.10",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-hook-form": "^7.41.1",
+    "react-hook-form": "^7.41.2",
     "react-icons": "^4.7.1",
     "react-photo-album": "^2.0.0",
     "redis": "4.5.1",

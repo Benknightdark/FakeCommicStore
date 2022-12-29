@@ -1,17 +1,15 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 import Loading from '../components/loading'
-import useSWR from 'swr'
 import { useEffect } from 'react'
 import { NextPage } from 'next'
 import { useGlobalData } from '../helpers/global-data-helper'
+import { useCategory } from '../helpers/category-helper'
 
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const Index: NextPage = () => {
   const { globalStoreData, mutateGlobalStoreData } = useGlobalData();
 
-  const { data, error } = useSWR([`/api/category?id=${globalStoreData.selectedSource.id}`], fetcher)
+  const { data, error } = useCategory(globalStoreData.selectedSource.id);
   const router = useRouter()
   useEffect(() => {
     mutateGlobalStoreData({ ...globalStoreData, subTitle: '漫畫類別' }, false)
@@ -21,7 +19,7 @@ const Index: NextPage = () => {
 
   return (
     <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-      {data.map((d: any) => (
+      {data.map((d) => (
         <div key={d.title} className="py-3 px-6 ">
           <div className="p-10 card-background background-animate-hover rounded-lg ">
             <div className="bg-white p-3 rounded-lg shadow-lg border-2 border-purple-500 
