@@ -5,7 +5,6 @@ import { ImBooks } from 'react-icons/im';
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import DownloadCount from "../../components/download-count";
-import useSWR from "swr";
 import ToastMessage from "../../components/toast-message";
 import { CustomImage } from "../../components/custom-image";
 import { useGlobalData } from "../../helpers/global-data-helper";
@@ -71,16 +70,14 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                                             }, false)
                                         }, 500);
                                     }}
-                                    ></AiFillEye></div> : <div className="tooltip tooltip-bottom" data-tip="隱藏圖片"> <AiFillEyeInvisible className='cursor-pointer w-7 h-7' onClick={() => {
-                                        
+                                    ></AiFillEye></div> : <div className="tooltip tooltip-bottom" data-tip="隱藏圖片"> 
+                                    <AiFillEyeInvisible className='cursor-pointer w-7 h-7' onClick={() => {                                    
                                         setTimeout(() => {
                                             mutateGlobalStoreData({
                                                 ...globalStoreData, showImage: false,
                                                 showToast: true, toastMessage: '隱藏圖片'
                                             }, false)
-                                        }, 500);
-                                        
-                    
+                                        }, 500);                                                
                                     }}
                                     ></AiFillEyeInvisible></div>}
 
@@ -151,8 +148,7 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                                 {session.status == 'authenticated' &&
 
                                     <div className="tooltip tooltip-bottom" data-tip="你是否要登出？">
-                                        <label htmlFor="logout-modal" className='blue-btn  modal-button'
-                                        >
+                                        <label htmlFor="logout-modal" className='blue-btn  modal-button'>
                                             {session?.data?.user?.name}</label>
                                     </div>
 
