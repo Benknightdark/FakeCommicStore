@@ -3,18 +3,16 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import useSWRInfinite from 'swr/infinite'
 import Loading from "../../components/loading";
-import Image from 'next/image'
-import useSWR from "swr";
-import { globalSettingStore, initialGlobalSettingStore } from "../../stores/global-setting-store";
 import LoadingProgress from "../../components/loading-progress";
 import { BsFillArrowUpRightCircleFill } from "react-icons/bs";
 import { GiBrokenHeart } from "react-icons/gi";
 import { removeFromFavorite } from '../../helpers/favorite-helper';
 import { CustomImage } from "../../components/custom-image";
+import { useGlobalData } from "../../helpers/global-data-helper";
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const Index = () => {
-    const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
+    const { globalStoreData, mutateGlobalStoreData } = useGlobalData();
 
     const session = useSession();
     const router = useRouter()
@@ -35,13 +33,6 @@ const Index = () => {
     if (session.status == "unauthenticated") {
         return (
             <div>
-                {/* <Image src="https://i.giphy.com/media/lvQe7YwEEJoaIluvs6/giphy.webp" alt="not accessed" layout="fill"
-                    className="cursor-pointer"
-                    onClick={() => {
-                        router.back()
-                    }}
-                ></Image> */}
-
                 <CustomImage imageUrl='https://i.giphy.com/media/lvQe7YwEEJoaIluvs6/giphy.webp'></CustomImage>
             </div>
         );
@@ -97,8 +88,6 @@ const Index = () => {
                                         </footer>
                                     </div>
                                 )
-
-
                             })
                         ))}
                     </div>

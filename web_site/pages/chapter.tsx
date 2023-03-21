@@ -3,7 +3,6 @@ import React, { ReactElement, useState, useEffect } from 'react'
 import Loading from '../components/loading'
 import { useRouter } from 'next/router'
 import { AiTwotoneDelete, AiOutlineCloudDownload, AiOutlineDownload, AiFillCloseCircle, AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
-import { globalSettingStore, initialGlobalSettingStore } from '../stores/global-setting-store'
 import { FcStackOfPhotos } from 'react-icons/fc'
 import { TbBrowser } from 'react-icons/tb'
 import FloatBtnLayout from './utils/float-btn-layout'
@@ -12,11 +11,12 @@ import { HiSortAscending, HiSortDescending } from 'react-icons/hi'
 import { BsArrowsFullscreen, BsFillArrowLeftSquareFill, BsFillArrowRightSquareFill, BsHeartFill } from 'react-icons/bs'
 import { addToFavorite } from '../helpers/favorite-helper'
 import { CustomImage } from '../components/custom-image';
+import { useGlobalData } from '../helpers/global-data-helper'
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const Chapter = () => {
     const [desc, setDesc] = useState(1);
     const router = useRouter()
-    const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
+    const { globalStoreData, mutateGlobalStoreData } = useGlobalData();
     const [imageList, setImageList] = useState<any>({});
     const { data, error, mutate } = useSWR([`/api/chapter?url=${router.query['url']}&id=${globalStoreData.selectedSource.id}&desc=${desc}`], //, csrfToken
         fetcher, {
@@ -210,7 +210,7 @@ const Chapter = () => {
             </button>
         </label>
         {/* 漫畫章節列表 */}
-        <div className=" flex flex-row  flex-wrap pt-20 p-3 justify-center space-x-2">
+        <div className=" flex flex-row   pt-20 p-3 justify-center space-x-2 flex-wrap lg:flex-nowrap">
             <div className="card  bg-base-100 shadow-xl  md:w-1/2 w-full h-96 mt-2 ">
                 <div className="card-body h-80">
                     <h2 className="card-title">章節列表

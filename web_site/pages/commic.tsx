@@ -12,12 +12,13 @@ import FloatBtnLayout from "./utils/float-btn-layout";
 import { BsFillArrowUpRightCircleFill, BsHeartFill } from "react-icons/bs";
 import { addToFavorite } from "../helpers/favorite-helper";
 import { CustomImage } from "../components/custom-image";
+import { useGlobalData } from "../helpers/global-data-helper";
 
 
 const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
 
 const Commic = () => {//{ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>
-    const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
+    const { globalStoreData, mutateGlobalStoreData } = useGlobalData();
     const router = useRouter()
     const [showLoading, setShowLoading] = useState(false)
     mutateGlobalStoreData({ ...globalStoreData, subTitle: router.query['subTitle']?.toString()! }, false)
@@ -52,20 +53,7 @@ const Commic = () => {//{ csrfToken }: InferGetServerSidePropsType<typeof getSer
                                      <CustomImage imageUrl={itemData.image}
                                      alt={itemData.title}
                                      className="rounded-t-lg h-120 w-full object-cover z-0 "
-                                     ></CustomImage>
-                                    
-                                    // <Image
-                                    //     layout='responsive'
-                                    //     width='100%'
-                                    //     height='100%'
-                                    //     src={itemData.image}
-                                    //     alt={itemData.title}
-                                    //     className="rounded-t-lg h-120 w-full object-cover z-0 "
-                                    //     placeholder="blur"
-                                    //     blurDataURL="./blur.jpg"
-                                    // />
-                                    
-                                    
+                                     ></CustomImage>                                                                        
                                     }
                                     <header className=" text-xl font-extrabold p-4">{itemData.title}</header>
 

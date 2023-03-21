@@ -1,5 +1,4 @@
 import useSWR from "swr";
-import { string } from 'yup';
 const fetcher = (url: string, keyName: string) => fetch(url, {
     method: 'POST',
     body: JSON.stringify({ keyName: keyName }),
