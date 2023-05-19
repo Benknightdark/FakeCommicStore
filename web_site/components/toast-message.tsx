@@ -1,10 +1,9 @@
 import { AiFillCloseCircle } from "react-icons/ai";
-import useSWR from "swr";
-import { globalSettingStore, initialGlobalSettingStore } from "../stores/global-setting-store";
 import { useEffect } from 'react';
+import { useGlobalData } from "../helpers/global-data-helper";
 
 const ToastMessage = () => {
-    const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
+    const { globalStoreData, mutateGlobalStoreData } = useGlobalData();
     useEffect(() => {
         if (globalStoreData.showToast) {
             setTimeout(() => {

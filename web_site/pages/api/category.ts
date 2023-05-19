@@ -1,25 +1,25 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getCherrioData } from '../../helpers/cheerio-helper';
-import { csrTokenCheck } from '../../helpers/csr-token-helper';
+import { Category } from '../../models/category';
 
-type Data = {
-  title: string
-  link: string | undefined
-}
+// type Data = {
+//   title: string
+//   link: string | undefined
+// }
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data[] | any>
+  res: NextApiResponse<Category[] | any>
 ) {
-  await csrTokenCheck(req, res)
-  let categories: Data[] = []
+  // await csrTokenCheck(req, res)
+  let categories: Category[] = []
   switch (req.query['id']) {
     case "1":
       const $1 = (await getCherrioData('https://www.comicun.com/'))
       $1('.nav_type > dl > dd').children('a').each(function (index, element) {
         if (index != 0)
-          categories.push({ title: $1(element).text(), link: $1(element).attr('href') })
+          categories.push({ title: $1(element).text(), link: $1(element).attr('href')! })
       });
       break;
     case "2":

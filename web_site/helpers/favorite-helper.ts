@@ -1,5 +1,4 @@
 export const addToFavorite = async (itemData: any) => {
-    console.log(itemData)
     const req = await fetch("/api/favorite/add", {
         method: "POST",
         body: JSON.stringify(itemData),

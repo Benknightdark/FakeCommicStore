@@ -7,6 +7,7 @@ import { useStartUrlsCount } from '../helpers/starts-url-helper';
 import { IoIosRefreshCircle } from 'react-icons/io'
 import { getCsrfToken } from 'next-auth/react';
 import { globalSettingStore, initialGlobalSettingStore } from '../stores/global-setting-store';
+import { useGlobalData } from '../helpers/global-data-helper';
 const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
 const RecordItem = (props: any) => {
     return <div className="m-1 border-solid border-4 border-blue-900	
@@ -29,12 +30,12 @@ const RecordItem = (props: any) => {
         </div>
     </div>
 }
-
-const QueueRecord = ({ csrfToken }: any) => {
-    const chapterRequestsSWR = useRequestsCount("chapter_url:requests", csrfToken)
-    const chapterStartUrlsCountSWR = useStartUrlsCount("chapter_url:start_urls", csrfToken)
-    const commicRequestsSWR = useRequestsCount("commic_url:requests", csrfToken)
-    const commicStartUrlsCountSWR = useStartUrlsCount("commic_url:start_urls", csrfToken)
+//{ csrfToken }: any
+const QueueRecord = () => {
+    const chapterRequestsSWR = useRequestsCount("chapter_url:requests")//, csrfToken
+    const chapterStartUrlsCountSWR = useStartUrlsCount("chapter_url:start_urls")//, csrfToken
+    const commicRequestsSWR = useRequestsCount("commic_url:requests")//, csrfToken
+    const commicStartUrlsCountSWR = useStartUrlsCount("commic_url:start_urls")//, csrfToken
     return <div className=" flex flex-col justify-start">
         <div className='p-4'>
             <div className="shadow-md rounded-md overflow-hidden text-center border-solid border-4 border-blue-400">
@@ -74,15 +75,15 @@ const QueueRecord = ({ csrfToken }: any) => {
         </div>
     </div>
 }
-
-const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
+//{ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>
+const DashBoard: NextPage = () => {
+    const { globalStoreData, mutateGlobalStoreData } = useGlobalData();
     mutateGlobalStoreData({ ...globalStoreData, subTitle: 'DashBoard' }, false)
     const defaultPageList = [1, 2, 3, 4, 5]
     const [page, setPage] = useState(1);
     const [pageList, setPageList] = useState(defaultPageList)
     const rowCount=5;
-    const { data, error, mutate } = useSWR([`/api/logs/items?page=${page}&row=${rowCount}`, csrfToken], fetcher)
+    const { data, error, mutate } = useSWR([`/api/logs/items?page=${page}&row=${rowCount}`], fetcher)//, csrfToken
     const changePage = async (curretnPage: number) => {
         console.log(curretnPage)
         await setPage(curretnPage)
@@ -95,13 +96,13 @@ const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof g
         setTimeout(() => {
             document.getElementById('contentBody')!.scrollTo(0, 9999);
         }, 200)
-    }
+    }//csrfToken={csrfToken}
     if (error) return <Loading></Loading>
     if (!data) return <Loading></Loading>
     return (
         <div className="p-10">
             <div className="flex xl:flex-row flex-col">
-                <QueueRecord csrfToken={csrfToken}></QueueRecord>
+                <QueueRecord></QueueRecord>
                 {
                     <div className="flex flex-col grow">
                         <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -160,7 +161,7 @@ const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof g
                                                                         body: JSON.stringify({ url: d['chapterUrl'] }), // must match 'Content-Type' header
                                                                         headers: {
                                                                             'content-type': 'application/json',
-                                                                            'x-csrf-token': csrfToken
+                                                                           // 'x-csrf-token': csrfToken
                                                                         },
                                                                         method: 'POST',
                                                                     })
@@ -203,11 +204,11 @@ const DashBoard: NextPage = ({ csrfToken }: InferGetServerSidePropsType<typeof g
         </div>
     );
 }
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    return {
-        props: {
-            csrfToken: await getCsrfToken(ctx)
-        }
-    }
-}
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+//     return {
+//         props: {
+//             csrfToken: await getCsrfToken(ctx)
+//         }
+//     }
+// }
 export default DashBoard;

@@ -8,7 +8,7 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    await csrTokenCheck(req,res)
+  //  await csrTokenCheck(req,res)
 
     const page=Number.parseInt(req.query['page']!.toString()) //1
     const row=Number.parseInt(req.query['row']!.toString()) //10

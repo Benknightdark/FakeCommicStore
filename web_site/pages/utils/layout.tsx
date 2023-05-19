@@ -5,14 +5,13 @@ import { ImBooks } from 'react-icons/im';
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import DownloadCount from "../../components/download-count";
-import useSWR from "swr";
-import { initialGlobalSettingStore, globalSettingStore } from "../../stores/global-setting-store";
-import Image from 'next/image'
 import ToastMessage from "../../components/toast-message";
+import { CustomImage } from "../../components/custom-image";
+import { useGlobalData } from "../../helpers/global-data-helper";
 
 const Layout = ({ children }: React.PropsWithChildren<{}>) => {
-    const { data: globalStoreData, mutate: mutateGlobalStoreData } = useSWR(globalSettingStore, { fallbackData: initialGlobalSettingStore })
-    
+    const { globalStoreData, mutateGlobalStoreData } = useGlobalData();
+
     const router = useRouter()
     const session = useSession();
     const [openMenu, setOpenMenu] = useState<string>("-translate-x-full")
@@ -64,12 +63,21 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                                 </p>
                                 {!globalStoreData?.showImage ? <div className="tooltip tooltip-bottom" data-tip="顯示圖片">
                                     <AiFillEye className='cursor-pointer w-7 h-7' onClick={() => {
-                                        mutateGlobalStoreData({ ...globalStoreData, showImage: true,
-                                             showToast: true, toastMessage: '顯示圖片' }, false)
+                                        setTimeout(() => {
+                                            mutateGlobalStoreData({
+                                                ...globalStoreData, showImage: true,
+                                                showToast: true, toastMessage: '顯示圖片'
+                                            }, false)
+                                        }, 500);
                                     }}
-                                    ></AiFillEye></div> : <div className="tooltip tooltip-bottom" data-tip="隱藏圖片"> <AiFillEyeInvisible className='cursor-pointer w-7 h-7' onClick={() => {
-                                        mutateGlobalStoreData({ ...globalStoreData, showImage: false, 
-                                            showToast: true, toastMessage: '隱藏圖片' }, false)
+                                    ></AiFillEye></div> : <div className="tooltip tooltip-bottom" data-tip="隱藏圖片">
+                                    <AiFillEyeInvisible className='cursor-pointer w-7 h-7' onClick={() => {
+                                        setTimeout(() => {
+                                            mutateGlobalStoreData({
+                                                ...globalStoreData, showImage: false,
+                                                showToast: true, toastMessage: '隱藏圖片'
+                                            }, false)
+                                        }, 500);
                                     }}
                                     ></AiFillEyeInvisible></div>}
 
@@ -140,8 +148,7 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                                 {session.status == 'authenticated' &&
 
                                     <div className="tooltip tooltip-bottom" data-tip="你是否要登出？">
-                                        <label htmlFor="logout-modal" className='blue-btn  modal-button'
-                                        >
+                                        <label htmlFor="logout-modal" className='blue-btn  modal-button'>
                                             {session?.data?.user?.name}</label>
                                     </div>
 
@@ -235,8 +242,8 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                     <label htmlFor="logout-modal" className="modal cursor-pointer">
                         <label className="modal-box relative" htmlFor="">
                             <h3 className="text-2xl font-bold">你確定要登出嗎？</h3>
-                            <Image src='https://media3.giphy.com/media/UrzZ4TmQK17yJpYPIL/giphy.gif?cid=ecf05e47gj882bfm331v6bl56st37vs0ma3a9yy6ywswxz9t&rid=giphy.gif&ct=s'
-                                alt='' layout='responsive' width='20px' height='20px'></Image>
+                            <CustomImage
+                                imageUrl='https://media3.giphy.com/media/UrzZ4TmQK17yJpYPIL/giphy.gif?cid=ecf05e47gj882bfm331v6bl56st37vs0ma3a9yy6ywswxz9t&rid=giphy.gif&ct=s'></CustomImage>
                             <div className="modal-action">
                                 <label htmlFor="logout-modal" className="btn btn-success" onClick={() => { signOut() }}>確定</label>
                                 <label htmlFor="logout-modal" className="btn btn-warning">取消</label>

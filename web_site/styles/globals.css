@@ -195,3 +195,9 @@ a {
     background-position: 100% 50%;
   }
 }
+
+
+.show-modal-visible{
+  visibility: visible!important;
+  opacity: 100!important;
+}

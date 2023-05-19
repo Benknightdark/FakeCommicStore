@@ -9,7 +9,7 @@ export default async function handler(
     res: NextApiResponse
 ) {
     try {
-        await csrTokenCheck(req,res)
+       // await csrTokenCheck(req,res)
         const reqData = JSON.parse(req.body)
         const client = createClient(
             {
