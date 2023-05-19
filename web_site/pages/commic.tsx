@@ -1,18 +1,13 @@
-import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from "next";
 import React, { ReactElement, useEffect, useState } from "react";
-import useSWRInfinite from 'swr/infinite'
 import Loading from "../components/loading";
-import Image from 'next/image'
-import { useRouter } from "next/router";
-import { getCsrfToken } from "next-auth/react";
-import useSWR from "swr";
-import { globalSettingStore, initialGlobalSettingStore } from "../stores/global-setting-store";
-import LoadingProgress from "../components/loading-progress";
-import FloatBtnLayout from "./utils/float-btn-layout";
-import { BsFillArrowUpRightCircleFill, BsHeartFill } from "react-icons/bs";
 import { addToFavorite } from "../helpers/favorite-helper";
 import { CustomImage } from "../components/custom-image";
 import { useGlobalData } from "../helpers/global-data-helper";
+import { useRouter } from "next/router";
+import { BsFillArrowUpRightCircleFill, BsHeartFill } from "react-icons/bs";
+import LoadingProgress from "../components/loading-progress";
+import FloatBtnLayout from "./utils/float-btn-layout";
+import useSWRInfinite  from 'swr/infinite'
 
 
 const fetcher = (url: string, csrfToken: string) => fetch(url, { headers: { 'x-csrf-token': csrfToken } }).then((res) => res.json());
