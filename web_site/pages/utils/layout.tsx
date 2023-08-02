@@ -70,14 +70,14 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                                             }, false)
                                         }, 500);
                                     }}
-                                    ></AiFillEye></div> : <div className="tooltip tooltip-bottom" data-tip="隱藏圖片"> 
-                                    <AiFillEyeInvisible className='cursor-pointer w-7 h-7' onClick={() => {                                    
+                                    ></AiFillEye></div> : <div className="tooltip tooltip-bottom" data-tip="隱藏圖片">
+                                    <AiFillEyeInvisible className='cursor-pointer w-7 h-7' onClick={() => {
                                         setTimeout(() => {
                                             mutateGlobalStoreData({
                                                 ...globalStoreData, showImage: false,
                                                 showToast: true, toastMessage: '隱藏圖片'
                                             }, false)
-                                        }, 500);                                                
+                                        }, 500);
                                     }}
                                     ></AiFillEyeInvisible></div>}
 

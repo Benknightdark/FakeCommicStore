@@ -1,19 +1,17 @@
 import React from 'react'
-import { useRouter } from 'next/router'
 import Loading from '../components/loading'
 import { useEffect } from 'react'
 import { NextPage } from 'next'
 import { useGlobalData } from '../helpers/global-data-helper'
 import { useCategory } from '../helpers/category-helper'
+import { useRouter } from 'next/router'
 
 const Index: NextPage = () => {
   const { globalStoreData, mutateGlobalStoreData } = useGlobalData();
+  mutateGlobalStoreData({ ...globalStoreData, subTitle: '漫畫類別' }, false);
 
   const { data, error } = useCategory(globalStoreData.selectedSource.id);
-  const router = useRouter()
-  useEffect(() => {
-    mutateGlobalStoreData({ ...globalStoreData, subTitle: '漫畫類別' }, false)
-  }, [mutateGlobalStoreData, globalStoreData])
+  const router = useRouter();
   if (error) return <Loading></Loading>
   if (!data) return <Loading></Loading>
 

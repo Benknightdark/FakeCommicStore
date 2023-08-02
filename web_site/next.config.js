@@ -6,5 +6,6 @@ module.exports = {
     'media3.giphy.com','www.comicimgs.com'],
   },
   swcMinify: true,
-  output: 'standalone'
+  output: 'standalone',
+  transpilePackages: ["swr"]
 }
