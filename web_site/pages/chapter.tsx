@@ -167,8 +167,6 @@ const Chapter = () => {
                     下載
                 </div>
             </button>
-
-
         </div>
         {/* Alert Window */}
         <div>
@@ -189,25 +187,28 @@ const Chapter = () => {
         {/* Modal */}
         <label htmlFor="image-modal"
             className="modal cursor-pointer space-x-3">
-            <button className="btn btn-circle btn-error" onClick={async () => {
-                await handleShowImageList(data[imageList.prev], imageList.prev)
-            }}>
-                <AiOutlineArrowLeft className='text-white font-bold w-6 h-6'></AiOutlineArrowLeft>
-            </button>
-            {
-                <div className="overflow-y-scroll h-screen">
-                    {
-                        imageList.data && imageList.data.map((r: any) => {
-                            return <CustomImage key={r.src} imageUrl={r.src}></CustomImage>
-                        })
-                    }
-                </div>
-            }
-            <button className="btn btn-circle btn-error" onClick={async () => {
-                await handleShowImageList(data[imageList.next], imageList.next)
-            }}>
-                <AiOutlineArrowRight className='text-white font-bold w-6 h-6'></AiOutlineArrowRight>
-            </button>
+            <div className='flex items-center '>
+                <button className="btn btn-circle btn-error" onClick={async () => {
+                    await handleShowImageList(data[imageList.prev], imageList.prev)
+                }}>
+                    <AiOutlineArrowLeft className='text-white font-bold w-6 h-6'></AiOutlineArrowLeft>
+                </button>
+                {
+                    <div className="overflow-y-scroll h-screen">
+                        {
+                            imageList.data && imageList.data.map((r: any) => {
+                                return <CustomImage key={r.src} imageUrl={r.src}></CustomImage>
+                            })
+                        }
+                    </div>
+                }
+                <button className="btn btn-circle btn-error" onClick={async () => {
+                    await handleShowImageList(data[imageList.next], imageList.next)
+                }}>
+                    <AiOutlineArrowRight className='text-white font-bold w-6 h-6'></AiOutlineArrowRight>
+                </button>
+            </div>
+
         </label>
         {/* 漫畫章節列表 */}
         <div className=" flex flex-row   pt-20 p-3 justify-center space-x-2 flex-wrap lg:flex-nowrap">
