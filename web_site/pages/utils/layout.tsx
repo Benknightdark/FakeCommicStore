@@ -87,7 +87,7 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
                                         <ImBooks tabIndex={0} className="w-7 h-7 m-1  flex xl:hidden
                                      text-red-900 cursor-pointer"></ImBooks>
                                     </div>
-                                    <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                                    <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 z-999">
                                         {
                                             globalStoreData && globalStoreData.sourceList.map((s: any) =>
                                                 <li key={s.id} className={`${globalStoreData.selectedSource.id === s.id ? "text-red-500" : ""}`}

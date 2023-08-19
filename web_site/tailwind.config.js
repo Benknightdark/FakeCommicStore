@@ -14,6 +14,10 @@ module.exports = {
       height: {
         '128': '32rem',
       },
+      zIndex: {
+        '100': '100',
+        '999':'999'
+      },
       typography: (theme) => ({
         dark: {
           css: {
